@@ -9,21 +9,37 @@
 /* Begin PBXBuildFile section */
 		E03B46522C2DE98E00E53E05 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46512C2DE98E00E53E05 /* AppDelegate.swift */; };
 		E03B46542C2DE98E00E53E05 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46532C2DE98E00E53E05 /* SceneDelegate.swift */; };
-		E03B46562C2DE98E00E53E05 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46552C2DE98E00E53E05 /* ViewController.swift */; };
-		E03B46592C2DE98E00E53E05 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E03B46572C2DE98E00E53E05 /* Main.storyboard */; };
 		E03B465B2C2DE98F00E53E05 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E03B465A2C2DE98F00E53E05 /* Assets.xcassets */; };
 		E03B465E2C2DE98F00E53E05 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E03B465C2C2DE98F00E53E05 /* LaunchScreen.storyboard */; };
+		E03B46672C2DEFAC00E53E05 /* CreateTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46662C2DEFAC00E53E05 /* CreateTrackerViewController.swift */; };
+		E03B46692C2DEFE400E53E05 /* SelectTypeEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46682C2DEFE400E53E05 /* SelectTypeEventViewController.swift */; };
+		E03B466B2C2DF00C00E53E05 /* TableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B466A2C2DF00C00E53E05 /* TableCell.swift */; };
+		E03B466E2C2DF04D00E53E05 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B466D2C2DF04D00E53E05 /* UIColor+Extension.swift */; };
+		E03B46712C2DF08E00E53E05 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46702C2DF08E00E53E05 /* Tracker.swift */; };
+		E03B46732C2DF0BC00E53E05 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46722C2DF0BC00E53E05 /* TrackerCategory.swift */; };
+		E03B46752C2DF0E700E53E05 /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46742C2DF0E700E53E05 /* TrackerRecord.swift */; };
+		E03B46782C2DF12500E53E05 /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46772C2DF12500E53E05 /* StatisticViewController.swift */; };
+		E03B467B2C2DF15C00E53E05 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B467A2C2DF15C00E53E05 /* TabBarController.swift */; };
+		E03B467E2C2DF19C00E53E05 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B467D2C2DF19C00E53E05 /* TrackersViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E03B464E2C2DE98E00E53E05 /* TrackerNew.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackerNew.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E03B46512C2DE98E00E53E05 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E03B46532C2DE98E00E53E05 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E03B46552C2DE98E00E53E05 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		E03B46582C2DE98E00E53E05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E03B465A2C2DE98F00E53E05 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E03B465D2C2DE98F00E53E05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E03B465F2C2DE98F00E53E05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E03B46662C2DEFAC00E53E05 /* CreateTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewController.swift; sourceTree = "<group>"; };
+		E03B46682C2DEFE400E53E05 /* SelectTypeEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTypeEventViewController.swift; sourceTree = "<group>"; };
+		E03B466A2C2DF00C00E53E05 /* TableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCell.swift; sourceTree = "<group>"; };
+		E03B466D2C2DF04D00E53E05 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		E03B46702C2DF08E00E53E05 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
+		E03B46722C2DF0BC00E53E05 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
+		E03B46742C2DF0E700E53E05 /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
+		E03B46772C2DF12500E53E05 /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
+		E03B467A2C2DF15C00E53E05 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		E03B467D2C2DF19C00E53E05 /* TrackersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +72,87 @@
 		E03B46502C2DE98E00E53E05 /* TrackerNew */ = {
 			isa = PBXGroup;
 			children = (
+				E03B466C2C2DF03800E53E05 /* Extensions */,
+				E03B466F2C2DF07B00E53E05 /* Models */,
+				E03B46792C2DF14D00E53E05 /* TabBarController */,
+				E03B467C2C2DF18F00E53E05 /* TrackersViewController */,
+				E03B46762C2DF11100E53E05 /* StatisticViewController */,
+				E03B46652C2DEF8E00E53E05 /* CreateEvent */,
 				E03B46512C2DE98E00E53E05 /* AppDelegate.swift */,
 				E03B46532C2DE98E00E53E05 /* SceneDelegate.swift */,
-				E03B46552C2DE98E00E53E05 /* ViewController.swift */,
-				E03B46572C2DE98E00E53E05 /* Main.storyboard */,
 				E03B465A2C2DE98F00E53E05 /* Assets.xcassets */,
 				E03B465C2C2DE98F00E53E05 /* LaunchScreen.storyboard */,
 				E03B465F2C2DE98F00E53E05 /* Info.plist */,
 			);
 			path = TrackerNew;
+			sourceTree = "<group>";
+		};
+		E03B46652C2DEF8E00E53E05 /* CreateEvent */ = {
+			isa = PBXGroup;
+			children = (
+				E03B467F2C2DF2BE00E53E05 /* SelectTypeEventViewController */,
+				E03B46802C2DF2DA00E53E05 /* CreateTrackerViewController */,
+			);
+			path = CreateEvent;
+			sourceTree = "<group>";
+		};
+		E03B466C2C2DF03800E53E05 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E03B466D2C2DF04D00E53E05 /* UIColor+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E03B466F2C2DF07B00E53E05 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E03B46702C2DF08E00E53E05 /* Tracker.swift */,
+				E03B46722C2DF0BC00E53E05 /* TrackerCategory.swift */,
+				E03B46742C2DF0E700E53E05 /* TrackerRecord.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E03B46762C2DF11100E53E05 /* StatisticViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E03B46772C2DF12500E53E05 /* StatisticViewController.swift */,
+			);
+			path = StatisticViewController;
+			sourceTree = "<group>";
+		};
+		E03B46792C2DF14D00E53E05 /* TabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				E03B467A2C2DF15C00E53E05 /* TabBarController.swift */,
+			);
+			path = TabBarController;
+			sourceTree = "<group>";
+		};
+		E03B467C2C2DF18F00E53E05 /* TrackersViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E03B467D2C2DF19C00E53E05 /* TrackersViewController.swift */,
+			);
+			path = TrackersViewController;
+			sourceTree = "<group>";
+		};
+		E03B467F2C2DF2BE00E53E05 /* SelectTypeEventViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E03B46682C2DEFE400E53E05 /* SelectTypeEventViewController.swift */,
+			);
+			path = SelectTypeEventViewController;
+			sourceTree = "<group>";
+		};
+		E03B46802C2DF2DA00E53E05 /* CreateTrackerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E03B46662C2DEFAC00E53E05 /* CreateTrackerViewController.swift */,
+				E03B466A2C2DF00C00E53E05 /* TableCell.swift */,
+			);
+			path = CreateTrackerViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +215,6 @@
 			files = (
 				E03B465E2C2DE98F00E53E05 /* LaunchScreen.storyboard in Resources */,
 				E03B465B2C2DE98F00E53E05 /* Assets.xcassets in Resources */,
-				E03B46592C2DE98E00E53E05 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,23 +225,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E03B46562C2DE98E00E53E05 /* ViewController.swift in Sources */,
+				E03B46732C2DF0BC00E53E05 /* TrackerCategory.swift in Sources */,
+				E03B466E2C2DF04D00E53E05 /* UIColor+Extension.swift in Sources */,
+				E03B467E2C2DF19C00E53E05 /* TrackersViewController.swift in Sources */,
+				E03B466B2C2DF00C00E53E05 /* TableCell.swift in Sources */,
+				E03B46782C2DF12500E53E05 /* StatisticViewController.swift in Sources */,
+				E03B46672C2DEFAC00E53E05 /* CreateTrackerViewController.swift in Sources */,
+				E03B46752C2DF0E700E53E05 /* TrackerRecord.swift in Sources */,
+				E03B46712C2DF08E00E53E05 /* Tracker.swift in Sources */,
 				E03B46522C2DE98E00E53E05 /* AppDelegate.swift in Sources */,
+				E03B467B2C2DF15C00E53E05 /* TabBarController.swift in Sources */,
 				E03B46542C2DE98E00E53E05 /* SceneDelegate.swift in Sources */,
+				E03B46692C2DEFE400E53E05 /* SelectTypeEventViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		E03B46572C2DE98E00E53E05 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E03B46582C2DE98E00E53E05 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		E03B465C2C2DE98F00E53E05 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -297,9 +385,9 @@
 				INFOPLIST_FILE = TrackerNew/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -307,9 +395,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.practicum.trackerNew.TrackerNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -325,9 +416,9 @@
 				INFOPLIST_FILE = TrackerNew/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -335,9 +426,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.practicum.trackerNew.TrackerNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

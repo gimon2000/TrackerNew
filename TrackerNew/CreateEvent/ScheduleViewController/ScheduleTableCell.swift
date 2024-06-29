@@ -1,13 +1,13 @@
 //
-//  TableCell.swift
+//  ScheduleTableCell.swift
 //  TrackerNew
 //
-//  Created by gimon on 27.06.2024.
+//  Created by gimon on 29.06.2024.
 //
 
 import UIKit
 
-final class TackerTableCell: UITableViewCell {
+final class ScheduleTableCell: UITableViewCell {
     
     //MARK: - Visual Components
     private var textLabelCell: UILabel = {
@@ -17,10 +17,14 @@ final class TackerTableCell: UITableViewCell {
         return view
     }()
     
-    private var imageChevron: UIImageView = {
-        let image = UIImage(named: "Chevron")
-        let view = UIImageView(image: image)
-        view.tintColor = .ypGray2
+    private lazy var checkBox: UISwitch = {
+        let view = UISwitch()
+        view.addTarget(
+            self,
+            action: #selector(checkBoxChanged(_:)),
+            for: .valueChanged
+        )
+        view.onTintColor = .ypBlue
         return view
     }()
     
@@ -33,14 +37,14 @@ final class TackerTableCell: UITableViewCell {
         
         [
             textLabelCell,
-            imageChevron
+            checkBox
         ].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
-            addSubview($0)
+            contentView.addSubview($0)
         }
         
         addConstraintTextLabelCell()
-        addConstraintImageChevron()
+        addConstraintCheckBox()
     }
     
     required init?(coder: NSCoder) {
@@ -62,12 +66,20 @@ final class TackerTableCell: UITableViewCell {
         ])
     }
     
-    private func addConstraintImageChevron() {
+    private func addConstraintCheckBox() {
         NSLayoutConstraint.activate([
-            imageChevron.centerYAnchor.constraint(equalTo: centerYAnchor),
-            imageChevron.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            imageChevron.heightAnchor.constraint(equalToConstant: 24),
-            imageChevron.widthAnchor.constraint(equalToConstant: 24)
+            checkBox.centerYAnchor.constraint(equalTo: centerYAnchor),
+            checkBox.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            checkBox.heightAnchor.constraint(equalToConstant: 31),
+            checkBox.widthAnchor.constraint(equalToConstant: 51)
         ])
+    }
+    
+    @objc private func checkBoxChanged(_ sender: UISwitch){
+        if sender.isOn {
+            print(#fileID, #function, #line)
+        } else {
+            print(#fileID, #function, #line)
+        }
     }
 }

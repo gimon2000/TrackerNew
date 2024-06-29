@@ -115,7 +115,7 @@ final class CreateTrackerViewController: UIViewController {
         tableView.dataSource = self
         
         tableView.register(
-            TableCell.self,
+            TackerTableCell.self,
             forCellReuseIdentifier: cellReuseIdentifier
         )
         
@@ -200,7 +200,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: cellReuseIdentifier,
             for: indexPath
-        ) as? TableCell else {
+        ) as? TackerTableCell else {
             print(#fileID, #function, #line)
             return UITableViewCell()
         }
@@ -226,6 +226,15 @@ extension CreateTrackerViewController: UITableViewDataSource {
                 bottom: 0,
                 right: 16
             )
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(#fileID, #function, #line, "indexPath: \(indexPath)")
+        if indexPath.row == 1 {
+            let scheduleViewController = ScheduleViewController()
+            let navigationController = UINavigationController(rootViewController: scheduleViewController)
+            present(navigationController, animated: true)
         }
     }
 }

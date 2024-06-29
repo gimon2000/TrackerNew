@@ -10,7 +10,7 @@ import UIKit
 final class TackerTableCell: UITableViewCell {
     
     //MARK: - Visual Components
-    private var textLabelCell: UILabel = {
+    private var textTitleLabelCell: UILabel = {
         let view = UILabel()
         view.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         view.textColor = .ypBlack
@@ -32,7 +32,7 @@ final class TackerTableCell: UITableViewCell {
         backgroundColor = .ypGray
         
         [
-            textLabelCell,
+            textTitleLabelCell,
             imageChevron
         ].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -51,14 +51,14 @@ final class TackerTableCell: UITableViewCell {
     // MARK: - Public Methods
     func setTextInTextLabelCell(text: String) {
         print(#fileID, #function, #line)
-        textLabelCell.text = text
+        textTitleLabelCell.text = text
     }
     
     // MARK: - Private Methods
     private func addConstraintTextLabelCell() {
         NSLayoutConstraint.activate([
-            textLabelCell.centerYAnchor.constraint(equalTo: centerYAnchor),
-            textLabelCell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16)
+            textTitleLabelCell.centerYAnchor.constraint(equalTo: centerYAnchor),
+            textTitleLabelCell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16)
         ])
     }
     

@@ -13,7 +13,7 @@
 		E03B465E2C2DE98F00E53E05 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E03B465C2C2DE98F00E53E05 /* LaunchScreen.storyboard */; };
 		E03B46672C2DEFAC00E53E05 /* CreateTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46662C2DEFAC00E53E05 /* CreateTrackerViewController.swift */; };
 		E03B46692C2DEFE400E53E05 /* SelectTypeEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46682C2DEFE400E53E05 /* SelectTypeEventViewController.swift */; };
-		E03B466B2C2DF00C00E53E05 /* TableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B466A2C2DF00C00E53E05 /* TableCell.swift */; };
+		E03B466B2C2DF00C00E53E05 /* TackerTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B466A2C2DF00C00E53E05 /* TackerTableCell.swift */; };
 		E03B466E2C2DF04D00E53E05 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B466D2C2DF04D00E53E05 /* UIColor+Extension.swift */; };
 		E03B46712C2DF08E00E53E05 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46702C2DF08E00E53E05 /* Tracker.swift */; };
 		E03B46732C2DF0BC00E53E05 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46722C2DF0BC00E53E05 /* TrackerCategory.swift */; };
@@ -24,6 +24,11 @@
 		E03B46832C2DF66400E53E05 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46822C2DF66400E53E05 /* ScheduleViewController.swift */; };
 		E03B46852C3000AD00E53E05 /* ScheduleTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46842C3000AD00E53E05 /* ScheduleTableCell.swift */; };
 		E03B46872C30257F00E53E05 /* Weekdays.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46862C30257F00E53E05 /* Weekdays.swift */; };
+		E03B468A2C3032BF00E53E05 /* CreateTrackerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46892C3032BF00E53E05 /* CreateTrackerPresenter.swift */; };
+		E03B468C2C30331900E53E05 /* CreateTrackerPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B468B2C30331900E53E05 /* CreateTrackerPresenterProtocol.swift */; };
+		E03B468E2C30337800E53E05 /* CreateTrackerViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B468D2C30337800E53E05 /* CreateTrackerViewControllerProtocol.swift */; };
+		E03B46902C3041DF00E53E05 /* CreateTrackerViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B468F2C3041DF00E53E05 /* CreateTrackerViewControllerDelegate.swift */; };
+		E03B46922C3043DD00E53E05 /* ScheduleViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46912C3043DD00E53E05 /* ScheduleViewControllerDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,7 +40,7 @@
 		E03B465F2C2DE98F00E53E05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E03B46662C2DEFAC00E53E05 /* CreateTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewController.swift; sourceTree = "<group>"; };
 		E03B46682C2DEFE400E53E05 /* SelectTypeEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTypeEventViewController.swift; sourceTree = "<group>"; };
-		E03B466A2C2DF00C00E53E05 /* TableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCell.swift; sourceTree = "<group>"; };
+		E03B466A2C2DF00C00E53E05 /* TackerTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TackerTableCell.swift; sourceTree = "<group>"; };
 		E03B466D2C2DF04D00E53E05 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		E03B46702C2DF08E00E53E05 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		E03B46722C2DF0BC00E53E05 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
@@ -46,6 +51,11 @@
 		E03B46822C2DF66400E53E05 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		E03B46842C3000AD00E53E05 /* ScheduleTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableCell.swift; sourceTree = "<group>"; };
 		E03B46862C30257F00E53E05 /* Weekdays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekdays.swift; sourceTree = "<group>"; };
+		E03B46892C3032BF00E53E05 /* CreateTrackerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerPresenter.swift; sourceTree = "<group>"; };
+		E03B468B2C30331900E53E05 /* CreateTrackerPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerPresenterProtocol.swift; sourceTree = "<group>"; };
+		E03B468D2C30337800E53E05 /* CreateTrackerViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewControllerProtocol.swift; sourceTree = "<group>"; };
+		E03B468F2C3041DF00E53E05 /* CreateTrackerViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewControllerDelegate.swift; sourceTree = "<group>"; };
+		E03B46912C3043DD00E53E05 /* ScheduleViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewControllerDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,8 +167,11 @@
 		E03B46802C2DF2DA00E53E05 /* CreateTrackerViewController */ = {
 			isa = PBXGroup;
 			children = (
+				E03B468F2C3041DF00E53E05 /* CreateTrackerViewControllerDelegate.swift */,
+				E03B468D2C30337800E53E05 /* CreateTrackerViewControllerProtocol.swift */,
 				E03B46662C2DEFAC00E53E05 /* CreateTrackerViewController.swift */,
-				E03B466A2C2DF00C00E53E05 /* TableCell.swift */,
+				E03B466A2C2DF00C00E53E05 /* TackerTableCell.swift */,
+				E03B46882C30326800E53E05 /* Presenter */,
 			);
 			path = CreateTrackerViewController;
 			sourceTree = "<group>";
@@ -168,8 +181,18 @@
 			children = (
 				E03B46822C2DF66400E53E05 /* ScheduleViewController.swift */,
 				E03B46842C3000AD00E53E05 /* ScheduleTableCell.swift */,
+				E03B46912C3043DD00E53E05 /* ScheduleViewControllerDelegate.swift */,
 			);
 			path = ScheduleViewController;
+			sourceTree = "<group>";
+		};
+		E03B46882C30326800E53E05 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				E03B46892C3032BF00E53E05 /* CreateTrackerPresenter.swift */,
+				E03B468B2C30331900E53E05 /* CreateTrackerPresenterProtocol.swift */,
+			);
+			path = Presenter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -246,17 +269,22 @@
 				E03B46732C2DF0BC00E53E05 /* TrackerCategory.swift in Sources */,
 				E03B466E2C2DF04D00E53E05 /* UIColor+Extension.swift in Sources */,
 				E03B467E2C2DF19C00E53E05 /* TrackersViewController.swift in Sources */,
-				E03B466B2C2DF00C00E53E05 /* TableCell.swift in Sources */,
+				E03B466B2C2DF00C00E53E05 /* TackerTableCell.swift in Sources */,
+				E03B46902C3041DF00E53E05 /* CreateTrackerViewControllerDelegate.swift in Sources */,
 				E03B46872C30257F00E53E05 /* Weekdays.swift in Sources */,
 				E03B46782C2DF12500E53E05 /* StatisticViewController.swift in Sources */,
 				E03B46672C2DEFAC00E53E05 /* CreateTrackerViewController.swift in Sources */,
 				E03B46752C2DF0E700E53E05 /* TrackerRecord.swift in Sources */,
+				E03B46922C3043DD00E53E05 /* ScheduleViewControllerDelegate.swift in Sources */,
 				E03B46712C2DF08E00E53E05 /* Tracker.swift in Sources */,
+				E03B468C2C30331900E53E05 /* CreateTrackerPresenterProtocol.swift in Sources */,
+				E03B468E2C30337800E53E05 /* CreateTrackerViewControllerProtocol.swift in Sources */,
 				E03B46852C3000AD00E53E05 /* ScheduleTableCell.swift in Sources */,
 				E03B46522C2DE98E00E53E05 /* AppDelegate.swift in Sources */,
 				E03B467B2C2DF15C00E53E05 /* TabBarController.swift in Sources */,
 				E03B46542C2DE98E00E53E05 /* SceneDelegate.swift in Sources */,
 				E03B46692C2DEFE400E53E05 /* SelectTypeEventViewController.swift in Sources */,
+				E03B468A2C3032BF00E53E05 /* CreateTrackerPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

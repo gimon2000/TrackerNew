@@ -93,20 +93,31 @@ final class SelectTypeEventViewController: UIViewController {
     //TODO: добавить реализацию
     @objc private func clickAddNewHabit () {
         print(#fileID, #function, #line)
-        let createTrackerViewController = CreateTrackerViewController(
+        clickAddNewEvent(
             navigationTitle: "Новая привычка",
             numberOfRowsInSection: 2
         )
-        navigationController?.pushViewController(createTrackerViewController, animated: true)
     }
     
     //TODO: добавить реализацию
     @objc private func clickAddNewIrregularEvent () {
         print(#fileID, #function, #line)
-        let createTrackerViewController = CreateTrackerViewController(
+        clickAddNewEvent(
             navigationTitle: "Новое нерегулярное событие",
             numberOfRowsInSection: 1
         )
+    }
+    
+    private func clickAddNewEvent (navigationTitle: String, numberOfRowsInSection: Int) {
+        print(#fileID, #function, #line)
+        let createTrackerViewController = CreateTrackerViewController(
+            navigationTitle: navigationTitle,
+            numberOfRowsInSection: numberOfRowsInSection
+        )
+        let createTrackerPresenter = CreateTrackerPresenter()
+        createTrackerViewController.createTrackerPresenter = createTrackerPresenter
+        createTrackerPresenter.createTrackerView = createTrackerViewController
         navigationController?.pushViewController(createTrackerViewController, animated: true)
     }
+    
 }

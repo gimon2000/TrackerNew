@@ -28,6 +28,9 @@ final class ScheduleTableCell: UITableViewCell {
         return view
     }()
     
+    // MARK: - Public Properties
+    private(set) var isCheckDay = false
+    
     // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         print(#fileID, #function, #line)
@@ -76,10 +79,7 @@ final class ScheduleTableCell: UITableViewCell {
     }
     
     @objc private func checkBoxChanged(_ sender: UISwitch){
-        if sender.isOn {
-            print(#fileID, #function, #line)
-        } else {
-            print(#fileID, #function, #line)
-        }
+        print(#fileID, #function, #line, "sender.isOn: \(sender.isOn)")
+        isCheckDay = sender.isOn
     }
 }

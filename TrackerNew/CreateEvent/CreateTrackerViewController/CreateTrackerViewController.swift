@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CreateTrackerViewController: UIViewController {
+final class CreateTrackerViewController: UIViewController, CreateTrackerViewControllerProtocol {
     
     //MARK: - Visual Components
     private var textField: UITextField = {
@@ -56,12 +56,15 @@ final class CreateTrackerViewController: UIViewController {
         return view
     }()
     
-    private var tableView: UITableView = {
+    private var tableViewCategoryAndSchedule: UITableView = {
         let view = UITableView()
         view.layer.cornerRadius = 16
         view.separatorColor = .ypGray2
         return view
     }()
+    
+    //MARK: - Public Property
+    var createTrackerPresenter: CreateTrackerPresenterProtocol?
     
     //MARK: - Private Property
     private var navigationTitle: String
@@ -98,7 +101,7 @@ final class CreateTrackerViewController: UIViewController {
             stackView,
             createButton,
             cancelButton,
-            tableView
+            tableViewCategoryAndSchedule
         ].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -106,15 +109,15 @@ final class CreateTrackerViewController: UIViewController {
         [
             textField,
             stackView,
-            tableView
+            tableViewCategoryAndSchedule
         ].forEach{
             view.addSubview($0)
         }
         
-        tableView.delegate = self
-        tableView.dataSource = self
+        tableViewCategoryAndSchedule.delegate = self
+        tableViewCategoryAndSchedule.dataSource = self
         
-        tableView.register(
+        tableViewCategoryAndSchedule.register(
             TackerTableCell.self,
             forCellReuseIdentifier: cellReuseIdentifier
         )
@@ -147,10 +150,10 @@ final class CreateTrackerViewController: UIViewController {
     
     private func addConstraintTableView() {
         NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
-            tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * numberOfRowsInSection))
+            tableViewCategoryAndSchedule.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            tableViewCategoryAndSchedule.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            tableViewCategoryAndSchedule.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
+            tableViewCategoryAndSchedule.heightAnchor.constraint(equalToConstant: CGFloat(75 * numberOfRowsInSection))
         ])
     }
     
@@ -181,6 +184,17 @@ final class CreateTrackerViewController: UIViewController {
 extension CreateTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(#fileID, #function, #line, "indexPath: \(indexPath)")
+        if indexPath.row == 1 {
+            let scheduleViewController = ScheduleViewController()
+            scheduleViewController.delegate = self
+            let navigationController = UINavigationController(rootViewController: scheduleViewController)
+            present(navigationController, animated: true)
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
@@ -228,13 +242,12 @@ extension CreateTrackerViewController: UITableViewDataSource {
             )
         }
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(#fileID, #function, #line, "indexPath: \(indexPath)")
-        if indexPath.row == 1 {
-            let scheduleViewController = ScheduleViewController()
-            let navigationController = UINavigationController(rootViewController: scheduleViewController)
-            present(navigationController, animated: true)
-        }
+}
+
+//MARK: - ScheduleViewControllerDelegate
+extension CreateTrackerViewController: ScheduleViewControllerDelegate {
+    func setWeekdaysChecked(_ weekdaysCheckedArray: [Weekdays]) {
+        createTrackerPresenter?.weekdaysChecked = weekdaysCheckedArray
+        print(#fileID, #function, #line, "createTrackerPresenter?.weekdaysChecked: \(String(describing: createTrackerPresenter?.weekdaysChecked))")
     }
 }

@@ -13,7 +13,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     private var textField: UITextField = {
         let view = UITextField()
         view.placeholder = "Введите название трекера"
-        view.backgroundColor = .ypGray
+        view.backgroundColor = .ypGray30
         view.layer.cornerRadius = 16
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         view.leftView = leftView
@@ -27,7 +27,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         view.setTitle("Создать", for: .normal)
         view.setTitleColor(.white, for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        view.backgroundColor = .ypGray2
+        view.backgroundColor = .ypGray
         view.layer.cornerRadius = 16
         view.addTarget(self, action: #selector(clickCreateButton), for: .touchUpInside)
         return view
@@ -59,7 +59,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     private var tableViewCategoryAndSchedule: UITableView = {
         let view = UITableView()
         view.layer.cornerRadius = 16
-        view.separatorColor = .ypGray2
+        view.separatorColor = .ypGray
         return view
     }()
     

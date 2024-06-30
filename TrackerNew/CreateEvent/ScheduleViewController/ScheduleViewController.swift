@@ -24,7 +24,7 @@ final class ScheduleViewController: UIViewController {
     private var tableViewWeekdays: UITableView = {
         let view = UITableView()
         view.layer.cornerRadius = 16
-        view.separatorColor = .ypGray2
+        view.separatorColor = .ypGray
         view.allowsSelection = false
         return view
     }()
@@ -44,6 +44,9 @@ final class ScheduleViewController: UIViewController {
         
         navigationItem.title = "Расписание"
         
+        tableViewWeekdays.delegate = self
+        tableViewWeekdays.dataSource = self
+        
         [
             doneButton,
             tableViewWeekdays
@@ -51,9 +54,6 @@ final class ScheduleViewController: UIViewController {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
-        
-        tableViewWeekdays.delegate = self
-        tableViewWeekdays.dataSource = self
         
         tableViewWeekdays.register(
             ScheduleTableCell.self,
@@ -64,8 +64,7 @@ final class ScheduleViewController: UIViewController {
         addConstraintDoneButton()
     }
     
-    // MARK: - Private Methods
-    
+    // MARK: - Private Methods    
     private func addConstraintTableView() {
         NSLayoutConstraint.activate([
             tableViewWeekdays.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),

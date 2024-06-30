@@ -36,7 +36,7 @@ final class ScheduleTableCell: UITableViewCell {
         print(#fileID, #function, #line)
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .ypGray
+        backgroundColor = .ypGray30
         
         [
             textLabelCell,

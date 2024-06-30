@@ -20,7 +20,7 @@ final class TackerTableCell: UITableViewCell {
     private var imageChevron: UIImageView = {
         let image = UIImage(named: "Chevron")
         let view = UIImageView(image: image)
-        view.tintColor = .ypGray2
+        view.tintColor = .ypGray
         return view
     }()
     
@@ -29,7 +29,7 @@ final class TackerTableCell: UITableViewCell {
         print(#fileID, #function, #line)
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .ypGray
+        backgroundColor = .ypGray30
         
         [
             textTitleLabelCell,

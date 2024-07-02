@@ -9,6 +9,7 @@ import Foundation
 
 protocol CreateTrackerPresenterProtocol {
     var createTrackerView: CreateTrackerViewControllerProtocol? { get set }
-    var weekdaysChecked:[Weekdays] { get set }
-    var category: String { get }
+    
+    func createTracker(name: String) 
+    func setWeekdaysChecked(weekdaysChecked:[Weekdays])
 }

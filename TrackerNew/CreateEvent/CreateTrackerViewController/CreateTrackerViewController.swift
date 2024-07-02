@@ -65,6 +65,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     //MARK: - Public Property
     var createTrackerPresenter: CreateTrackerPresenterProtocol?
+    weak var delegate: SelectTypeEventViewControllerDelegate?
     
     //MARK: - Private Property
     private var navigationTitle: String
@@ -171,7 +172,9 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     @objc private func clickCreateButton() {
         print(#fileID, #function, #line)
-        //TODO: добавить реализацию
+        let name = textField.text
+        createTrackerPresenter?.createTracker(name: name ?? "Название отсутсвует")
+        self.dismiss(animated: true)
     }
     
     @objc private func clickCancelButton() {
@@ -247,7 +250,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
 //MARK: - ScheduleViewControllerDelegate
 extension CreateTrackerViewController: ScheduleViewControllerDelegate {
     func setWeekdaysChecked(_ weekdaysCheckedArray: [Weekdays]) {
-        createTrackerPresenter?.weekdaysChecked = weekdaysCheckedArray
-        print(#fileID, #function, #line, "createTrackerPresenter?.weekdaysChecked: \(String(describing: createTrackerPresenter?.weekdaysChecked))")
+        createTrackerPresenter?.setWeekdaysChecked(weekdaysChecked:weekdaysCheckedArray)
+        print(#fileID, #function, #line, "weekdaysCheckedArray: \(String(describing: weekdaysCheckedArray))")
     }
 }

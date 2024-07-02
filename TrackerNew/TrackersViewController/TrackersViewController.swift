@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TrackersViewController: UIViewController {
+final class TrackersViewController: UIViewController, TrackersViewControllerProtocol {
     
     //MARK: - Visual Components
     private lazy var addNewTracker: UIButton = {
@@ -77,10 +77,10 @@ final class TrackersViewController: UIViewController {
         return collectionView
     }()
     
-    //MARK: - Private Property
+    //MARK: - Public Property
+    var trackersPresenter: TrackersPresenterProtocol?
     
-    //    private var categories: [TrackerCategory]?
-    //    private var completedTrackers: [TrackerRecord]?
+    //MARK: - Private Property
     private let cellIdentifier = "cellIdentifier"
     private let headerIdentifier = "header"
     
@@ -110,11 +110,11 @@ final class TrackersViewController: UIViewController {
         collectionView.allowsMultipleSelection = false
         
         [
-            emptyTrackersImage,
-            emptyTrackersLabel,
             header,
             searchTextField,
-            collectionView
+            collectionView,
+            emptyTrackersImage,
+            emptyTrackersLabel,
         ].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
@@ -125,6 +125,8 @@ final class TrackersViewController: UIViewController {
         addConstraintEmptyTrackersImage()
         addConstraintEmptyTrackersLabel()
         addConstraintCollectionView()
+        
+        hideEmptyImage(setHidden: true)
     }
     
     // MARK: - Private Methods
@@ -171,41 +173,67 @@ final class TrackersViewController: UIViewController {
     
     //TODO: добавить реализацию
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
-        print(#fileID, #function, #line, sender)
-        let selectedDate = sender.date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
-        let formattedDate = dateFormatter.string(from: selectedDate)
-        print("Выбранная дата: \(formattedDate)")
+        print(#fileID, #function, #line, "sender.date: \(sender.date)")
+        trackersPresenter?.setCurrentDate(date: sender.date)
+        hideEmptyImage(setHidden: true)
+        collectionView.reloadData()
     }
     
     @objc private func clickAddNewTracker() {
+        print(#fileID, #function, #line)
         let selectTypeEventViewController = SelectTypeEventViewController()
+        selectTypeEventViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: selectTypeEventViewController)
         present(navigationController, animated: true)
+    }
+    
+    private func hideEmptyImage(setHidden: Bool) {
+        print(#fileID, #function, #line, "setHidden: \(setHidden)")
+        emptyTrackersImage.isHidden = setHidden
+        emptyTrackersLabel.isHidden = setHidden
     }
 }
 
 // MARK: - UICollectionViewDataSource
 extension TrackersViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        let number = trackersPresenter?.getCountTrackersInCategoriesInCurentDate() ?? 0
+        print(#fileID, #function, #line, "number: \(number)")
+        if number == 0 {
+            hideEmptyImage(setHidden: false)
+        }
+        return number
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? TrackerCollectionViewCell else {
             return UICollectionViewCell()
         }
+        guard let tracker = trackersPresenter?.getTrackersInDate(index: indexPath.row) else {
+            print(#fileID, #function, #line)
+            return cell
+        }
+        cell.delegate = trackersPresenter
+        cell.setCellItems(tracker: tracker)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: headerIdentifier,
-            for: indexPath
-        ) as! CategoryView
-        return view
+        print(#fileID, #function, #line)
+        let countCategories = trackersPresenter?.getCountCategories() ?? 0
+        let number = trackersPresenter?.getCountTrackersInCategoriesInCurentDate() ?? 0
+        if countCategories > 0 && number > 0 {
+            print(#fileID, #function, #line, "count: \(countCategories)")
+            let view = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: headerIdentifier,
+                for: indexPath
+            ) as! CategoryView
+            let nameCategory = trackersPresenter?.getNameCategory(index: countCategories) ?? ""
+            view.titleLabel.text = nameCategory
+            return view
+        }
+        return UICollectionReusableView()
     }
     
 }
@@ -235,5 +263,14 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 9
+    }
+}
+
+// MARK: - TrackersViewControllerDelegate
+extension TrackersViewController: TrackersViewControllerDelegate {
+    func setTracker(tracker: Tracker) {
+        trackersPresenter?.setTracker(tracker: tracker)
+        collectionView.reloadData()
+        hideEmptyImage(setHidden: true)
     }
 }

@@ -13,6 +13,9 @@ final class TabBarController: UITabBarController {
         print(#fileID, #function, #line)
         
         let trackersViewController = TrackersViewController()
+        let trackersPresenter = TrackersPresenter()
+        trackersViewController.trackersPresenter = trackersPresenter
+        trackersPresenter.trackersViewController = trackersViewController
         let navigationController = UINavigationController(rootViewController: trackersViewController)
         navigationController.tabBarItem = UITabBarItem(
             title: "Трекеры",

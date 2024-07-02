@@ -9,4 +9,5 @@ import Foundation
 
 protocol CreateTrackerViewControllerProtocol: AnyObject {
     var createTrackerPresenter: CreateTrackerPresenterProtocol? { get set }
+    var delegate: SelectTypeEventViewControllerDelegate? { get set }
 }

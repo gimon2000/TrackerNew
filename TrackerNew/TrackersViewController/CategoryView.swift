@@ -10,9 +10,8 @@ import UIKit
 final class CategoryView: UICollectionReusableView {
     
     //MARK: - Visual Components
-    let titleLabel: UILabel = {
+    var titleLabel: UILabel = {
         let view = UILabel()
-        view.text = "Домашний уют"
         view.textColor = .ypBlack
         view.font = UIFont.boldSystemFont(ofSize: 19)
         return view

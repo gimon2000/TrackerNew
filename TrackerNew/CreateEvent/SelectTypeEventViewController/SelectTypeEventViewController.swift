@@ -41,6 +41,9 @@ final class SelectTypeEventViewController: UIViewController {
         return view
     }()
     
+    //MARK: - Public Properties
+    weak var delegate: TrackersViewControllerDelegate?
+    
     //MARK: - Public Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,7 +93,6 @@ final class SelectTypeEventViewController: UIViewController {
         ])
     }
     
-    //TODO: добавить реализацию
     @objc private func clickAddNewHabit () {
         print(#fileID, #function, #line)
         clickAddNewEvent(
@@ -99,7 +101,6 @@ final class SelectTypeEventViewController: UIViewController {
         )
     }
     
-    //TODO: добавить реализацию
     @objc private func clickAddNewIrregularEvent () {
         print(#fileID, #function, #line)
         clickAddNewEvent(
@@ -117,7 +118,15 @@ final class SelectTypeEventViewController: UIViewController {
         let createTrackerPresenter = CreateTrackerPresenter()
         createTrackerViewController.createTrackerPresenter = createTrackerPresenter
         createTrackerPresenter.createTrackerView = createTrackerViewController
+        createTrackerViewController.delegate = self
         navigationController?.pushViewController(createTrackerViewController, animated: true)
     }
     
+}
+
+// MARK: - SelectTypeEventViewControllerDelegate
+extension SelectTypeEventViewController: SelectTypeEventViewControllerDelegate {
+    func setTracker(tracker: Tracker) {
+        delegate?.setTracker(tracker: tracker)
+    }
 }

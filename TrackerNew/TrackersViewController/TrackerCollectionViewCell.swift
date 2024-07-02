@@ -13,13 +13,11 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private var backgroundColorView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 16
-        view.backgroundColor = .green
         return view
     }()
     
     private let nameTracker: UILabel = {
         let view = UILabel()
-        view.text = "Трекер"
         view.textColor = .white
         view.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         view.numberOfLines = 2
@@ -29,7 +27,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private let emojiTracker: UILabel = {
         let view = UILabel()
-        view.text = "❤️"
         view.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         return view
     }()
@@ -42,26 +39,29 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }()
     
     private lazy var plusTrackerCellButton: UIButton = {
-        guard let image = UIImage(named: "PlusTrackerCellButton") else {
-            print(#fileID, #function, #line)
-            return UIButton()
-        }
         let view = UIButton.systemButton(
-            with: image,
+            with: UIImage(),
             target: self,
             action: #selector(clickPlusTrackerCellButton)
         )
-        view.tintColor = .green
+        view.layer.cornerRadius = 17
+        view.layer.masksToBounds = true
         return view
     }()
     
     private let daysTracker: UILabel = {
         let view = UILabel()
-        view.text = "5 дней"
         view.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         view.textColor = .ypBlack
         return view
     }()
+    
+    // MARK: - Public Properties
+    var delegate: TrackersPresenterProtocol?
+    
+    // MARK: - Private Properties
+    private var plusTrackerCellButtonColor = UIColor.red
+    private var trackerId: UInt = 0
     
     // MARK: - Initializers
     override init(frame: CGRect) {
@@ -97,6 +97,17 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Public Methods
+    func setCellItems(tracker: Tracker) {
+        backgroundColorView.backgroundColor = tracker.color
+        nameTracker.text = tracker.name
+        emojiTracker.text = tracker.emoji
+        plusTrackerCellButtonColor = tracker.color
+        trackerId = tracker.id
+        daysTracker.text = delegate?.countTrackerRecordDate(id: trackerId) ?? "0 дней"
+        setColorPlusTrackerCellButton()
     }
     
     // MARK: - Private Methods
@@ -151,6 +162,57 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     @objc private func clickPlusTrackerCellButton() {
         print(#fileID, #function, #line)
-        //TODO: -
+        
+        guard let delegate else {
+            print(#fileID, #function, #line)
+            assertionFailure()
+            return
+        }
+        
+        if delegate.getCurrentDate() > Date() {
+            print(#fileID, #function, #line)
+            return
+        }
+        
+        if delegate.containTrackerRecordDate(id: trackerId) {
+            print(#fileID, #function, #line)
+            delegate.deleteTrackerRecordDate(id: trackerId)
+            setColorPlusTrackerCellButton()
+            daysTracker.text = delegate.countTrackerRecordDate(id: trackerId)
+        } else {
+            print(#fileID, #function, #line)
+            delegate.setTrackerRecordDate(id: trackerId)
+            setColorPlusTrackerCellButton()
+            daysTracker.text = delegate.countTrackerRecordDate(id: trackerId)
+        }
+    }
+    
+    private func setColorPlusTrackerCellButton() {
+        
+        guard let delegate else {
+            print(#fileID, #function, #line)
+            assertionFailure()
+            return
+        }
+        
+        guard let imageDone = UIImage(named: "DoneTrackerCellButton"),
+              let imagePlus = UIImage(named: "PlusTrackerCellButton")
+        else {
+            print(#fileID, #function, #line)
+            return
+        }
+        
+        if delegate.containTrackerRecordDate(id: trackerId) {
+            print(#fileID, #function, #line)
+            plusTrackerCellButton.setImage(imageDone, for: .normal)
+            plusTrackerCellButton.backgroundColor = plusTrackerCellButtonColor
+            plusTrackerCellButton.tintColor = .white
+            plusTrackerCellButton.backgroundColor = plusTrackerCellButton.backgroundColor?.withAlphaComponent(0.3)
+        } else {
+            print(#fileID, #function, #line)
+            plusTrackerCellButton.setImage(imagePlus, for: .normal)
+            plusTrackerCellButton.backgroundColor = .white
+            plusTrackerCellButton.tintColor = plusTrackerCellButtonColor
+        }
     }
 }

@@ -48,7 +48,20 @@ final class TrackersPresenter: TrackersPresenterProtocol {
         }
         
         let countTrackersInCategoriesInDate = categories[0].trackers.filter{
-            $0.schedule.contains(day)
+            
+            guard let schedule = $0.schedule else {
+                print(#fileID, #function, #line)
+                guard let trackerDate = dateIgnoreTime(date: $0.eventDate),
+                      let selfDate = dateIgnoreTime(date: currentDate) else {
+                    return false
+                }
+                if trackerDate == selfDate {
+                    return true
+                }
+                return false
+            }
+            
+            return schedule.contains(day)
         }.count
         print(#fileID, #function, #line, "countTrackersInCategoriesInDate: \(countTrackersInCategoriesInDate)")
         return countTrackersInCategoriesInDate
@@ -69,7 +82,19 @@ final class TrackersPresenter: TrackersPresenterProtocol {
         
         let arrayTracersDay:[Tracker] = {
             categories[0].trackers.filter{
-                $0.schedule.contains(day)
+                guard let schedule = $0.schedule else {
+                    print(#fileID, #function, #line)
+                    guard let trackerDate = dateIgnoreTime(date: $0.eventDate),
+                          let selfDate = dateIgnoreTime(date: currentDate) else {
+                        return false
+                    }
+                    if trackerDate == selfDate {
+                        return true
+                    }
+                    return false
+                }
+                
+                return schedule.contains(day)
             }
         }()
         
@@ -77,19 +102,19 @@ final class TrackersPresenter: TrackersPresenterProtocol {
         return arrayTracersDay[index]
     }
     
-    func setTracker(tracker: Tracker) {
+    func setTracker(tracker: Tracker, category: String) {
         print(#fileID, #function, #line)
         if categories.isEmpty {
             categories.append(
                 TrackerCategory(
-                    name: "Test Category",
+                    name: category,
                     trackers: [tracker]
                 )
             )
         } else {
             categories = [
                 TrackerCategory(
-                    name: "Test Category",
+                    name: category,
                     trackers: (categories[0].trackers + [tracker])
                 )
             ]
@@ -166,5 +191,15 @@ final class TrackersPresenter: TrackersPresenterProtocol {
             return false
         }
         return true
+    }
+    
+    // MARK: - Private Methods
+    private func dateIgnoreTime (date: Date?) -> Date? {
+        guard let date else {
+            return nil
+        }
+        let dateComponents = Calendar.current.dateComponents([.day, .month, .year], from: date)
+        let dateWithoutTime = Calendar.current.date(from: dateComponents)
+        return dateWithoutTime
     }
 }

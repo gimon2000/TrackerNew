@@ -268,8 +268,8 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - TrackersViewControllerDelegate
 extension TrackersViewController: TrackersViewControllerDelegate {
-    func setTracker(tracker: Tracker) {
-        trackersPresenter?.setTracker(tracker: tracker)
+    func setTracker(tracker: Tracker, category: String) {
+        trackersPresenter?.setTracker(tracker: tracker, category: category)
         collectionView.reloadData()
         hideEmptyImage(setHidden: true)
     }

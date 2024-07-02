@@ -126,7 +126,7 @@ final class SelectTypeEventViewController: UIViewController {
 
 // MARK: - SelectTypeEventViewControllerDelegate
 extension SelectTypeEventViewController: SelectTypeEventViewControllerDelegate {
-    func setTracker(tracker: Tracker) {
-        delegate?.setTracker(tracker: tracker)
+    func setTracker(tracker: Tracker, category: String) {
+        delegate?.setTracker(tracker: tracker, category: category)
     }
 }

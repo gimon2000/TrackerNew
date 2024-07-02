@@ -13,21 +13,35 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
     weak var createTrackerView: CreateTrackerViewControllerProtocol?
     
     // MARK: - Private Properties
-    private var weekdaysChecked:[Weekdays] = []
+    private var weekdaysChecked:[Weekdays]?
     private let category: String = "Тест"
     private let emoji: String = "👍"
     private let color: UIColor = .red
     
     // MARK: - Public Methods
     func createTracker(name: String) {
-        let tracker = Tracker(
-            id: UInt.random(in: 0...UInt.max),
-            name: name,
-            emoji: emoji,
-            color: color,
-            schedule: weekdaysChecked
-        )
-        createTrackerView?.delegate?.setTracker(tracker: tracker)
+        if let weekdaysChecked = weekdaysChecked {
+            let tracker = Tracker(
+                id: UInt.random(in: 0...UInt.max),
+                name: name,
+                emoji: emoji,
+                color: color,
+                schedule: weekdaysChecked,
+                eventDate: nil
+            )
+            createTrackerView?.delegate?.setTracker(tracker: tracker, category: category)
+        } else {
+            let tracker = Tracker(
+                id: UInt.random(in: 0...UInt.max),
+                name: name,
+                emoji: emoji,
+                color: color,
+                schedule: nil,
+                eventDate: Date()
+            )
+            createTrackerView?.delegate?.setTracker(tracker: tracker, category: category)
+        }
+        
     }
     
     func setWeekdaysChecked(weekdaysChecked:[Weekdays]) {

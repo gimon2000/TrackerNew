@@ -15,7 +15,7 @@ protocol TrackersPresenterProtocol {
     func getCountCategories() -> Int
     func getCountTrackersInCategoriesInCurentDate() -> Int
     func getTrackersInDate(index: Int) -> Tracker?
-    func setTracker(tracker: Tracker)
+    func setTracker(tracker: Tracker, category: String)
     func getNameCategory(index: Int) -> String    
     func setTrackerRecordDate(id: UInt)
     func deleteTrackerRecordDate(id: UInt)

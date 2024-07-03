@@ -12,4 +12,5 @@ protocol CreateTrackerPresenterProtocol {
     
     func createTracker(name: String) 
     func setWeekdaysChecked(weekdaysChecked:[Weekdays])
+    func isWeekdaysCheckedNil() -> Bool
 }

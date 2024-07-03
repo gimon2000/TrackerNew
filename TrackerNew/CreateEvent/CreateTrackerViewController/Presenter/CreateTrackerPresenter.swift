@@ -47,4 +47,11 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
     func setWeekdaysChecked(weekdaysChecked:[Weekdays]) {
         self.weekdaysChecked = weekdaysChecked
     }
+    
+    func isWeekdaysCheckedNil() -> Bool {
+        guard let weekdaysChecked else {
+            return true
+        }
+        return weekdaysChecked.isEmpty
+    }
 }

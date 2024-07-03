@@ -95,6 +95,10 @@ final class ScheduleViewController: UIViewController {
                 print(#fileID, #function, #line, "weekdaysChecked: \(weekdaysChecked)")
             }
         }
+        if weekdaysChecked.isEmpty {
+            self.dismiss(animated: true)
+            return
+        }
         self.delegate?.setWeekdaysChecked(weekdaysChecked)
         self.dismiss(animated: true)
     }

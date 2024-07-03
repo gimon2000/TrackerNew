@@ -129,6 +129,10 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         addConstraintCreateButton()
         addConstraintCancelButton()
         addConstraintTableView()
+        
+        textField.delegate = self
+        changeStateCreateButton()
+        addTapGestureToHideKeyboard()
     }
     
     // MARK: - Private Methods
@@ -180,6 +184,25 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     @objc private func clickCancelButton() {
         print(#fileID, #function, #line)
         self.dismiss(animated: true)
+    }
+    
+    private func changeStateCreateButton() {
+        let textFieldIsEmpty = textField.text?.isEmpty ?? true
+        let createTrackerPresenterIsEmpty = createTrackerPresenter?.isWeekdaysCheckedNil() ?? true
+        if !textFieldIsEmpty && !createTrackerPresenterIsEmpty {
+            print(#fileID, #function, #line)
+            createButton.isEnabled = true
+            createButton.backgroundColor = .ypBlack
+        } else {
+            print(#fileID, #function, #line)
+            createButton.isEnabled = false
+            createButton.backgroundColor = .ypGray
+        }
+    }
+    
+    private func addTapGestureToHideKeyboard() {
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(view.endEditing))
+        view.addGestureRecognizer(tapGesture)
     }
 }
 
@@ -251,6 +274,21 @@ extension CreateTrackerViewController: UITableViewDataSource {
 extension CreateTrackerViewController: ScheduleViewControllerDelegate {
     func setWeekdaysChecked(_ weekdaysCheckedArray: [Weekdays]) {
         createTrackerPresenter?.setWeekdaysChecked(weekdaysChecked:weekdaysCheckedArray)
+        changeStateCreateButton()
         print(#fileID, #function, #line, "weekdaysCheckedArray: \(String(describing: weekdaysCheckedArray))")
+    }
+}
+
+//MARK: - UITextFieldDelegate
+extension CreateTrackerViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print(#fileID, #function, #line)
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        print(#fileID, #function, #line)
+        changeStateCreateButton()
     }
 }

@@ -24,14 +24,6 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         return view
     }()
     
-    private let header: UILabel = {
-        let view = UILabel()
-        view.text = "Трекеры"
-        view.textColor = .ypBlack
-        view.font = UIFont.boldSystemFont(ofSize: 34)
-        return view
-    }()
-    
     private let emptyTrackersImage: UIImageView = {
         guard let image = UIImage(named: "EmptyTrackersImage") else {
             print(#fileID, #function, #line)
@@ -91,6 +83,9 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         
         view.backgroundColor = .white
         
+        title = "Трекеры"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addNewTracker)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
         
@@ -110,7 +105,6 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         collectionView.allowsMultipleSelection = false
         
         [
-            header,
             searchTextField,
             collectionView,
             emptyTrackersImage,
@@ -120,7 +114,6 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
             view.addSubview($0)
         }
         
-        addConstraintHeader()
         addConstraintSearchTextField()
         addConstraintEmptyTrackersImage()
         addConstraintEmptyTrackersLabel()
@@ -130,13 +123,6 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     }
     
     // MARK: - Private Methods
-    private func addConstraintHeader() {
-        NSLayoutConstraint.activate([
-            header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
-            header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16)
-        ])
-    }
-    
     private func addConstraintEmptyTrackersImage() {
         NSLayoutConstraint.activate([
             emptyTrackersImage.widthAnchor.constraint(equalToConstant: 80),
@@ -158,7 +144,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
             searchTextField.heightAnchor.constraint(equalToConstant: 36),
             searchTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             searchTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            searchTextField.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 7)
+            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 7)
         ])
     }
     

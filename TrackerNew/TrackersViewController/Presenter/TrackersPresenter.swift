@@ -14,7 +14,6 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     // MARK: - Private Properties
     private var categories: [TrackerCategory] = []
     private var completedTrackers: [TrackerRecord] = []
-    private var trackerRecords: [TrackerRecord] = []
     private var currentDate: Date = Date()
     private let calendar = Calendar.current
     
@@ -126,49 +125,49 @@ final class TrackersPresenter: TrackersPresenterProtocol {
         return categories[0].name
     }
     
-    func setTrackerRecordDate(id: UInt) {
+    func setTrackerCompletedTrackers(id: UInt) {
         print(#fileID, #function, #line)
-        guard let index = trackerRecords.firstIndex(where: {$0.id == id}) else {
+        guard let index = completedTrackers.firstIndex(where: {$0.id == id}) else {
             let trackerRecord = TrackerRecord(
                 id: id,
                 dates: Set<Date>(arrayLiteral: currentDate)
             )
-            trackerRecords.append(trackerRecord)
+            completedTrackers.append(trackerRecord)
             return
         }
         
-        var dates: Set<Date> = trackerRecords[index].dates
+        var dates: Set<Date> = completedTrackers[index].dates
         dates.insert(currentDate)
-        trackerRecords.remove(at: index)
+        completedTrackers.remove(at: index)
         let trackerRecord = TrackerRecord(
             id: id,
             dates: dates
         )
-        trackerRecords.append(trackerRecord)
+        completedTrackers.append(trackerRecord)
     }
     
-    func deleteTrackerRecordDate(id: UInt) {
+    func deleteTrackerCompletedTrackers(id: UInt) {
         print(#fileID, #function, #line)
-        guard let index = trackerRecords.firstIndex(where: {$0.id == id}) else {
+        guard let index = completedTrackers.firstIndex(where: {$0.id == id}) else {
             return
         }
         
-        var dates: Set<Date> = trackerRecords[index].dates
+        var dates: Set<Date> = completedTrackers[index].dates
         dates.remove(currentDate)
-        trackerRecords.remove(at: index)
+        completedTrackers.remove(at: index)
         let trackerRecord = TrackerRecord(
             id: id,
             dates: dates
         )
-        trackerRecords.append(trackerRecord)
+        completedTrackers.append(trackerRecord)
     }
     
-    func countTrackerRecordDate(id: UInt) -> String {
+    func countTrackerCompletedTrackers(id: UInt) -> String {
         print(#fileID, #function, #line)
-        guard let index = trackerRecords.firstIndex(where: {$0.id == id}) else {
+        guard let index = completedTrackers.firstIndex(where: {$0.id == id}) else {
             return "0 дней"
         }
-        let count = trackerRecords[index].dates.count
+        let count = completedTrackers[index].dates.count
         let suffix: String
         
         if count % 10 == 1 && count % 100 != 11 {
@@ -183,9 +182,9 @@ final class TrackersPresenter: TrackersPresenterProtocol {
         return "\(count) \(suffix)"
     }
     
-    func containTrackerRecordDate(id: UInt) -> Bool {
+    func containTrackerCompletedTrackers(id: UInt) -> Bool {
         print(#fileID, #function, #line)
-        guard let _ = trackerRecords.firstIndex(where: {
+        guard let _ = completedTrackers.firstIndex(where: {
             $0.id == id && $0.dates.contains(currentDate)
         }) else {
             return false

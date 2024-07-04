@@ -192,7 +192,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     private func changeStateCreateButton() {
         let textFieldIsEmpty = textField.text?.isEmpty ?? true
         let createTrackerPresenterIsEmpty = createTrackerPresenter?.isWeekdaysCheckedNil() ?? true
-        if !textFieldIsEmpty && !createTrackerPresenterIsEmpty {
+        if !textFieldIsEmpty && (!createTrackerPresenterIsEmpty || numberOfRowsInSection != 2) {
             print(#fileID, #function, #line)
             createButton.isEnabled = true
             createButton.backgroundColor = .ypBlack

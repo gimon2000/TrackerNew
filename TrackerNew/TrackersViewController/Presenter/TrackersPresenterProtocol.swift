@@ -17,8 +17,8 @@ protocol TrackersPresenterProtocol {
     func getTrackersInDate(index: Int) -> Tracker?
     func setTracker(tracker: Tracker, category: String)
     func getNameCategory(index: Int) -> String    
-    func setTrackerRecordDate(id: UInt)
-    func deleteTrackerRecordDate(id: UInt)
-    func containTrackerRecordDate(id: UInt) -> Bool
-    func countTrackerRecordDate(id: UInt) -> String
+    func setTrackerCompletedTrackers(id: UInt)
+    func deleteTrackerCompletedTrackers(id: UInt)
+    func containTrackerCompletedTrackers(id: UInt) -> Bool
+    func countTrackerCompletedTrackers(id: UInt) -> String
 }

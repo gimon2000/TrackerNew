@@ -106,7 +106,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         emojiTracker.text = tracker.emoji
         plusTrackerCellButtonColor = tracker.color
         trackerId = tracker.id
-        daysTracker.text = delegate?.countTrackerRecordDate(id: trackerId) ?? "0 дней"
+        daysTracker.text = delegate?.countTrackerCompletedTrackers(id: trackerId) ?? "0 дней"
         setColorPlusTrackerCellButton()
     }
     
@@ -174,16 +174,16 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             return
         }
         
-        if delegate.containTrackerRecordDate(id: trackerId) {
+        if delegate.containTrackerCompletedTrackers(id: trackerId) {
             print(#fileID, #function, #line)
-            delegate.deleteTrackerRecordDate(id: trackerId)
+            delegate.deleteTrackerCompletedTrackers(id: trackerId)
             setColorPlusTrackerCellButton()
-            daysTracker.text = delegate.countTrackerRecordDate(id: trackerId)
+            daysTracker.text = delegate.countTrackerCompletedTrackers(id: trackerId)
         } else {
             print(#fileID, #function, #line)
-            delegate.setTrackerRecordDate(id: trackerId)
+            delegate.setTrackerCompletedTrackers(id: trackerId)
             setColorPlusTrackerCellButton()
-            daysTracker.text = delegate.countTrackerRecordDate(id: trackerId)
+            daysTracker.text = delegate.countTrackerCompletedTrackers(id: trackerId)
         }
     }
     
@@ -202,7 +202,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             return
         }
         
-        if delegate.containTrackerRecordDate(id: trackerId) {
+        if delegate.containTrackerCompletedTrackers(id: trackerId) {
             print(#fileID, #function, #line)
             plusTrackerCellButton.setImage(imageDone, for: .normal)
             plusTrackerCellButton.backgroundColor = plusTrackerCellButtonColor

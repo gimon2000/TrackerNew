@@ -71,6 +71,10 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     private var navigationTitle: String
     private let cellReuseIdentifier = "tableCellIdentifier"
     private var numberOfRowsInSection: Int
+    private lazy var tapGesture = UITapGestureRecognizer(
+        target: view,
+        action: #selector(view.endEditing)
+    )
     
     // MARK: - Initializers
     init(
@@ -132,7 +136,6 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         
         textField.delegate = self
         changeStateCreateButton()
-        addTapGestureToHideKeyboard()
     }
     
     // MARK: - Private Methods
@@ -199,11 +202,6 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
             createButton.backgroundColor = .ypGray
         }
     }
-    
-    private func addTapGestureToHideKeyboard() {
-        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(view.endEditing))
-        view.addGestureRecognizer(tapGesture)
-    }
 }
 
 //MARK: - UITableViewDelegate
@@ -245,7 +243,11 @@ extension CreateTrackerViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         let title = ["Категория", "Расписание"]
-        cell.setTextInTextLabelCell(text: title[indexPath.row])
+        var subtitle = ""
+        if indexPath.row == 1 {
+            subtitle = createTrackerPresenter?.getSubtitle() ?? ""
+        }
+        cell.setTextInCell(title: title[indexPath.row], subtitle: subtitle)
         return cell
     }
     
@@ -274,8 +276,14 @@ extension CreateTrackerViewController: UITableViewDataSource {
 extension CreateTrackerViewController: ScheduleViewControllerDelegate {
     func setWeekdaysChecked(_ weekdaysCheckedArray: [Weekdays]) {
         createTrackerPresenter?.setWeekdaysChecked(weekdaysChecked:weekdaysCheckedArray)
+        tableViewCategoryAndSchedule.reloadData()
         changeStateCreateButton()
         print(#fileID, #function, #line, "weekdaysCheckedArray: \(String(describing: weekdaysCheckedArray))")
+    }
+    
+    func containWeekday(weekday: Weekdays) -> Bool {
+        print(#fileID, #function, #line)
+        return createTrackerPresenter?.containWeekday(weekday: weekday) ?? false
     }
 }
 
@@ -284,6 +292,17 @@ extension CreateTrackerViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         print(#fileID, #function, #line)
         textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print(#fileID, #function, #line)
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        print(#fileID, #function, #line)
+        view.removeGestureRecognizer(tapGesture)
         return true
     }
     

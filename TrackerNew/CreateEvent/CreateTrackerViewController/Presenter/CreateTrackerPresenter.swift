@@ -13,13 +13,14 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
     weak var createTrackerView: CreateTrackerViewControllerProtocol?
     
     // MARK: - Private Properties
-    private var weekdaysChecked:[Weekdays]?
+    private var weekdaysChecked: [Weekdays]?
     private let category: String = "Тест"
     private let emoji: String = "👍"
     private let color: UIColor = .red
     
     // MARK: - Public Methods
     func createTracker(name: String) {
+        print(#fileID, #function, #line)
         if let weekdaysChecked = weekdaysChecked {
             let tracker = Tracker(
                 id: UInt.random(in: 0...UInt.max),
@@ -46,12 +47,38 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
     
     func setWeekdaysChecked(weekdaysChecked:[Weekdays]) {
         self.weekdaysChecked = weekdaysChecked
+        print(
+            #fileID,
+            #function,
+            #line,
+            "self.weekdaysChecked: \(String(describing: self.weekdaysChecked))"
+        )
+    }
+    
+    func containWeekday(weekday: Weekdays) -> Bool {
+        print(#fileID, #function, #line)
+        guard let weekdaysChecked else {
+            print(#fileID, #function, #line)
+            return false
+        }
+        return weekdaysChecked.contains(where: {$0 == weekday})
     }
     
     func isWeekdaysCheckedNil() -> Bool {
+        print(#fileID, #function, #line)
         guard let weekdaysChecked else {
+            print(#fileID, #function, #line)
             return true
         }
         return weekdaysChecked.isEmpty
+    }
+    
+    func getSubtitle() -> String {
+        print(#fileID, #function, #line)
+        guard let weekdaysChecked else {
+            print(#fileID, #function, #line)
+            return ""
+        }
+        return weekdaysChecked.map{ $0.shortName }.joined(separator: ", ")
     }
 }

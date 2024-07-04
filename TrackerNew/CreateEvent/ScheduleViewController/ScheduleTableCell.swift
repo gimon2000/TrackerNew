@@ -56,9 +56,11 @@ final class ScheduleTableCell: UITableViewCell {
     }
     
     // MARK: - Public Methods
-    func setTextInTextLabelCell(text: String) {
+    func setTextInTextLabelCell(text: String, isOn: Bool) {
         print(#fileID, #function, #line)
         textLabelCell.text = text
+        checkBox.isOn = isOn
+        isCheckDay = isOn
     }
     
     // MARK: - Private Methods

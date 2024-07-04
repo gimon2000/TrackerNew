@@ -64,7 +64,7 @@ final class ScheduleViewController: UIViewController {
         addConstraintDoneButton()
     }
     
-    // MARK: - Private Methods    
+    // MARK: - Private Methods
     private func addConstraintTableView() {
         NSLayoutConstraint.activate([
             tableViewWeekdays.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -131,7 +131,12 @@ extension ScheduleViewController: UITableViewDataSource {
             print(#fileID, #function, #line)
             return UITableViewCell()
         }
-        cell.setTextInTextLabelCell(text: Weekdays.allCases[indexPath.row].fullName)
+        let day = Weekdays.allCases[indexPath.row]
+        let isOn = delegate?.containWeekday(weekday: day) ?? false
+        cell.setTextInTextLabelCell(
+            text: day.fullName,
+            isOn: isOn
+        )
         return cell
     }
     

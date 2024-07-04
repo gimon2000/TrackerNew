@@ -17,6 +17,23 @@ final class TackerTableCell: UITableViewCell {
         return view
     }()
     
+    private var textSubtitleLabelCell: UILabel = {
+        let view = UILabel()
+        view.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        view.textColor = .ypGray
+        return view
+    }()
+    
+    private lazy var stackView: UIStackView = {
+        //        let view = UIStackView(arrangedSubviews: [textTitleLabelCell, textSubtitleLabelCell])
+        let view = UIStackView(arrangedSubviews: [textTitleLabelCell])
+        view.axis = .vertical
+        view.alignment = .fill
+        view.distribution = .fillEqually
+        view.spacing = 2
+        return view
+    }()
+    
     private var imageChevron: UIImageView = {
         let image = UIImage(named: "Chevron")
         let view = UIImageView(image: image)
@@ -32,14 +49,20 @@ final class TackerTableCell: UITableViewCell {
         backgroundColor = .ypGray30
         
         [
-            textTitleLabelCell,
+            stackView,
             imageChevron
         ].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
             addSubview($0)
         }
+        [
+            textTitleLabelCell,
+            textSubtitleLabelCell
+        ].forEach{
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
         
-        addConstraintTextLabelCell()
+        addConstraintStackView()
         addConstraintImageChevron()
     }
     
@@ -49,16 +72,26 @@ final class TackerTableCell: UITableViewCell {
     }
     
     // MARK: - Public Methods
-    func setTextInTextLabelCell(text: String) {
+    func setTextInCell(title: String, subtitle: String) {
         print(#fileID, #function, #line)
-        textTitleLabelCell.text = text
+        textTitleLabelCell.text = title
+        if subtitle == "" {
+            if stackView.contains(textSubtitleLabelCell) {
+                stackView.removeArrangedSubview(textSubtitleLabelCell)
+            }
+        } else {
+            if !stackView.contains(textSubtitleLabelCell) {
+                stackView.addArrangedSubview(textSubtitleLabelCell)
+            }
+            textSubtitleLabelCell.text = subtitle
+        }
     }
     
     // MARK: - Private Methods
-    private func addConstraintTextLabelCell() {
+    private func addConstraintStackView() {
         NSLayoutConstraint.activate([
-            textTitleLabelCell.centerYAnchor.constraint(equalTo: centerYAnchor),
-            textTitleLabelCell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16)
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16)
         ])
     }
     

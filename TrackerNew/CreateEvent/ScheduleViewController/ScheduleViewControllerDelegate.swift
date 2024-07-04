@@ -9,4 +9,5 @@ import Foundation
 
 protocol ScheduleViewControllerDelegate: AnyObject {
     func setWeekdaysChecked(_:[Weekdays])
+    func containWeekday(weekday: Weekdays) -> Bool
 }

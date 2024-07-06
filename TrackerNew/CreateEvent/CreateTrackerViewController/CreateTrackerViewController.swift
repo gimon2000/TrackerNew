@@ -10,6 +10,15 @@ import UIKit
 final class CreateTrackerViewController: UIViewController, CreateTrackerViewControllerProtocol {
     
     //MARK: - Visual Components
+    private lazy var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.backgroundColor = .white
+        view.isScrollEnabled = true
+        view.showsVerticalScrollIndicator = true
+        view.alwaysBounceVertical = true
+        return view
+    }()
+    
     private var textField: UITextField = {
         let view = UITextField()
         view.placeholder = "Введите название трекера"
@@ -63,6 +72,20 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         return view
     }()
     
+    private let titleEmojis: UILabel = {
+        let view = UILabel()
+        view.font = UIFont.systemFont(ofSize: 19, weight: .bold)
+        view.textColor = .ypBlack
+        view.text = "Emoji"
+        return view
+    }()
+    
+    private var emojisCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        return collectionView
+    }()
+    
     //MARK: - Public Property
     var createTrackerPresenter: CreateTrackerPresenterProtocol?
     weak var delegate: SelectTypeEventViewControllerDelegate?
@@ -75,6 +98,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         target: view,
         action: #selector(view.endEditing)
     )
+    private let emojiCellIdentifier = "emojiCellIdentifier"
     
     // MARK: - Initializers
     init(
@@ -102,21 +126,27 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         navigationItem.title = navigationTitle
         
         [
+            scrollView,
             textField,
             stackView,
             createButton,
             cancelButton,
-            tableViewCategoryAndSchedule
+            tableViewCategoryAndSchedule,
+            titleEmojis,
+            emojisCollectionView
         ].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
+        view.addSubview(scrollView)
         [
             textField,
             stackView,
-            tableViewCategoryAndSchedule
+            tableViewCategoryAndSchedule,
+            titleEmojis,
+            emojisCollectionView
         ].forEach{
-            view.addSubview($0)
+            scrollView.addSubview($0)
         }
         
         tableViewCategoryAndSchedule.delegate = self
@@ -127,24 +157,40 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
             forCellReuseIdentifier: cellReuseIdentifier
         )
         
+        emojisCollectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: emojiCellIdentifier)
+        emojisCollectionView.delegate = self
+        emojisCollectionView.dataSource = self
+        emojisCollectionView.allowsMultipleSelection = false
         
+        addConstraintScrollView()
         addConstraintTextField()
         addConstraintStackView()
         addConstraintCreateButton()
         addConstraintCancelButton()
         addConstraintTableView()
+        addConstraintTitleEmojis()
+        addConstraintEmojisCollectionView()
         
         textField.delegate = self
         changeStateCreateButton()
     }
     
     // MARK: - Private Methods
+    private func addConstraintScrollView() {
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+    }
+    
     private func addConstraintTextField() {
         NSLayoutConstraint.activate([
             textField.heightAnchor.constraint(equalToConstant: 75),
             textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24)
+            textField.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24)
         ])
     }
     
@@ -162,6 +208,22 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
             tableViewCategoryAndSchedule.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             tableViewCategoryAndSchedule.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
             tableViewCategoryAndSchedule.heightAnchor.constraint(equalToConstant: CGFloat(75 * numberOfRowsInSection))
+        ])
+    }
+    
+    private func addConstraintTitleEmojis() {
+        NSLayoutConstraint.activate([
+            titleEmojis.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 28),
+            titleEmojis.topAnchor.constraint(equalTo: tableViewCategoryAndSchedule.bottomAnchor, constant: 32),
+        ])
+    }
+    
+    private func addConstraintEmojisCollectionView() {
+        NSLayoutConstraint.activate([
+            emojisCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 18),
+            emojisCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -18),
+            emojisCollectionView.topAnchor.constraint(equalTo: titleEmojis.bottomAnchor, constant: 24),
+            emojisCollectionView.heightAnchor.constraint(equalToConstant: CGFloat(52 * 3))
         ])
     }
     
@@ -192,7 +254,10 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     private func changeStateCreateButton() {
         let textFieldIsEmpty = textField.text?.isEmpty ?? true
         let createTrackerPresenterIsEmpty = createTrackerPresenter?.isWeekdaysCheckedNil() ?? true
-        if !textFieldIsEmpty && (!createTrackerPresenterIsEmpty || numberOfRowsInSection != 2) {
+        let selectedEmojiIsEmpty = createTrackerPresenter?.selectedEmojiIsEmpty() ?? true
+        if !textFieldIsEmpty &&
+            (!createTrackerPresenterIsEmpty || numberOfRowsInSection != 2) &&
+            !selectedEmojiIsEmpty {
             print(#fileID, #function, #line)
             createButton.isEnabled = true
             createButton.backgroundColor = .ypBlack
@@ -310,4 +375,49 @@ extension CreateTrackerViewController: UITextFieldDelegate {
         print(#fileID, #function, #line)
         changeStateCreateButton()
     }
+}
+
+//MARK: - UICollectionViewDelegate
+extension CreateTrackerViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(#fileID, #function, #line)
+        createTrackerPresenter?.setSelectedEmoji(index: indexPath.row)
+        changeStateCreateButton()
+    }
+}
+
+//MARK: - UICollectionViewDataSource
+extension CreateTrackerViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print(#fileID, #function, #line)
+        return createTrackerPresenter?.arrayEmojis.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = emojisCollectionView.dequeueReusableCell(withReuseIdentifier: emojiCellIdentifier, for: indexPath) as? EmojiCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        print(#fileID, #function, #line)
+        cell.emojiLabel.text = createTrackerPresenter?.arrayEmojis[indexPath.row]
+        return cell
+    }
+}
+
+//MARK: - UICollectionViewDelegateFlowLayout
+extension CreateTrackerViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        print(#fileID, #function, #line)
+        return CGSize(width: 52, height: 52)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        print(#fileID, #function, #line)
+        return (emojisCollectionView.bounds.width - 52 * 6) / 5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        print(#fileID, #function, #line)
+        return 0
+    }
+    
 }

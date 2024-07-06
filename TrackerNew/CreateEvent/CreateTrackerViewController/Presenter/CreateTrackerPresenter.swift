@@ -11,11 +11,31 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
     
     // MARK: - Public Properties
     weak var createTrackerView: CreateTrackerViewControllerProtocol?
+    let arrayEmojis = [
+        "🙂",
+        "😻",
+        "🌺",
+        "🐶",
+        "❤️",
+        "😱",
+        "😇",
+        "😡",
+        "🥶",
+        "🤔",
+        "🙌",
+        "🍔",
+        "🥦",
+        "🏓",
+        "🥇",
+        "🎸",
+        "🏝",
+        "😪"
+    ]
     
     // MARK: - Private Properties
     private var weekdaysChecked: [Weekdays]?
     private let category: String = "Тест"
-    private let emoji: String = "👍"
+    private var selectedEmoji: String = ""
     private let color: UIColor = .red
     
     // MARK: - Public Methods
@@ -25,7 +45,7 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
             let tracker = Tracker(
                 id: UInt.random(in: 0...UInt.max),
                 name: name,
-                emoji: emoji,
+                emoji: selectedEmoji,
                 color: color,
                 schedule: weekdaysChecked,
                 eventDate: nil
@@ -35,7 +55,7 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
             let tracker = Tracker(
                 id: UInt.random(in: 0...UInt.max),
                 name: name,
-                emoji: emoji,
+                emoji: selectedEmoji,
                 color: color,
                 schedule: nil,
                 eventDate: Date()
@@ -80,5 +100,15 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
             return ""
         }
         return weekdaysChecked.map{ $0.shortName }.joined(separator: ", ")
+    }
+    
+    func setSelectedEmoji(index: Int) {
+        print(#fileID, #function, #line)
+        selectedEmoji = arrayEmojis[index]
+    }
+    
+    func selectedEmojiIsEmpty() -> Bool {
+        print(#fileID, #function, #line)
+        return !arrayEmojis.contains(selectedEmoji)
     }
 }

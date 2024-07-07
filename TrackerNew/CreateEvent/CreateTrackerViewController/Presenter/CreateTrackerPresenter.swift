@@ -31,11 +31,32 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
         "🏝",
         "😪"
     ]
+    let arrayColors: [UIColor] = [
+        .ypColorFD4C49,
+        .ypColorFF881E,
+        .ypColor007BFA,
+        .ypColor6E44FE,
+        .ypColor33CF69,
+        .ypColorE66DD4,
+        .ypColorF9D4D4,
+        .ypColor34A7FE,
+        .ypColor46E69D,
+        .ypColor35347C,
+        .ypColorFF674D,
+        .ypColorFF99CC,
+        .ypColorF6C48B,
+        .ypColor7994F5,
+        .ypColor832CF1,
+        .ypColorAD56DA,
+        .ypColor8D72E6,
+        .ypColor2FD058,
+    ]
     
     // MARK: - Private Properties
     private var weekdaysChecked: [Weekdays]?
     private let category: String = "Тест"
     private var selectedEmoji: String = ""
+    private var selectedColor: UIColor?
     private let color: UIColor = .red
     
     // MARK: - Public Methods
@@ -46,7 +67,7 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
                 id: UInt.random(in: 0...UInt.max),
                 name: name,
                 emoji: selectedEmoji,
-                color: color,
+                color: selectedColor ?? .red,
                 schedule: weekdaysChecked,
                 eventDate: nil
             )
@@ -56,7 +77,7 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
                 id: UInt.random(in: 0...UInt.max),
                 name: name,
                 emoji: selectedEmoji,
-                color: color,
+                color: selectedColor ?? .red,
                 schedule: nil,
                 eventDate: Date()
             )
@@ -107,8 +128,21 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
         selectedEmoji = arrayEmojis[index]
     }
     
+    func setSelectedColor(index: Int) {
+        print(#fileID, #function, #line)
+        selectedColor = arrayColors[index]
+    }
+    
     func selectedEmojiIsEmpty() -> Bool {
         print(#fileID, #function, #line)
         return !arrayEmojis.contains(selectedEmoji)
+    }
+    
+    func selectedColorIsEmpty() -> Bool {
+        print(#fileID, #function, #line)
+        if selectedColor == nil {
+            return true
+        }
+        return false
     }
 }

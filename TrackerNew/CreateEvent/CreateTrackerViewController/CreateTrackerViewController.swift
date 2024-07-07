@@ -80,7 +80,21 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         return view
     }()
     
+    private let titleColors: UILabel = {
+        let view = UILabel()
+        view.font = UIFont.systemFont(ofSize: 19, weight: .bold)
+        view.textColor = .ypBlack
+        view.text = "Цвет"
+        return view
+    }()
+    
     private var emojisCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        return collectionView
+    }()
+    
+    private var colorsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return collectionView
@@ -99,6 +113,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         action: #selector(view.endEditing)
     )
     private let emojiCellIdentifier = "emojiCellIdentifier"
+    private let colorCellIdentifier = "colorCellIdentifier"
     
     // MARK: - Initializers
     init(
@@ -133,7 +148,9 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
             cancelButton,
             tableViewCategoryAndSchedule,
             titleEmojis,
-            emojisCollectionView
+            emojisCollectionView,
+            titleColors,
+            colorsCollectionView
         ].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -144,7 +161,9 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
             stackView,
             tableViewCategoryAndSchedule,
             titleEmojis,
-            emojisCollectionView
+            emojisCollectionView,
+            titleColors,
+            colorsCollectionView
         ].forEach{
             scrollView.addSubview($0)
         }
@@ -162,6 +181,11 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         emojisCollectionView.dataSource = self
         emojisCollectionView.allowsMultipleSelection = false
         
+        colorsCollectionView.register(ColorCollectionViewCell.self, forCellWithReuseIdentifier: colorCellIdentifier)
+        colorsCollectionView.delegate = self
+        colorsCollectionView.dataSource = self
+        colorsCollectionView.allowsMultipleSelection = false
+        
         addConstraintScrollView()
         addConstraintTextField()
         addConstraintStackView()
@@ -170,6 +194,8 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         addConstraintTableView()
         addConstraintTitleEmojis()
         addConstraintEmojisCollectionView()
+        addConstraintTitleColors()
+        addConstraintColorsCollectionView()
         
         textField.delegate = self
         changeStateCreateButton()
@@ -198,7 +224,8 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -34)
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -34),
+            stackView.topAnchor.constraint(equalTo: colorsCollectionView.bottomAnchor, constant: 40)
         ])
     }
     
@@ -218,12 +245,28 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         ])
     }
     
+    private func addConstraintTitleColors() {
+        NSLayoutConstraint.activate([
+            titleColors.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 28),
+            titleColors.topAnchor.constraint(equalTo: emojisCollectionView.bottomAnchor, constant: 40),
+        ])
+    }
+    
     private func addConstraintEmojisCollectionView() {
         NSLayoutConstraint.activate([
             emojisCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 18),
             emojisCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -18),
             emojisCollectionView.topAnchor.constraint(equalTo: titleEmojis.bottomAnchor, constant: 24),
             emojisCollectionView.heightAnchor.constraint(equalToConstant: CGFloat(52 * 3))
+        ])
+    }
+    
+    private func addConstraintColorsCollectionView() {
+        NSLayoutConstraint.activate([
+            colorsCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 18),
+            colorsCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -18),
+            colorsCollectionView.topAnchor.constraint(equalTo: titleColors.bottomAnchor, constant: 24),
+            colorsCollectionView.heightAnchor.constraint(equalToConstant: CGFloat(52 * 3))
         ])
     }
     
@@ -255,9 +298,12 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         let textFieldIsEmpty = textField.text?.isEmpty ?? true
         let createTrackerPresenterIsEmpty = createTrackerPresenter?.isWeekdaysCheckedNil() ?? true
         let selectedEmojiIsEmpty = createTrackerPresenter?.selectedEmojiIsEmpty() ?? true
+        let selectedColorIsEmpty = createTrackerPresenter?.selectedColorIsEmpty() ?? true
         if !textFieldIsEmpty &&
             (!createTrackerPresenterIsEmpty || numberOfRowsInSection != 2) &&
-            !selectedEmojiIsEmpty {
+            !selectedEmojiIsEmpty &&
+            !selectedColorIsEmpty
+        {
             print(#fileID, #function, #line)
             createButton.isEnabled = true
             createButton.backgroundColor = .ypBlack
@@ -381,7 +427,12 @@ extension CreateTrackerViewController: UITextFieldDelegate {
 extension CreateTrackerViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(#fileID, #function, #line)
-        createTrackerPresenter?.setSelectedEmoji(index: indexPath.row)
+        if collectionView == emojisCollectionView {
+            createTrackerPresenter?.setSelectedEmoji(index: indexPath.row)
+        }
+        if collectionView == colorsCollectionView {
+            createTrackerPresenter?.setSelectedColor(index: indexPath.row)
+        }
         changeStateCreateButton()
     }
 }
@@ -390,16 +441,33 @@ extension CreateTrackerViewController: UICollectionViewDelegate {
 extension CreateTrackerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print(#fileID, #function, #line)
-        return createTrackerPresenter?.arrayEmojis.count ?? 0
+        if collectionView == emojisCollectionView {
+            return createTrackerPresenter?.arrayEmojis.count ?? 0
+        }
+        if collectionView == colorsCollectionView {
+            return createTrackerPresenter?.arrayColors.count ?? 0
+        }
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = emojisCollectionView.dequeueReusableCell(withReuseIdentifier: emojiCellIdentifier, for: indexPath) as? EmojiCollectionViewCell else {
-            return UICollectionViewCell()
+        if collectionView == emojisCollectionView {
+            guard let cell = emojisCollectionView.dequeueReusableCell(withReuseIdentifier: emojiCellIdentifier, for: indexPath) as? EmojiCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            print(#fileID, #function, #line)
+            cell.emojiLabel.text = createTrackerPresenter?.arrayEmojis[indexPath.row]
+            return cell
         }
-        print(#fileID, #function, #line)
-        cell.emojiLabel.text = createTrackerPresenter?.arrayEmojis[indexPath.row]
-        return cell
+        if collectionView == colorsCollectionView {
+            guard let cell = colorsCollectionView.dequeueReusableCell(withReuseIdentifier: colorCellIdentifier, for: indexPath) as? ColorCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            print(#fileID, #function, #line)
+            cell.colorView.backgroundColor = createTrackerPresenter?.arrayColors[indexPath.row] ?? .ypRed
+            return cell
+        }
+        return UICollectionViewCell()
     }
 }
 
@@ -412,7 +480,13 @@ extension CreateTrackerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         print(#fileID, #function, #line)
-        return (emojisCollectionView.bounds.width - 52 * 6) / 5
+        if collectionView == emojisCollectionView {
+            return (emojisCollectionView.bounds.width - 52 * 6) / 5
+        }
+        if collectionView == colorsCollectionView {
+            return (colorsCollectionView.bounds.width - 52 * 6) / 5
+        }
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

@@ -64,7 +64,7 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
         print(#fileID, #function, #line)
         if let weekdaysChecked = weekdaysChecked {
             let tracker = Tracker(
-                id: UInt.random(in: 0...UInt.max),
+                id: UInt.random(in: 0...UInt(Int32.max)),
                 name: name,
                 emoji: selectedEmoji,
                 color: selectedColor ?? .red,
@@ -74,7 +74,7 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
             createTrackerView?.delegate?.setTracker(tracker: tracker, category: category)
         } else {
             let tracker = Tracker(
-                id: UInt.random(in: 0...UInt.max),
+                id: UInt.random(in: 0...UInt(Int32.max)),
                 name: name,
                 emoji: selectedEmoji,
                 color: selectedColor ?? .red,

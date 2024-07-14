@@ -183,7 +183,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
 // MARK: - UICollectionViewDataSource
 extension TrackersViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let number = trackersPresenter?.getCountTrackersInCategoriesInCurentDate() ?? 0
+        let number = trackersPresenter?.getCountTrackersInCategoriesInCurrentDate() ?? 0
         print(#fileID, #function, #line, "number: \(number)")
         if number == 0 {
             hideEmptyImage(setHidden: false)
@@ -207,7 +207,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         print(#fileID, #function, #line)
         let countCategories = trackersPresenter?.getCountCategories() ?? 0
-        let number = trackersPresenter?.getCountTrackersInCategoriesInCurentDate() ?? 0
+        let number = trackersPresenter?.getCountTrackersInCategoriesInCurrentDate() ?? 0
         if countCategories > 0 && number > 0 {
             print(#fileID, #function, #line, "count: \(countCategories)")
             let view = collectionView.dequeueReusableSupplementaryView(

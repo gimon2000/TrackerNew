@@ -13,7 +13,7 @@ protocol TrackersPresenterProtocol {
     func getCurrentDate() -> Date
     func setCurrentDate(date: Date)
     func getCountCategories() -> Int
-    func getCountTrackersInCategoriesInCurentDate() -> Int
+    func getCountTrackersInCategoriesInCurrentDate() -> Int
     func getTrackersInDate(index: Int) -> Tracker?
     func setTracker(tracker: Tracker, category: String)
     func getNameCategory(index: Int) -> String    

@@ -15,7 +15,7 @@ final class TrackerStore {
     private let uiColorMarshalling = UIColorMarshalling()
     private let daysValueTransformer = DaysValueTransformer()
     private let coreDataStore = TrackerCategoryStore()
-
+    
     // MARK: - Initializers
     convenience init() {
         let context = (UIApplication.shared.delegate as! AppDelegate).context

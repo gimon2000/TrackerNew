@@ -8,15 +8,37 @@
 import UIKit
 import CoreData
 
-final class TrackerCategoryStore {
+// MARK: - CategoryDataProviderDelegate
+protocol TrackerCategoryStoreDelegate: AnyObject {
+    func didUpdateCategory()
+}
+
+final class TrackerCategoryStore: NSObject {
+    
+    // MARK: - Public Properties
+    let context: NSManagedObjectContext
+    weak var delegate: TrackerCategoryStoreDelegate?
     
     // MARK: - Private Properties
-    private let context: NSManagedObjectContext
     private let uiColorMarshalling = UIColorMarshalling()
     private let daysValueTransformer = DaysValueTransformer()
     
+    private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData> = {
+        
+        let fetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: false)]
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                                  managedObjectContext: context,
+                                                                  sectionNameKeyPath: nil,
+                                                                  cacheName: nil)
+        fetchedResultsController.delegate = self
+        try? fetchedResultsController.performFetch()
+        return fetchedResultsController
+    }()
+    
     // MARK: - Initializers
-    convenience init() {
+    convenience override init() {
         let context = (UIApplication.shared.delegate as! AppDelegate).context
         self.init(context: context)
     }
@@ -40,7 +62,7 @@ final class TrackerCategoryStore {
     }
     
     func fetchTrackerCategoryCoreData(categoryName: String) -> TrackerCategoryCoreData? {
-        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = fetchedResultsController.fetchRequest
         fetchRequest.predicate = NSPredicate(format: "name == %@", categoryName)
         
         do {
@@ -54,7 +76,7 @@ final class TrackerCategoryStore {
     }
     
     func getCountTrackerCategoryCoreData() -> Int {
-        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = fetchedResultsController.fetchRequest
         
         do {
             let category = try context.fetch(fetchRequest)
@@ -68,7 +90,7 @@ final class TrackerCategoryStore {
     }
     
     func getNameTrackerCategoryCoreData(index: Int) -> String {
-        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = fetchedResultsController.fetchRequest
         
         do {
             let categorys = try context.fetch(fetchRequest)
@@ -82,7 +104,11 @@ final class TrackerCategoryStore {
     }
     
     
-    func getCountTrackersInTrackerCategoryCoreDataIn(currentWeekday: Weekdays, currentDate: Date, categoryName: String) -> Int {
+    func getCountTrackersInTrackerCategoryCoreDataIn(
+        currentWeekday: Weekdays,
+        currentDate: Date,
+        categoryName: String
+    ) -> Int {
         
         let count = getArrayTrackers(
             categoryName: categoryName,
@@ -93,7 +119,12 @@ final class TrackerCategoryStore {
         return count ?? 0
     }
     
-    func getTrackerInDate(currentWeekday: Weekdays, currentDate: Date, index: Int, categoryName: String) -> Tracker? {
+    func getTrackerInDate(
+        currentWeekday: Weekdays,
+        currentDate: Date,
+        index: Int,
+        categoryName: String
+    ) -> Tracker? {
         let arrayTrackers = getArrayTrackers(
             categoryName: categoryName,
             currentWeekday: currentWeekday,
@@ -149,7 +180,7 @@ final class TrackerCategoryStore {
     }
     
     private func getArrayTrackers(categoryName: String, currentWeekday: Weekdays, currentDate: Date) -> [TrackerCoreData]? {
-        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = fetchedResultsController.fetchRequest
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.predicate = NSPredicate(
             format: "%K == %@",
@@ -187,5 +218,12 @@ final class TrackerCategoryStore {
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
+    }
+}
+
+//MARK: - NSFetchedResultsControllerDelegate
+extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        delegate?.didUpdateCategory()
     }
 }

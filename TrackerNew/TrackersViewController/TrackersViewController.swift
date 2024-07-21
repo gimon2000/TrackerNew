@@ -157,7 +157,6 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         ])
     }
     
-    //TODO: добавить реализацию
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
         print(#fileID, #function, #line, "sender.date: \(sender.date)")
         trackersPresenter?.setCurrentDate(date: sender.date)
@@ -177,6 +176,11 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         print(#fileID, #function, #line, "setHidden: \(setHidden)")
         emptyTrackersImage.isHidden = setHidden
         emptyTrackersLabel.isHidden = setHidden
+    }
+    
+    func collectionViewReloadData() {
+        print(#fileID, #function, #line)
+        collectionView.reloadData()
     }
 }
 
@@ -256,7 +260,6 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 extension TrackersViewController: TrackersViewControllerDelegate {
     func setTracker(tracker: Tracker, category: String) {
         trackersPresenter?.setTracker(tracker: tracker, category: category)
-        collectionView.reloadData()
         hideEmptyImage(setHidden: true)
     }
 }

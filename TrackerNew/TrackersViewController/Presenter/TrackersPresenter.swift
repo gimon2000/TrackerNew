@@ -13,13 +13,16 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     weak var trackersViewController: TrackersViewControllerProtocol?
     
     // MARK: - Private Properties
-    private var categories: [TrackerCategory] = []
-    private var completedTrackers: [TrackerRecord] = []
-    private var currentDate: Date = Date()
+    private lazy var currentDate: Date = Date()
     private let calendar = Calendar.current
-    private let trackerCategoryStore = TrackerCategoryStore()
+    private lazy var trackerCategoryStore = TrackerCategoryStore()
     private let trackerStore = TrackerStore()
-    private let trackerRecordStore = TrackerRecordStore()
+    private lazy var trackerRecordStore = TrackerRecordStore()
+    
+    init() {
+        self.trackerCategoryStore.delegate = self
+        self.trackerRecordStore.delegate = self
+    }
     
     // MARK: - Public Methods
     func getCurrentDate() -> Date {
@@ -33,8 +36,9 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     }
     
     func getCountCategories() -> Int {
-        print(#fileID, #function, #line, "categories.count: \(categories.count)")
-        return trackerCategoryStore.getCountTrackerCategoryCoreData()
+        let countTrackerCategory = trackerCategoryStore.getCountTrackerCategoryCoreData()
+        print(#fileID, #function, #line, "countTrackerCategory: \(countTrackerCategory)")
+        return countTrackerCategory
     }
     
     func getCountTrackersInCategoriesInCurrentDate() -> Int {
@@ -125,10 +129,21 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     func containTrackerCompletedTrackers(id: UInt) -> Bool {
         print(#fileID, #function, #line)
         
-        // TODO: core data
         return trackerRecordStore.containTrackerCompletedTrackers(
             currentDate: currentDate,
             id: id
         )
+    }
+}
+
+extension TrackersPresenter: TrackerCategoryStoreDelegate {
+    func didUpdateCategory() {
+        trackersViewController?.collectionViewReloadData()
+    }
+}
+
+extension TrackersPresenter: TrackerRecordStoreDelegate {
+    func didUpdateRecord() {
+        trackersViewController?.collectionViewReloadData()
     }
 }

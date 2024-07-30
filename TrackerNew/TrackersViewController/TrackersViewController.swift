@@ -54,12 +54,13 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
             action: #selector(datePickerValueChanged(_:)),
             for: .valueChanged
         )
+        picker.tintColor = .ypBlue
         return picker
     }()
     
     private var searchTextField : UISearchTextField = {
         let viewSearchTextField = UISearchTextField()
-        viewSearchTextField.text = "Поиск"
+        viewSearchTextField.placeholder = "Поиск"
         return viewSearchTextField
     }()
     

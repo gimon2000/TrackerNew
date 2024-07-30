@@ -54,7 +54,7 @@ final class TrackerStore {
                 print(#fileID, #function, #line)
             } catch {
                 let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                assertionFailure("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
     }

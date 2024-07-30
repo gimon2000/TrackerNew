@@ -54,12 +54,13 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
             action: #selector(datePickerValueChanged(_:)),
             for: .valueChanged
         )
+        picker.tintColor = .ypBlue
         return picker
     }()
     
     private var searchTextField : UISearchTextField = {
         let viewSearchTextField = UISearchTextField()
-        viewSearchTextField.text = "Поиск"
+        viewSearchTextField.placeholder = "Поиск"
         return viewSearchTextField
     }()
     
@@ -157,7 +158,6 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         ])
     }
     
-    //TODO: добавить реализацию
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
         print(#fileID, #function, #line, "sender.date: \(sender.date)")
         trackersPresenter?.setCurrentDate(date: sender.date)
@@ -178,12 +178,17 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         emptyTrackersImage.isHidden = setHidden
         emptyTrackersLabel.isHidden = setHidden
     }
+    
+    func collectionViewReloadData() {
+        print(#fileID, #function, #line)
+        collectionView.reloadData()
+    }
 }
 
 // MARK: - UICollectionViewDataSource
 extension TrackersViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let number = trackersPresenter?.getCountTrackersInCategoriesInCurentDate() ?? 0
+        let number = trackersPresenter?.getCountTrackersInCategoriesInCurrentDate() ?? 0
         print(#fileID, #function, #line, "number: \(number)")
         if number == 0 {
             hideEmptyImage(setHidden: false)
@@ -207,7 +212,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         print(#fileID, #function, #line)
         let countCategories = trackersPresenter?.getCountCategories() ?? 0
-        let number = trackersPresenter?.getCountTrackersInCategoriesInCurentDate() ?? 0
+        let number = trackersPresenter?.getCountTrackersInCategoriesInCurrentDate() ?? 0
         if countCategories > 0 && number > 0 {
             print(#fileID, #function, #line, "count: \(countCategories)")
             let view = collectionView.dequeueReusableSupplementaryView(
@@ -256,7 +261,6 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 extension TrackersViewController: TrackersViewControllerDelegate {
     func setTracker(tracker: Tracker, category: String) {
         trackersPresenter?.setTracker(tracker: tracker, category: category)
-        collectionView.reloadData()
         hideEmptyImage(setHidden: true)
     }
 }

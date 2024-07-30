@@ -177,13 +177,9 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         if delegate.containTrackerCompletedTrackers(id: trackerId) {
             print(#fileID, #function, #line)
             delegate.deleteTrackerCompletedTrackers(id: trackerId)
-            setColorPlusTrackerCellButton()
-            daysTracker.text = delegate.countTrackerCompletedTrackers(id: trackerId)
         } else {
             print(#fileID, #function, #line)
             delegate.setTrackerCompletedTrackers(id: trackerId)
-            setColorPlusTrackerCellButton()
-            daysTracker.text = delegate.countTrackerCompletedTrackers(id: trackerId)
         }
     }
     

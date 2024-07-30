@@ -29,6 +29,14 @@
 		E03B468E2C30337800E53E05 /* CreateTrackerViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B468D2C30337800E53E05 /* CreateTrackerViewControllerProtocol.swift */; };
 		E03B46922C3043DD00E53E05 /* ScheduleViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03B46912C3043DD00E53E05 /* ScheduleViewControllerDelegate.swift */; };
 		E05472472C31ED3E009E86E6 /* TrackersViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05472462C31ED3E009E86E6 /* TrackersViewControllerDelegate.swift */; };
+		E054724B2C392A3B009E86E6 /* EmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E054724A2C392A3B009E86E6 /* EmojiCollectionViewCell.swift */; };
+		E054724D2C3A8747009E86E6 /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E054724C2C3A8747009E86E6 /* ColorCollectionViewCell.swift */; };
+		E05472732C3AC3D0009E86E6 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E05472712C3AC3D0009E86E6 /* CoreDataModel.xcdatamodeld */; };
+		E05472992C3DB928009E86E6 /* DaysValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05472982C3DB928009E86E6 /* DaysValueTransformer.swift */; };
+		E054729B2C3DBBDB009E86E6 /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E054729A2C3DBBDB009E86E6 /* UIColorMarshalling.swift */; };
+		E054729F2C3FA1D6009E86E6 /* TrackerCategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E054729E2C3FA1D6009E86E6 /* TrackerCategoryStore.swift */; };
+		E05472A12C445B4F009E86E6 /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05472A02C445B4F009E86E6 /* TrackerStore.swift */; };
+		E05472A32C445DA9009E86E6 /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05472A22C445DA9009E86E6 /* TrackerRecordStore.swift */; };
 		E0799E622C309434006C7F7A /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0799E612C309434006C7F7A /* TrackerCollectionViewCell.swift */; };
 		E0799E642C309B59006C7F7A /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0799E632C309B59006C7F7A /* CategoryView.swift */; };
 		E0799E672C3179E1006C7F7A /* TrackersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0799E662C3179E1006C7F7A /* TrackersPresenter.swift */; };
@@ -62,6 +70,14 @@
 		E03B468D2C30337800E53E05 /* CreateTrackerViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewControllerProtocol.swift; sourceTree = "<group>"; };
 		E03B46912C3043DD00E53E05 /* ScheduleViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewControllerDelegate.swift; sourceTree = "<group>"; };
 		E05472462C31ED3E009E86E6 /* TrackersViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewControllerDelegate.swift; sourceTree = "<group>"; };
+		E054724A2C392A3B009E86E6 /* EmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewCell.swift; sourceTree = "<group>"; };
+		E054724C2C3A8747009E86E6 /* ColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewCell.swift; sourceTree = "<group>"; };
+		E05472722C3AC3D0009E86E6 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
+		E05472982C3DB928009E86E6 /* DaysValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysValueTransformer.swift; sourceTree = "<group>"; };
+		E054729A2C3DBBDB009E86E6 /* UIColorMarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
+		E054729E2C3FA1D6009E86E6 /* TrackerCategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryStore.swift; sourceTree = "<group>"; };
+		E05472A02C445B4F009E86E6 /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
+		E05472A22C445DA9009E86E6 /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
 		E0799E612C309434006C7F7A /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		E0799E632C309B59006C7F7A /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		E0799E662C3179E1006C7F7A /* TrackersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersPresenter.swift; sourceTree = "<group>"; };
@@ -100,6 +116,7 @@
 		E03B46502C2DE98E00E53E05 /* TrackerNew */ = {
 			isa = PBXGroup;
 			children = (
+				E05472742C3AC98A009E86E6 /* CoreData */,
 				E03B466C2C2DF03800E53E05 /* Extensions */,
 				E03B466F2C2DF07B00E53E05 /* Models */,
 				E03B46792C2DF14D00E53E05 /* TabBarController */,
@@ -187,6 +204,8 @@
 			children = (
 				E03B468D2C30337800E53E05 /* CreateTrackerViewControllerProtocol.swift */,
 				E03B46662C2DEFAC00E53E05 /* CreateTrackerViewController.swift */,
+				E054724A2C392A3B009E86E6 /* EmojiCollectionViewCell.swift */,
+				E054724C2C3A8747009E86E6 /* ColorCollectionViewCell.swift */,
 				E03B466A2C2DF00C00E53E05 /* TackerTableCell.swift */,
 				E03B46882C30326800E53E05 /* Presenter */,
 			);
@@ -210,6 +229,19 @@
 				E03B468B2C30331900E53E05 /* CreateTrackerPresenterProtocol.swift */,
 			);
 			path = Presenter;
+			sourceTree = "<group>";
+		};
+		E05472742C3AC98A009E86E6 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				E05472712C3AC3D0009E86E6 /* CoreDataModel.xcdatamodeld */,
+				E05472982C3DB928009E86E6 /* DaysValueTransformer.swift */,
+				E054729A2C3DBBDB009E86E6 /* UIColorMarshalling.swift */,
+				E054729E2C3FA1D6009E86E6 /* TrackerCategoryStore.swift */,
+				E05472A02C445B4F009E86E6 /* TrackerStore.swift */,
+				E05472A22C445DA9009E86E6 /* TrackerRecordStore.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		E0799E652C3179AA006C7F7A /* Presenter */ = {
@@ -292,8 +324,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E03B46832C2DF66400E53E05 /* ScheduleViewController.swift in Sources */,
+				E05472732C3AC3D0009E86E6 /* CoreDataModel.xcdatamodeld in Sources */,
 				E03B46732C2DF0BC00E53E05 /* TrackerCategory.swift in Sources */,
+				E054729F2C3FA1D6009E86E6 /* TrackerCategoryStore.swift in Sources */,
 				E03B466E2C2DF04D00E53E05 /* UIColor+Extension.swift in Sources */,
+				E05472A32C445DA9009E86E6 /* TrackerRecordStore.swift in Sources */,
 				E03B467E2C2DF19C00E53E05 /* TrackersViewController.swift in Sources */,
 				E03B466B2C2DF00C00E53E05 /* TackerTableCell.swift in Sources */,
 				E03B46872C30257F00E53E05 /* Weekdays.swift in Sources */,
@@ -302,20 +337,25 @@
 				E03B46752C2DF0E700E53E05 /* TrackerRecord.swift in Sources */,
 				E03B46922C3043DD00E53E05 /* ScheduleViewControllerDelegate.swift in Sources */,
 				E03B46712C2DF08E00E53E05 /* Tracker.swift in Sources */,
+				E05472992C3DB928009E86E6 /* DaysValueTransformer.swift in Sources */,
 				E03B468C2C30331900E53E05 /* CreateTrackerPresenterProtocol.swift in Sources */,
 				E03B468E2C30337800E53E05 /* CreateTrackerViewControllerProtocol.swift in Sources */,
 				E0799E672C3179E1006C7F7A /* TrackersPresenter.swift in Sources */,
+				E05472A12C445B4F009E86E6 /* TrackerStore.swift in Sources */,
 				E03B46852C3000AD00E53E05 /* ScheduleTableCell.swift in Sources */,
 				E03B46522C2DE98E00E53E05 /* AppDelegate.swift in Sources */,
 				E0799E642C309B59006C7F7A /* CategoryView.swift in Sources */,
 				E0799E6D2C31E4F3006C7F7A /* SelectTypeEventViewControllerDelegate.swift in Sources */,
 				E03B467B2C2DF15C00E53E05 /* TabBarController.swift in Sources */,
+				E054729B2C3DBBDB009E86E6 /* UIColorMarshalling.swift in Sources */,
 				E0799E692C317A0C006C7F7A /* TrackersPresenterProtocol.swift in Sources */,
 				E05472472C31ED3E009E86E6 /* TrackersViewControllerDelegate.swift in Sources */,
 				E03B46542C2DE98E00E53E05 /* SceneDelegate.swift in Sources */,
+				E054724D2C3A8747009E86E6 /* ColorCollectionViewCell.swift in Sources */,
 				E03B46692C2DEFE400E53E05 /* SelectTypeEventViewController.swift in Sources */,
 				E0799E622C309434006C7F7A /* TrackerCollectionViewCell.swift in Sources */,
 				E0799E6B2C317ACD006C7F7A /* TrackersViewControllerProtocol.swift in Sources */,
+				E054724B2C392A3B009E86E6 /* EmojiCollectionViewCell.swift in Sources */,
 				E03B468A2C3032BF00E53E05 /* CreateTrackerPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -537,6 +577,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E05472712C3AC3D0009E86E6 /* CoreDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E05472722C3AC3D0009E86E6 /* CoreDataModel.xcdatamodel */,
+			);
+			currentVersion = E05472722C3AC3D0009E86E6 /* CoreDataModel.xcdatamodel */;
+			path = CoreDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E03B46462C2DE98E00E53E05 /* Project object */;
 }

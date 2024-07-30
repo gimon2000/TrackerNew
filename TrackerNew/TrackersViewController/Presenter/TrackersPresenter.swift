@@ -8,14 +8,21 @@
 import Foundation
 
 final class TrackersPresenter: TrackersPresenterProtocol {
+    
     // MARK: - Public Properties
     weak var trackersViewController: TrackersViewControllerProtocol?
     
     // MARK: - Private Properties
-    private var categories: [TrackerCategory] = []
-    private var completedTrackers: [TrackerRecord] = []
-    private var currentDate: Date = Date()
+    private lazy var currentDate: Date = Date()
     private let calendar = Calendar.current
+    private lazy var trackerCategoryStore = TrackerCategoryStore()
+    private let trackerStore = TrackerStore()
+    private lazy var trackerRecordStore = TrackerRecordStore()
+    
+    init() {
+        self.trackerCategoryStore.delegate = self
+        self.trackerRecordStore.delegate = self
+    }
     
     // MARK: - Public Methods
     func getCurrentDate() -> Date {
@@ -29,13 +36,14 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     }
     
     func getCountCategories() -> Int {
-        print(#fileID, #function, #line, "categories.count: \(categories.count)")
-        return categories.count
+        let countTrackerCategory = trackerCategoryStore.getCountTrackerCategoryCoreData()
+        print(#fileID, #function, #line, "countTrackerCategory: \(countTrackerCategory)")
+        return countTrackerCategory
     }
     
-    func getCountTrackersInCategoriesInCurentDate() -> Int {
+    func getCountTrackersInCategoriesInCurrentDate() -> Int {
         
-        if categories.isEmpty {
+        if trackerCategoryStore.getCountTrackerCategoryCoreData() == 0 {
             print(#fileID, #function, #line)
             return 0
         }
@@ -46,29 +54,16 @@ final class TrackersPresenter: TrackersPresenterProtocol {
             return 0
         }
         
-        let countTrackersInCategoriesInDate = categories[0].trackers.filter{
-            
-            guard let schedule = $0.schedule else {
-                print(#fileID, #function, #line)
-                guard let trackerDate = dateIgnoreTime(date: $0.eventDate),
-                      let selfDate = dateIgnoreTime(date: currentDate) else {
-                    return false
-                }
-                if trackerDate == selfDate {
-                    return true
-                }
-                return false
-            }
-            
-            return schedule.contains(day)
-        }.count
-        print(#fileID, #function, #line, "countTrackersInCategoriesInDate: \(countTrackersInCategoriesInDate)")
-        return countTrackersInCategoriesInDate
+        return trackerCategoryStore.getCountTrackersInTrackerCategoryCoreDataIn(
+            currentWeekday: day,
+            currentDate: currentDate,
+            categoryName: "Тест"
+        )
     }
     
     func getTrackersInDate(index: Int) -> Tracker? {
         
-        if categories.isEmpty {
+        if trackerCategoryStore.getCountTrackerCategoryCoreData() == 0 {
             print(#fileID, #function, #line)
             return nil
         }
@@ -79,95 +74,43 @@ final class TrackersPresenter: TrackersPresenterProtocol {
             return nil
         }
         
-        let arrayTracersDay:[Tracker] = {
-            categories[0].trackers.filter{
-                guard let schedule = $0.schedule else {
-                    print(#fileID, #function, #line)
-                    guard let trackerDate = dateIgnoreTime(date: $0.eventDate),
-                          let selfDate = dateIgnoreTime(date: currentDate) else {
-                        return false
-                    }
-                    if trackerDate == selfDate {
-                        return true
-                    }
-                    return false
-                }
-                
-                return schedule.contains(day)
-            }
-        }()
-        
-        print(#fileID, #function, #line, "arrayTracersDay[index]: \(arrayTracersDay[index])")
-        return arrayTracersDay[index]
+        return trackerCategoryStore.getTrackerInDate(
+            currentWeekday: day,
+            currentDate: currentDate,
+            index: index,
+            categoryName: "Тест"
+        )
     }
     
     func setTracker(tracker: Tracker, category: String) {
         print(#fileID, #function, #line)
-        if categories.isEmpty {
-            categories.append(
-                TrackerCategory(
-                    name: category,
-                    trackers: [tracker]
-                )
-            )
-        } else {
-            categories = [
-                TrackerCategory(
-                    name: category,
-                    trackers: (categories[0].trackers + [tracker])
-                )
-            ]
+        do {
+            try trackerStore.addTrackerInCoreData(tracker: tracker, categoryName: category)
+        } catch {
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
     }
     
     func getNameCategory(index: Int) -> String {
         print(#fileID, #function, #line)
-        return categories[0].name
+        return trackerCategoryStore.getNameTrackerCategoryCoreData(index: 0)
     }
     
     func setTrackerCompletedTrackers(id: UInt) {
         print(#fileID, #function, #line)
-        guard let index = completedTrackers.firstIndex(where: {$0.id == id}) else {
-            let trackerRecord = TrackerRecord(
-                id: id,
-                dates: Set<Date>(arrayLiteral: currentDate)
-            )
-            completedTrackers.append(trackerRecord)
-            return
-        }
-        
-        var dates: Set<Date> = completedTrackers[index].dates
-        dates.insert(currentDate)
-        completedTrackers.remove(at: index)
-        let trackerRecord = TrackerRecord(
-            id: id,
-            dates: dates
-        )
-        completedTrackers.append(trackerRecord)
+        trackerRecordStore.setTrackerCompletedTrackers(currentDate: currentDate, id: id)
     }
     
     func deleteTrackerCompletedTrackers(id: UInt) {
         print(#fileID, #function, #line)
-        guard let index = completedTrackers.firstIndex(where: {$0.id == id}) else {
-            return
-        }
-        
-        var dates: Set<Date> = completedTrackers[index].dates
-        dates.remove(currentDate)
-        completedTrackers.remove(at: index)
-        let trackerRecord = TrackerRecord(
-            id: id,
-            dates: dates
-        )
-        completedTrackers.append(trackerRecord)
+        trackerRecordStore.deleteTrackerCompletedTrackers(currentDate: currentDate, id: id)
     }
     
     func countTrackerCompletedTrackers(id: UInt) -> String {
         print(#fileID, #function, #line)
-        guard let index = completedTrackers.firstIndex(where: {$0.id == id}) else {
-            return "0 дней"
-        }
-        let count = completedTrackers[index].dates.count
+        let count = trackerRecordStore.countTrackerCompletedTrackers(id: id)
+        
         let suffix: String
         
         if count % 10 == 1 && count % 100 != 11 {
@@ -179,26 +122,28 @@ final class TrackersPresenter: TrackersPresenterProtocol {
         } else {
             suffix = "дней"
         }
+        
         return "\(count) \(suffix)"
     }
     
     func containTrackerCompletedTrackers(id: UInt) -> Bool {
         print(#fileID, #function, #line)
-        guard let _ = completedTrackers.firstIndex(where: {
-            $0.id == id && $0.dates.contains(currentDate)
-        }) else {
-            return false
-        }
-        return true
+        
+        return trackerRecordStore.containTrackerCompletedTrackers(
+            currentDate: currentDate,
+            id: id
+        )
     }
-    
-    // MARK: - Private Methods
-    private func dateIgnoreTime (date: Date?) -> Date? {
-        guard let date else {
-            return nil
-        }
-        let dateComponents = Calendar.current.dateComponents([.day, .month, .year], from: date)
-        let dateWithoutTime = Calendar.current.date(from: dateComponents)
-        return dateWithoutTime
+}
+
+extension TrackersPresenter: TrackerCategoryStoreDelegate {
+    func didUpdateCategory() {
+        trackersViewController?.collectionViewReloadData()
+    }
+}
+
+extension TrackersPresenter: TrackerRecordStoreDelegate {
+    func didUpdateRecord() {
+        trackersViewController?.collectionViewReloadData()
     }
 }

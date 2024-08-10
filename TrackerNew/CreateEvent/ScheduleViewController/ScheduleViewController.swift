@@ -30,7 +30,7 @@ final class ScheduleViewController: UIViewController {
     }()
     
     //MARK: - Public Property
-    weak var delegate: ScheduleViewControllerDelegate?
+    weak var delegate: CreateTrackerViewControllerDelegate?
     
     //MARK: - Private Property
     private let cellReuseIdentifier = "dayTableCellIdentifier"

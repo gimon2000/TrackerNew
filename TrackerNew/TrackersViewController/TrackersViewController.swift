@@ -187,8 +187,9 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
 
 // MARK: - UICollectionViewDataSource
 extension TrackersViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let number = trackersPresenter?.getCountTrackersInCategoriesInCurrentDate() ?? 0
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        let number =  trackersPresenter?.getCountCategoriesInCurrentDate() ?? 0
         print(#fileID, #function, #line, "number: \(number)")
         if number == 0 {
             hideEmptyImage(setHidden: false)
@@ -196,11 +197,20 @@ extension TrackersViewController: UICollectionViewDataSource {
         return number
     }
     
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let number = trackersPresenter?.getCountTrackersInCategoriesInCurrentDate(inSection: section) ?? 0
+        print(#fileID, #function, #line, "number: \(number)")
+        return number
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? TrackerCollectionViewCell else {
             return UICollectionViewCell()
         }
-        guard let tracker = trackersPresenter?.getTrackersInDate(index: indexPath.row) else {
+        guard let tracker = trackersPresenter?.getTrackersInDate(
+            indexSection: indexPath.section,
+            indexTracker: indexPath.row
+        ) else {
             print(#fileID, #function, #line)
             return cell
         }
@@ -211,20 +221,14 @@ extension TrackersViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         print(#fileID, #function, #line)
-        let countCategories = trackersPresenter?.getCountCategories() ?? 0
-        let number = trackersPresenter?.getCountTrackersInCategoriesInCurrentDate() ?? 0
-        if countCategories > 0 && number > 0 {
-            print(#fileID, #function, #line, "count: \(countCategories)")
-            let view = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: headerIdentifier,
-                for: indexPath
-            ) as! CategoryView
-            let nameCategory = trackersPresenter?.getNameCategory(index: countCategories) ?? ""
-            view.titleLabel.text = nameCategory
-            return view
-        }
-        return UICollectionReusableView()
+        let view = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: headerIdentifier,
+            for: indexPath
+        ) as! CategoryView
+        let nameCategory = trackersPresenter?.getNameCategory(index: indexPath.section)
+        view.titleLabel.text = nameCategory
+        return view
     }
     
 }

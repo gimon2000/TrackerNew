@@ -54,7 +54,7 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
     
     // MARK: - Private Properties
     private var weekdaysChecked: [Weekdays]?
-    private let category: String = "Тест"
+    private var category: String = ""
     private var selectedEmoji: String = ""
     private var selectedColor: UIColor?
     private let color: UIColor = .red
@@ -96,6 +96,16 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
         )
     }
     
+    func setCategoryChecked(nameCategory: String) {
+        self.category = nameCategory
+        print(
+            #fileID,
+            #function,
+            #line,
+            "self.category: \(String(describing: self.category))"
+        )
+    }
+    
     func containWeekday(weekday: Weekdays) -> Bool {
         print(#fileID, #function, #line)
         guard let weekdaysChecked else {
@@ -114,13 +124,23 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
         return weekdaysChecked.isEmpty
     }
     
-    func getSubtitle() -> String {
+    func categoryCheckedIsEmpty() -> Bool {
+        print(#fileID, #function, #line, "category.isEmpty: \(category.isEmpty)")
+        return category.isEmpty
+    }
+    
+    func getSubtitleSchedule() -> String {
         print(#fileID, #function, #line)
         guard let weekdaysChecked else {
             print(#fileID, #function, #line)
             return ""
         }
         return weekdaysChecked.map{ $0.shortName }.joined(separator: ", ")
+    }
+    
+    func getSubtitleCategory() -> String {
+        print(#fileID, #function, #line)
+        return category
     }
     
     func setSelectedEmoji(index: Int) {

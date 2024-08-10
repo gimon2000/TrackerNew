@@ -296,13 +296,15 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     private func changeStateCreateButton() {
         let textFieldIsEmpty = textField.text?.isEmpty ?? true
-        let createTrackerPresenterIsEmpty = createTrackerPresenter?.isWeekdaysCheckedNil() ?? true
+        let weekdaysCheckedIsEmpty = createTrackerPresenter?.isWeekdaysCheckedNil() ?? true
+        let categoryCheckedIsEmpty = createTrackerPresenter?.categoryCheckedIsEmpty() ?? true
         let selectedEmojiIsEmpty = createTrackerPresenter?.selectedEmojiIsEmpty() ?? true
         let selectedColorIsEmpty = createTrackerPresenter?.selectedColorIsEmpty() ?? true
         if !textFieldIsEmpty &&
-            (!createTrackerPresenterIsEmpty || numberOfRowsInSection != 2) &&
+            (!weekdaysCheckedIsEmpty || numberOfRowsInSection != 2) &&
             !selectedEmojiIsEmpty &&
-            !selectedColorIsEmpty
+            !selectedColorIsEmpty &&
+            !categoryCheckedIsEmpty
         {
             print(#fileID, #function, #line)
             createButton.isEnabled = true
@@ -327,6 +329,13 @@ extension CreateTrackerViewController: UITableViewDelegate {
             let scheduleViewController = ScheduleViewController()
             scheduleViewController.delegate = self
             let navigationController = UINavigationController(rootViewController: scheduleViewController)
+            present(navigationController, animated: true)
+        }
+        if indexPath.row == 0 {
+            let categoryViewController = CategoryViewController()
+            categoryViewController.delegate = self
+            categoryViewController.initViewModel()
+            let navigationController = UINavigationController(rootViewController: categoryViewController)
             present(navigationController, animated: true)
         }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -356,7 +365,10 @@ extension CreateTrackerViewController: UITableViewDataSource {
         let title = ["Категория", "Расписание"]
         var subtitle = ""
         if indexPath.row == 1 {
-            subtitle = createTrackerPresenter?.getSubtitle() ?? ""
+            subtitle = createTrackerPresenter?.getSubtitleSchedule() ?? ""
+        }
+        if indexPath.row == 0 {
+            subtitle = createTrackerPresenter?.getSubtitleCategory() ?? ""
         }
         cell.setTextInCell(title: title[indexPath.row], subtitle: subtitle)
         return cell
@@ -384,7 +396,15 @@ extension CreateTrackerViewController: UITableViewDataSource {
 }
 
 //MARK: - ScheduleViewControllerDelegate
-extension CreateTrackerViewController: ScheduleViewControllerDelegate {
+extension CreateTrackerViewController: CreateTrackerViewControllerDelegate {
+    
+    func setCategoryChecked(nameCategory: String) {
+        createTrackerPresenter?.setCategoryChecked(nameCategory: nameCategory)
+        tableViewCategoryAndSchedule.reloadData()
+        changeStateCreateButton()
+        print(#fileID, #function, #line, "nameCategory: \(nameCategory)")
+    }
+    
     func setWeekdaysChecked(_ weekdaysCheckedArray: [Weekdays]) {
         createTrackerPresenter?.setWeekdaysChecked(weekdaysChecked:weekdaysCheckedArray)
         tableViewCategoryAndSchedule.reloadData()

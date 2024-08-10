@@ -7,7 +7,8 @@
 
 import Foundation
 
-protocol ScheduleViewControllerDelegate: AnyObject {
+protocol CreateTrackerViewControllerDelegate: AnyObject {
     func setWeekdaysChecked(_:[Weekdays])
+    func setCategoryChecked(nameCategory: String)
     func containWeekday(weekday: Weekdays) -> Bool
 }

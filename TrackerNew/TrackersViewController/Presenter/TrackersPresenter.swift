@@ -135,19 +135,12 @@ final class TrackersPresenter: TrackersPresenterProtocol {
         print(#fileID, #function, #line)
         let count = trackerRecordStore.countTrackerCompletedTrackers(id: id)
         
-        let suffix: String
+        let daysString = String.localizedStringWithFormat(
+            NSLocalizedString("numberOfDays", comment: "Number of completed days"),
+            count
+        )
         
-        if count % 10 == 1 && count % 100 != 11 {
-            suffix = "день"
-        } else if (count % 10 == 2 && count % 100 != 12) ||
-                    (count % 10 == 3 && count % 100 != 13) ||
-                    (count % 10 == 4 && count % 100 != 14) {
-            suffix = "дня"
-        } else {
-            suffix = "дней"
-        }
-        
-        return "\(count) \(suffix)"
+        return daysString
     }
     
     func containTrackerCompletedTrackers(id: UInt) -> Bool {

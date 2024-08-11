@@ -29,7 +29,6 @@ final class CategoryViewController: UIViewController {
         let view = UITableView()
         view.layer.cornerRadius = 16
         view.separatorColor = .ypGray
-        //        view.allowsSelection = false
         return view
     }()
     
@@ -56,12 +55,12 @@ final class CategoryViewController: UIViewController {
     
     //MARK: - Public Property
     weak var delegate: CreateTrackerViewControllerDelegate?
-    let categoryViewModel = CategoryViewModel()
+    var categoryViewModel: CategoryViewModelProtocol?
     
     //MARK: - Private Property
     private let cellReuseIdentifier = "categoryTableCellIdentifier"
     private lazy var tableViewCategoriesHeightConstraint: NSLayoutConstraint = {
-        let tableHeight = CGFloat(75 * categoryViewModel.trackerCategoryCount())
+        let tableHeight = CGFloat(75 * (categoryViewModel?.trackerCategoryCount() ?? 0))
         tableViewCategoriesHeightConstraint = tableViewCategories.heightAnchor.constraint(equalToConstant: tableHeight)
         tableViewCategoriesHeightConstraint.isActive = true
         return tableViewCategoriesHeightConstraint
@@ -102,21 +101,19 @@ final class CategoryViewController: UIViewController {
     }
     
     func initViewModel() {
-        categoryViewModel.hiddenEmptyImageLabel = { [weak self] in
+        categoryViewModel?.hiddenEmptyImageLabel = { [weak self] in
             self?.hiddenEmptyImageLabel()
-            self?.tableViewCategoriesHeightConstraint.constant = CGFloat(75 * (self?.categoryViewModel.trackerCategoryCount() ?? 0))
+            self?.tableViewCategoriesHeightConstraint.constant = CGFloat(75 * (self?.categoryViewModel?.trackerCategoryCount() ?? 0))
             self?.tableViewCategories.reloadData()
         }
     }
     
     // MARK: - Private Methods
     private func hiddenEmptyImageLabel() {
-        if categoryViewModel.trackerCategoryIsEmpty() {
-            emptyCategoriesImage.isHidden = false
-            emptyCategoriesLabel.isHidden = false
-        } else {
-            emptyCategoriesImage.isHidden = true
-            emptyCategoriesLabel.isHidden = true
+        if let trackerCategoryIsEmpty = categoryViewModel?.trackerCategoryIsEmpty() {
+                print(#fileID, #function, #line, "trackerCategoryIsEmpty: \(trackerCategoryIsEmpty)")
+                emptyCategoriesImage.isHidden = !trackerCategoryIsEmpty
+                emptyCategoriesLabel.isHidden = !trackerCategoryIsEmpty
         }
     }
     
@@ -180,7 +177,7 @@ extension CategoryViewController: UITableViewDelegate {
             return nil
         }[indexPath.row] ?? "Error"
         print(#fileID, #function, #line, "name: \(name)")
-        categoryViewModel.addLastCategory(categoryName: name)
+        categoryViewModel?.addLastCategory(categoryName: name)
         delegate?.setCategoryChecked(nameCategory: name)
         self.dismiss(animated: true)
     }
@@ -189,9 +186,11 @@ extension CategoryViewController: UITableViewDelegate {
 //MARK: - UITableViewDataSource
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count = categoryViewModel.trackerCategoryCount()
-        print(#fileID, #function, #line, "categories.count: \(count)")
-        return count
+        if let count = categoryViewModel?.trackerCategoryCount() {
+            print(#fileID, #function, #line, "categories.count: \(count)")
+            return count
+        }
+        return 0
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -207,13 +206,15 @@ extension CategoryViewController: UITableViewDataSource {
             print(#fileID, #function, #line)
             return UITableViewCell()
         }
-        let (name, isLast ) = categoryViewModel.getNameCategory(id: indexPath.row)
-        cell.setDataInCell(text: name, doesCheckmarkHidden: !isLast)
-        return cell
+        if let (name, isLast ) = categoryViewModel?.getNameCategory(id: indexPath.row) {
+            cell.setDataInCell(text: name, doesCheckmarkHidden: !isLast)
+            return cell
+        }
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let isLastCell = indexPath.row == categoryViewModel.trackerCategoryCount() - 1
+        let isLastCell = indexPath.row == (categoryViewModel?.trackerCategoryCount() ?? 0) - 1
         
         if isLastCell {
             cell.separatorInset = UIEdgeInsets(
@@ -236,6 +237,6 @@ extension CategoryViewController: UITableViewDataSource {
 extension CategoryViewController: CategoryViewControllerDelegate {
     func createNewCategory(nameCategory: String) {
         print(#fileID, #function, #line, "name:\(nameCategory)")
-        categoryViewModel.addCategory(name: nameCategory)
+        categoryViewModel?.addCategory(name: nameCategory)
     }
 }

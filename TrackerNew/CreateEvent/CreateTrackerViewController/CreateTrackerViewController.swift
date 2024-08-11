@@ -334,6 +334,7 @@ extension CreateTrackerViewController: UITableViewDelegate {
         if indexPath.row == 0 {
             let categoryViewController = CategoryViewController()
             categoryViewController.delegate = self
+            categoryViewController.categoryViewModel = CategoryViewModel()
             categoryViewController.initViewModel()
             let navigationController = UINavigationController(rootViewController: categoryViewController)
             present(navigationController, animated: true)

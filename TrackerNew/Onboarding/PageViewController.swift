@@ -52,17 +52,6 @@ final class PageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let didOnboardingShow = UserDefaults.standard.bool(forKey: "didOnboardingShow")
-        
-        if didOnboardingShow {
-            guard let window = UIApplication.shared.windows.first else {
-                print(#fileID, #function, #line, "window error")
-                return
-            }
-            let tabBarController = TabBarController()
-            window.rootViewController = tabBarController
-        }
-        
         dataSource = self
         delegate = self
         

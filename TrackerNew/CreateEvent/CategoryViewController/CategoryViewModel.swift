@@ -7,9 +7,18 @@
 
 import Foundation
 
+protocol CategoryViewModelProtocol {
+    var hiddenEmptyImageLabel: Binding? {set get}
+    func trackerCategoryCount() -> Int
+    func trackerCategoryIsEmpty() -> Bool
+    func addLastCategory(categoryName: String)
+    func addCategory(name: String)
+    func getNameCategory(id: Int) -> (String, Bool)
+}
+
 typealias Binding = () -> Void
 
-final class CategoryViewModel {
+final class CategoryViewModel: CategoryViewModelProtocol {
     
     //MARK: - Public Property
     var hiddenEmptyImageLabel: Binding?
@@ -36,7 +45,7 @@ final class CategoryViewModel {
         return categories[id]
     }
     
-    func addLastCategory(categoryName: String){
+    func addLastCategory(categoryName: String) {
         trackerCategoryStore.cleanLastCategoryCoreData()
         trackerCategoryStore.addLastCategoryCoreData(categoryName: categoryName)
         categories = trackerCategoryStore.getArrayNameCategoryCoreData()

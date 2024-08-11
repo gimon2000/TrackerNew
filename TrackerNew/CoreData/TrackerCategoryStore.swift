@@ -61,6 +61,13 @@ final class TrackerCategoryStore: NSObject {
         return trackerCategoryCoreData
     }
     
+    func addCategoryCoreData(name: String) {
+        let trackerCategoryCoreData = TrackerCategoryCoreData(context: context)
+        trackerCategoryCoreData.name = name
+        print(#fileID, #function, #line, "trackerCategoryCoreData: \(trackerCategoryCoreData)")
+        saveContext()
+    }
+    
     func fetchTrackerCategoryCoreData(categoryName: String) -> TrackerCategoryCoreData? {
         let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = fetchedResultsController.fetchRequest
         fetchRequest.predicate = NSPredicate(format: "name == %@", categoryName)
@@ -72,6 +79,34 @@ final class TrackerCategoryStore: NSObject {
         } catch {
             print(#fileID, #function, #line, "result: nil")
             return nil
+        }
+    }
+    
+    func cleanLastCategoryCoreData(){
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = fetchedResultsController.fetchRequest
+        fetchRequest.predicate = NSPredicate(format: "isLast == true")
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            print(#fileID, #function, #line, "result: \(result)")
+            result.first?.isLast = false
+            saveContext()
+        } catch {
+            print(#fileID, #function, #line, "result: nil")
+        }
+    }
+    
+    func addLastCategoryCoreData(categoryName: String){
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = fetchedResultsController.fetchRequest
+        fetchRequest.predicate = NSPredicate(format: "name == %@", categoryName)
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            print(#fileID, #function, #line, "result: \(result)")
+            result.first?.isLast = true
+            saveContext()
+        } catch {
+            print(#fileID, #function, #line, "result: nil")
         }
     }
     
@@ -87,6 +122,51 @@ final class TrackerCategoryStore: NSObject {
             print(#fileID, #function, #line, "count: 0 catch")
             return 0
         }
+    }
+    
+    func isCategoryCoreDataEmpty() -> Bool {
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = fetchedResultsController.fetchRequest
+        
+        do {
+            let category = try context.fetch(fetchRequest)
+            let isEmpty = category.isEmpty
+            print(#fileID, #function, #line, "isEmpty: \(isEmpty)")
+            return isEmpty
+        } catch {
+            print(#fileID, #function, #line, "isEmpty: catch")
+            return true
+        }
+    }
+    
+    func getCountCategoryCoreData() -> Int {
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = fetchedResultsController.fetchRequest
+        
+        do {
+            let category = try context.fetch(fetchRequest)
+            let count = category.count
+            print(#fileID, #function, #line, "count: \(count)")
+            return count
+        } catch {
+            print(#fileID, #function, #line, "count: 0 catch")
+            return 0
+        }
+    }
+    
+    func getArrayNameCategoryCoreData() -> [(String, Bool)] {
+        let category = getCategories()
+        guard let category else {
+            return []
+        }
+        var array: [(String, Bool)] = []
+        
+        category.forEach{
+            if let name = $0.name {
+                let isLast = $0.isLast
+                array.append((name, isLast))
+            }
+        }
+        
+        return array
     }
     
     func getNameTrackerCategoryCoreData(index: Int) -> String {
@@ -119,39 +199,143 @@ final class TrackerCategoryStore: NSObject {
         return count ?? 0
     }
     
+    func getCountTrackersInTrackerCategoryCoreDataIn(
+        currentWeekday: Weekdays,
+        currentDate: Date,
+        inSection: Int
+    ) -> Int {
+        guard let category = getCategories() else {
+            return 0
+        }
+        
+        let names = category.compactMap{
+            $0.name
+        }
+        
+        let namesInDate = names.compactMap{
+            getArrayTrackers(
+                categoryName: $0,
+                currentWeekday: currentWeekday,
+                currentDate: currentDate
+            )?.count
+        }
+        
+        return namesInDate[inSection]
+    }
+    
+    func getNameCategoryCoreDataIn(
+        currentWeekday: Weekdays,
+        currentDate: Date,
+        inSection: Int
+    ) -> String {
+        
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = fetchedResultsController.fetchRequest
+        
+        do {
+            let category = try context.fetch(fetchRequest)
+            let name = category.filter{
+                guard let nameCategory = $0.name else { return false }
+                let countTrackers = getArrayTrackers(
+                    categoryName: nameCategory,
+                    currentWeekday: currentWeekday,
+                    currentDate: currentDate
+                )?.count ?? 0
+                print(#fileID, #function, #line, countTrackers as Any)
+                return countTrackers > 0
+            }[inSection].name ?? "Error getCountTrackersInTrackerCategoryCoreDataIn"
+            print(#fileID, #function, #line, "name: \(name)")
+            return name
+        } catch {
+            print(#fileID, #function, #line, "name: catch")
+            return ""
+        }
+    }
+    
+    func getCountCategoryCoreDataIn(
+        currentWeekday: Weekdays,
+        currentDate: Date
+    ) -> Int {
+        guard let category = getCategories() else {
+            return 0
+        }
+        let count = category.filter{
+            guard let nameCategory = $0.name else { return false }
+            let countTrackers = getArrayTrackers(
+                categoryName: nameCategory,
+                currentWeekday: currentWeekday,
+                currentDate: currentDate
+            )?.count ?? 0
+            print(#fileID, #function, #line, countTrackers as Any)
+            return countTrackers > 0
+        }.count
+        print(#fileID, #function, #line, "count: \(count)")
+        return count
+    }
+    
     func getTrackerInDate(
         currentWeekday: Weekdays,
         currentDate: Date,
-        index: Int,
-        categoryName: String
+        indexSection: Int,
+        indexTracker: Int
     ) -> Tracker? {
-        let arrayTrackers = getArrayTrackers(
-            categoryName: categoryName,
-            currentWeekday: currentWeekday,
-            currentDate: currentDate
-        )
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = fetchedResultsController.fetchRequest
         
-        print(#fileID, #function, #line, arrayTrackers?[index] as Any)
-        guard let trackerCoreData = arrayTrackers?[index] as? TrackerCoreData else {
-            print(#fileID, #function, #line)
+        do {
+            let category = try context.fetch(fetchRequest)
+            let trackersCoreData = category.filter{
+                guard let nameCategory = $0.name else { return false }
+                let countTrackers = getArrayTrackers(
+                    categoryName: nameCategory,
+                    currentWeekday: currentWeekday,
+                    currentDate: currentDate
+                )?.count ?? 0
+                print(#fileID, #function, #line, countTrackers as Any)
+                return countTrackers > 0
+            }[indexSection].tracker?.filter{
+                if let _ = $0 as? TrackerCoreData {
+                    return true
+                }
+                return false
+            }
+            
+            guard let trackerCoreData = trackersCoreData?[indexTracker] as? TrackerCoreData else {
+                print(#fileID, #function, #line)
+                return nil
+            }
+            
+            var schedules: [Weekdays]?
+            if let schedule = daysValueTransformer.reverseTransformedValue(trackerCoreData.schedule) as? [Weekdays]? {
+                schedules = schedule
+            }
+            
+            let tracker = Tracker(
+                id: UInt(trackerCoreData.idTracker),
+                name: trackerCoreData.name ?? "",
+                emoji: trackerCoreData.emoji ?? "",
+                color: uiColorMarshalling.color(from: trackerCoreData.color ?? ""),
+                schedule: schedules,
+                eventDate: trackerCoreData.eventDate
+            )
+            
+            print(#fileID, #function, #line, "tracker: \(tracker)")
+            return tracker
+        } catch {
+            print(#fileID, #function, #line, "name: catch")
             return nil
         }
+    }
+    
+    func getCategories() -> [TrackerCategoryCoreData]? {
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = fetchedResultsController.fetchRequest
         
-        var schedules: [Weekdays]?
-        if let schedule = daysValueTransformer.reverseTransformedValue(trackerCoreData.schedule) as? [Weekdays]? {
-            schedules = schedule
+        do {
+            let categories = try context.fetch(fetchRequest)
+            print(#fileID, #function, #line, "categories: \(categories)")
+            return categories
+        } catch {
+            print(#fileID, #function, #line, "categories: \(error)")
+            return nil
         }
-        
-        let tracker = Tracker(
-            id: UInt(trackerCoreData.idTracker),
-            name: trackerCoreData.name ?? "",
-            emoji: trackerCoreData.emoji ?? "",
-            color: uiColorMarshalling.color(from: trackerCoreData.color ?? ""),
-            schedule: schedules,
-            eventDate: trackerCoreData.eventDate
-        )
-        print(#fileID, #function, #line, tracker)
-        return tracker
     }
     
     // MARK: - Private Methods
@@ -222,7 +406,7 @@ final class TrackerCategoryStore: NSObject {
 }
 
 //MARK: - NSFetchedResultsControllerDelegate
-extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {    
+extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         delegate?.didUpdateCategory()
     }

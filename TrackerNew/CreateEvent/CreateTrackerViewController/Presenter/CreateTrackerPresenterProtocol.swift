@@ -14,8 +14,11 @@ protocol CreateTrackerPresenterProtocol {
     
     func createTracker(name: String)
     func setWeekdaysChecked(weekdaysChecked:[Weekdays])
+    func setCategoryChecked(nameCategory: String)
     func isWeekdaysCheckedNil() -> Bool
-    func getSubtitle() -> String
+    func categoryCheckedIsEmpty() -> Bool
+    func getSubtitleSchedule() -> String
+    func getSubtitleCategory() -> String
     func containWeekday(weekday: Weekdays) -> Bool
     func setSelectedEmoji(index: Int)
     func setSelectedColor(index: Int)

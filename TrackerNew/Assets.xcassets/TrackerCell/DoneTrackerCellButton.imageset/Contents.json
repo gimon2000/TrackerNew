@@ -3,16 +3,19 @@
     {
       "filename" : "Done@1x.png",
       "idiom" : "universal",
+      "language-direction" : "left-to-right",
       "scale" : "1x"
     },
     {
       "filename" : "Done@2x.png",
       "idiom" : "universal",
+      "language-direction" : "left-to-right",
       "scale" : "2x"
     },
     {
       "filename" : "Done@3x.png",
       "idiom" : "universal",
+      "language-direction" : "left-to-right",
       "scale" : "3x"
     }
   ],

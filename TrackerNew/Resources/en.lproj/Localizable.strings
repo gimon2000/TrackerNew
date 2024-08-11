@@ -54,3 +54,6 @@
 "friday.shortName" = "Fri";
 "saturday.shortName" = "Sat";
 "sunday.shortName" = "Sun";
+// MARK: - TabBar
+"tab.bar.title.trackers" = "Trackers";
+"tab.bar.title.statistic" = "Statistic";

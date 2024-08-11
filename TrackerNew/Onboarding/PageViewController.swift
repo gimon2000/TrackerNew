@@ -15,13 +15,21 @@ final class PageViewController: UIPageViewController {
               let image2 = UIImage(named: "second") else {
             return [UIViewController()]
         }
+        let onboardingLabelTextFirst = NSLocalizedString(
+            "onboarding.text.first",
+            comment: "Text displayed in onboarding label"
+        )
+        let onboardingLabelTextSecond = NSLocalizedString(
+            "onboarding.text.second",
+            comment: "Text displayed in onboarding label"
+        )
         let first = OnboardingViewController(
             image: image1,
-            text: "Отслеживайте только то, что хотите"
+            text: onboardingLabelTextFirst
         )
         let second = OnboardingViewController(
             image: image2,
-            text: "Даже если это не литры воды и йога"
+            text: onboardingLabelTextSecond
         )
         return [first, second]
     }()

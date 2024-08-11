@@ -21,7 +21,10 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     private var textField: UITextField = {
         let view = UITextField()
-        view.placeholder = "Введите название трекера"
+        view.placeholder = NSLocalizedString(
+            "text.field.placeholder",
+            comment: "Text displayed in placeholder"
+        )
         view.backgroundColor = .ypGray30
         view.layer.cornerRadius = 16
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
@@ -33,7 +36,11 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     private lazy var createButton: UIButton = {
         let view = UIButton(type: .custom)
-        view.setTitle("Создать", for: .normal)
+        let createText = NSLocalizedString(
+            "create.button",
+            comment: "Text displayed in button"
+        )
+        view.setTitle(createText, for: .normal)
         view.setTitleColor(.white, for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         view.backgroundColor = .ypGray
@@ -44,7 +51,11 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     private lazy var cancelButton: UIButton = {
         let view = UIButton(type: .custom)
-        view.setTitle("Отменить", for: .normal)
+        let cancelText = NSLocalizedString(
+            "cancel.button",
+            comment: "Text displayed in button"
+        )
+        view.setTitle(cancelText, for: .normal)
         view.setTitleColor(.ypRed, for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         view.backgroundColor = .white
@@ -76,7 +87,10 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         let view = UILabel()
         view.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         view.textColor = .ypBlack
-        view.text = "Emoji"
+        view.text = NSLocalizedString(
+            "title.emojis",
+            comment: "Text displayed in title emoji"
+        )
         return view
     }()
     
@@ -84,7 +98,10 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         let view = UILabel()
         view.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         view.textColor = .ypBlack
-        view.text = "Цвет"
+        view.text = NSLocalizedString(
+            "title.colors",
+            comment: "Text displayed in title colors"
+        )
         return view
     }()
     
@@ -363,7 +380,18 @@ extension CreateTrackerViewController: UITableViewDataSource {
             print(#fileID, #function, #line)
             return UITableViewCell()
         }
-        let title = ["Категория", "Расписание"]
+        
+        let titleCategory = NSLocalizedString(
+            "title.table.cell.category",
+            comment: "Text displayed in title table"
+        )
+        
+        let titleSchedule = NSLocalizedString(
+            "title.table.cell.schedule",
+            comment: "Text displayed in title table"
+        )
+        
+        let title = [titleCategory, titleSchedule]
         var subtitle = ""
         if indexPath.row == 1 {
             subtitle = createTrackerPresenter?.getSubtitleSchedule() ?? ""

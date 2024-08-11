@@ -12,7 +12,11 @@ final class CreateCategoryViewController: UIViewController {
     //MARK: - Visual Components
     private lazy var doneButton: UIButton = {
         let view = UIButton(type: .custom)
-        view.setTitle("Готово", for: .normal)
+        let textButton = NSLocalizedString(
+            "done.button.category",
+            comment: "Text displayed in button"
+        )
+        view.setTitle(textButton, for: .normal)
         view.setTitleColor(.white, for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         view.backgroundColor = .ypGray
@@ -24,7 +28,10 @@ final class CreateCategoryViewController: UIViewController {
     
     private lazy var nameCategoryTextField : UITextField = {
         let view = UITextField()
-        view.placeholder = "Введите название категории"
+        view.placeholder = NSLocalizedString(
+            "name.category.text.field.placeholder",
+            comment: "Text displayed in placeholder"
+        )
         view.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: view.frame.height))
         view.leftViewMode = .always
         view.backgroundColor = .ypGray30
@@ -49,9 +56,11 @@ final class CreateCategoryViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        navigationItem.title = "Новая категория"
-        
-        
+        navigationItem.title = NSLocalizedString(
+            "create.category.view.controller.title",
+            comment: "Text displayed in title"
+        )
+                
         [
             doneButton,
             nameCategoryTextField

@@ -16,7 +16,11 @@ final class CategoryViewController: UIViewController {
     //MARK: - Visual Components
     private lazy var createCategoryButton: UIButton = {
         let view = UIButton(type: .custom)
-        view.setTitle("Добавить категорию", for: .normal)
+        let buttonText = NSLocalizedString(
+            "create.category.button",
+            comment: "Text displayed in button"
+        )
+        view.setTitle(buttonText, for: .normal)
         view.setTitleColor(.white, for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         view.backgroundColor = .ypBlack
@@ -44,7 +48,10 @@ final class CategoryViewController: UIViewController {
     
     private let emptyCategoriesLabel: UILabel = {
         let view = UILabel()
-        view.text = "Привычки и события можно\nобъединить по смыслу"
+        view.text = NSLocalizedString(
+            "empty.categories.label",
+            comment: "Text displayed on empty state"
+        )
         view.numberOfLines = 2
         view.textAlignment = .center
         view.textColor = .ypBlack
@@ -73,7 +80,10 @@ final class CategoryViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        navigationItem.title = "Категория"
+        navigationItem.title = NSLocalizedString(
+            "category.view.controller.title",
+            comment: "Text displayed in title"
+        )
         
         tableViewCategories.delegate = self
         tableViewCategories.dataSource = self

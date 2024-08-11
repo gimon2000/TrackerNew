@@ -12,7 +12,11 @@ final class ScheduleViewController: UIViewController {
     //MARK: - Visual Components
     private lazy var doneButton: UIButton = {
         let view = UIButton(type: .custom)
-        view.setTitle("Готово", for: .normal)
+        let textButton = NSLocalizedString(
+            "done.button.schedule",
+            comment: "Text displayed in button"
+        )
+        view.setTitle(textButton, for: .normal)
         view.setTitleColor(.white, for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         view.backgroundColor = .ypBlack
@@ -42,7 +46,10 @@ final class ScheduleViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        navigationItem.title = "Расписание"
+        navigationItem.title = NSLocalizedString(
+            "schedule.view.controller.title",
+            comment: "Text displayed in title"
+        )
         
         tableViewWeekdays.delegate = self
         tableViewWeekdays.dataSource = self

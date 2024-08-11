@@ -19,38 +19,80 @@ enum Weekdays: Int, CaseIterable, Codable {
     var fullName: String {
         switch self {
         case .monday:
-            return "Понедельник"
+            return NSLocalizedString(
+                "monday.fullName",
+                comment: "Text displayed in table"
+            )
         case .tuesday:
-            return "Вторник"
+            return NSLocalizedString(
+                "tuesday.fullName",
+                comment: "Text displayed in table"
+            )
         case .wednesday:
-            return "Среда"
+            return NSLocalizedString(
+                "wednesday.fullName",
+                comment: "Text displayed in table"
+            )
         case .thursday:
-            return "Четверг"
+            return NSLocalizedString(
+                "thursday.fullName",
+                comment: "Text displayed in table"
+            )
         case .friday:
-            return "Пятница"
+            return NSLocalizedString(
+                "friday.fullName",
+                comment: "Text displayed in table"
+            )
         case .saturday:
-            return "Суббота"
+            return NSLocalizedString(
+                "saturday.fullName",
+                comment: "Text displayed in table"
+            )
         case .sunday:
-            return "Воскресенье"
+            return NSLocalizedString(
+                "sunday.fullName",
+                comment: "Text displayed in table"
+            )
         }
     }
     
     var shortName: String {
         switch self {
         case .monday:
-            return "Пн"
+            return NSLocalizedString(
+                "monday.shortName",
+                comment: "Text displayed in table"
+            )
         case .tuesday:
-            return "Вт"
+            return NSLocalizedString(
+                "tuesday.shortName",
+                comment: "Text displayed in table"
+            )
         case .wednesday:
-            return "Ср"
+            return NSLocalizedString(
+                "wednesday.shortName",
+                comment: "Text displayed in table"
+            )
         case .thursday:
-            return "Чт"
+            return NSLocalizedString(
+                "thursday.shortName",
+                comment: "Text displayed in table"
+            )
         case .friday:
-            return "Пт"
+            return NSLocalizedString(
+                "friday.shortName",
+                comment: "Text displayed in table"
+            )
         case .saturday:
-            return "Сб"
+            return NSLocalizedString(
+                "saturday.shortName",
+                comment: "Text displayed in table"
+            )
         case .sunday:
-            return "Вс"
+            return NSLocalizedString(
+                "sunday.shortName",
+                comment: "Text displayed in table"
+            )
         }
     }
 }

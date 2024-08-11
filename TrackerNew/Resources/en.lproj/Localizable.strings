@@ -1,0 +1,56 @@
+/* 
+  Localizable.strings
+  TrackerNew
+
+  Created by gimon on 10.08.2024.
+  
+*/
+
+// MARK: - Onboarding
+"onboarding.button" = "These are technologies!";
+"onboarding.text.first" = "Track only what you want";
+"onboarding.text.second" = "Even if it's not liters of water and yoga";
+// MARK: - Trackers
+"empty.trackers.label" = "What are we going to track?";
+"search.text.field.placeholder" = "Search";
+"trackers.view.controller.title" = "Trackers";
+// MARK: - SelectTypeTracker
+"select.type.event.view.controller.title" = "Creating a tracker";
+"add.new.habit.button" = "Habit";
+"add.new.irregular.event" = "Irregular event";
+// MARK: - CreateTracker
+"create.habit.tracker.view.controller.title" = "New habit";
+"create.irregular.event.tracker.view.controller.title" = "New irregular event";
+"text.field.placeholder" = "Enter the name of the tracker";
+"create.button" = "Create";
+"cancel.button" = "Cancel";
+"title.emojis" = "Emoji";
+"title.colors" = "Color";
+"title.table.cell.category" = "Category";
+"title.table.cell.schedule" = "Schedule";
+// MARK: - Category
+"create.category.button" = "Add a category";
+"empty.categories.label" = "Habits and events can be\ncombined in meaning";
+"category.view.controller.title" = "Category";
+// MARK: - CreateCategory
+"create.category.view.controller.title" = "New category";
+"done.button.category" = "Done";
+"name.category.text.field.placeholder" = "Enter the name of the category";
+// MARK: - Schedule
+"schedule.view.controller.title" = "Schedule";
+"done.button.schedule" = "Done";
+// MARK: - Weekdays
+"monday.fullName" = "Monday";
+"tuesday.fullName" = "Tuesday";
+"wednesday.fullName" = "Wednesday";
+"thursday.fullName" = "Thursday";
+"friday.fullName" = "Friday";
+"saturday.fullName" = "Saturday";
+"sunday.fullName" = "Sunday";
+"monday.shortName" = "Mon";
+"tuesday.shortName" = "Tue";
+"wednesday.shortName" = "Wed";
+"thursday.shortName" = "Thu";
+"friday.shortName" = "Fri";
+"saturday.shortName" = "Sat";
+"sunday.shortName" = "Sun";

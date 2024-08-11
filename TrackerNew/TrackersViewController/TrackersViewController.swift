@@ -35,7 +35,10 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     
     private let emptyTrackersLabel: UILabel = {
         let view = UILabel()
-        view.text = "Что будем отслеживать?"
+        view.text = NSLocalizedString(
+            "empty.trackers.label",
+            comment: "Text displayed on empty state"
+        )
         view.textColor = .ypBlack
         view.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         return view
@@ -45,7 +48,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         let picker = UIDatePicker()
         picker.datePickerMode = .date
         picker.preferredDatePickerStyle = .compact
-        picker.locale = Locale(identifier: "ru_Ru")
+        picker.locale = .current
         picker.translatesAutoresizingMaskIntoConstraints = false
         picker.widthAnchor.constraint(equalToConstant: 100).isActive = true
         picker.calendar.firstWeekday = 2
@@ -60,7 +63,10 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     
     private var searchTextField : UISearchTextField = {
         let viewSearchTextField = UISearchTextField()
-        viewSearchTextField.placeholder = "Поиск"
+        viewSearchTextField.placeholder = NSLocalizedString(
+            "search.text.field.placeholder",
+            comment: "Text displayed in placeholder"
+        )
         return viewSearchTextField
     }()
     
@@ -84,7 +90,10 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         
         view.backgroundColor = .white
         
-        title = "Трекеры"
+        title = NSLocalizedString(
+            "trackers.view.controller.title",
+            comment: "Text displayed in title"
+        )
         navigationController?.navigationBar.prefersLargeTitles = true
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addNewTracker)

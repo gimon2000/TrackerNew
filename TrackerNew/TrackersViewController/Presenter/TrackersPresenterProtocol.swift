@@ -22,4 +22,5 @@ protocol TrackersPresenterProtocol {
     func deleteTrackerCompletedTrackers(id: UInt)
     func containTrackerCompletedTrackers(id: UInt) -> Bool
     func countTrackerCompletedTrackers(id: UInt) -> String
+    func setSearchText(text: String)
 }

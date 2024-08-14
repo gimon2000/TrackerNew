@@ -61,12 +61,13 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         return picker
     }()
     
-    private var searchTextField : UISearchTextField = {
+    private lazy var searchTextField : UISearchTextField = {
         let viewSearchTextField = UISearchTextField()
         viewSearchTextField.placeholder = NSLocalizedString(
             "search.text.field.placeholder",
             comment: "Text displayed in placeholder"
         )
+        viewSearchTextField.addTarget(self, action: #selector(searchTextFieldDidChanged), for: .editingChanged)
         return viewSearchTextField
     }()
     
@@ -180,6 +181,16 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         selectTypeEventViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: selectTypeEventViewController)
         present(navigationController, animated: true)
+    }
+    
+    @objc private func searchTextFieldDidChanged(_ searchField: UISearchTextField) {
+        if let searchText = searchField.text, !searchText.isEmpty {
+            trackersPresenter?.setSearchText(text: searchText)
+        } else {
+            trackersPresenter?.setSearchText(text: "")
+        }
+        hideEmptyImage(setHidden: true)
+        collectionView.reloadData()
     }
     
     private func hideEmptyImage(setHidden: Bool) {

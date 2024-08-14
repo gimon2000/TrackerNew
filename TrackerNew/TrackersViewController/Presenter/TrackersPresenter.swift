@@ -21,6 +21,8 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     private let daysValueTransformer = DaysValueTransformer()
     private let uiColorMarshalling = UIColorMarshalling()
     private lazy var categories: [TrackerCategoryCoreData]? = trackerCategoryStore.getCategories()
+    private var visibleCategories: [TrackerCategory] = []
+    private var searchText = ""
     
     init() {
         self.trackerCategoryStore.delegate = self
@@ -38,6 +40,11 @@ final class TrackersPresenter: TrackersPresenterProtocol {
         currentDate = date
     }
     
+    func setSearchText(text: String) {
+        print(#fileID, #function, #line, "text: \(text)")
+        searchText = text
+    }
+    
     func getCountCategories() -> Int {
         guard let categories else {
             return 0
@@ -47,47 +54,21 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     }
     
     func getCountTrackersInCategoriesInCurrentDate(inSection: Int) -> Int {
-        
-        let categoriesInDate = getCategoryCoreDataInCurrentDay()
-        let trackers = categoriesInDate[inSection].tracker
-        
-        let count = trackers?.count ?? 0
+        let count = visibleCategories[inSection].trackers.count
         print(#fileID, #function, #line, "count: \(count)")
         return count
     }
     
     func getCountCategoriesInCurrentDate() -> Int {
-        
-        let categoriesInDate = getCategoryCoreDataInCurrentDay()
-        
-        let count = categoriesInDate.count
+        visibleCategories = getCategoryInCurrentDay()
+        let count = visibleCategories.count
         print(#fileID, #function, #line, "count: \(count)")
         return count
         
     }
     
     func getTrackersInDate(indexSection: Int, indexTracker: Int) -> Tracker? {
-        
-        let categoriesInDate = getCategoryCoreDataInCurrentDay()
-        guard let trackers = categoriesInDate[indexSection].tracker as? Set<TrackerCoreData> else {
-            return nil
-        }
-        let trackerCoreData = Array(trackers)[indexTracker]
-        
-        var schedules: [Weekdays]?
-        if let schedule = daysValueTransformer.reverseTransformedValue(trackerCoreData.schedule) as? [Weekdays]? {
-            schedules = schedule
-        }
-        
-        let tracker = Tracker(
-            id: UInt(trackerCoreData.idTracker),
-            name: trackerCoreData.name ?? "",
-            emoji: trackerCoreData.emoji ?? "",
-            color: uiColorMarshalling.color(from: trackerCoreData.color ?? ""),
-            schedule: schedules,
-            eventDate: trackerCoreData.eventDate
-        )
-        
+        let tracker = visibleCategories[indexSection].trackers[indexTracker]
         print(#fileID, #function, #line, "tracker: \(tracker)")
         return tracker
     }
@@ -104,19 +85,7 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     }
     
     func getNameCategory(index: Int) -> String {
-        print(#fileID, #function, #line)
-        
-        guard let categories else {
-            print(#fileID, #function, #line)
-            assertionFailure("Error getNameCategory")
-            return "Error getNameCategory"
-        }
-        
-        guard let nameCategory = categories[index].name else {
-            print(#fileID, #function, #line)
-            assertionFailure("Error getNameCategory")
-            return "Error getNameCategory"
-        }
+        let nameCategory = visibleCategories[index].name
         print(#fileID, #function, #line, "nameCategory: \(nameCategory)")
         return nameCategory
     }
@@ -173,12 +142,12 @@ final class TrackersPresenter: TrackersPresenterProtocol {
         return day
     }
     
-    private func getCategoryCoreDataInCurrentDay() -> [TrackerCategoryCoreData]{
+    private func getCategoryInCurrentDay() -> [TrackerCategory]{
         let day = getCurrentWeekday()
         
-        return categories?.filter{
-            if let trackers = $0.tracker {
-                return !trackers.filter{
+        return categories?.compactMap{
+            if let trackersCoreData = $0.tracker, let categoryName = $0.name {
+                var trackersInDate = trackersCoreData.filter{
                     if let tracker = $0 as? TrackerCoreData {
                         print(#fileID, #function, #line, tracker.schedule as Any)
                         if let schedule = daysValueTransformer.reverseTransformedValue(tracker.schedule) as? [Weekdays] {
@@ -192,9 +161,48 @@ final class TrackersPresenter: TrackersPresenterProtocol {
                         return false
                     }
                     return false
-                }.isEmpty
+                }
+                
+                if !searchText.isEmpty {
+                    trackersInDate = trackersInDate.filter{
+                        if let tracker = $0 as? TrackerCoreData {
+                            if let name = tracker.name {
+                                let contain = name.lowercased().contains(searchText.lowercased())
+                                print(#fileID, #function, #line, "contain: \(contain)")
+                                return contain
+                            }
+                            return false
+                        }
+                        return false
+                    }
+                }
+                
+                let trackers: [Tracker] = trackersInDate.compactMap{
+                    if let tracker = $0 as? TrackerCoreData {
+                        var schedules: [Weekdays]?
+                        if let schedule = daysValueTransformer.reverseTransformedValue(tracker.schedule) as? [Weekdays]? {
+                            schedules = schedule
+                        }
+                        
+                        let tracker = Tracker(
+                            id: UInt(tracker.idTracker),
+                            name: tracker.name ?? "",
+                            emoji: tracker.emoji ?? "",
+                            color: uiColorMarshalling.color(from: tracker.color ?? ""),
+                            schedule: schedules,
+                            eventDate: tracker.eventDate
+                        )
+                        return tracker
+                    }
+                    return nil
+                }
+                
+                if !trackers.isEmpty {
+                    return TrackerCategory(name: categoryName, trackers: trackers)
+                }
+                return nil
             }
-            return false
+            return nil
         } ?? []
     }
 }

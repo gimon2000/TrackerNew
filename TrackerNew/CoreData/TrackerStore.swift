@@ -46,6 +46,29 @@ final class TrackerStore {
         saveContext()
     }
     
+    func changeCategoryInTrackerCoreData(categoryName: String, idTracker: UInt) {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %d", idTracker)
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            print(#fileID, #function, #line, "result: \(result)")
+            
+            if categoryName == "Закрепленные" {
+                let oldCategory = result.first?.oldTrackerCategory
+                result.first?.trackerCategory = oldCategory
+            } else {
+                let categoryFix = coreDataStore.getTrackerCategoryCoreData(categoryName: "Закрепленные")
+                let oldCategory = result.first?.trackerCategory
+                result.first?.oldTrackerCategory = oldCategory
+                result.first?.trackerCategory = categoryFix
+            }
+            saveContext()
+        } catch {
+            print(#fileID, #function, #line, "result: nil")
+        }
+    }
+    
     // MARK: - Core Data Saving support
     private func saveContext() {
         if context.hasChanges {

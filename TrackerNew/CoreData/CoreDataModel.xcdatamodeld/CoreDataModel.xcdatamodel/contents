@@ -12,6 +12,7 @@
         <attribute name="idTracker" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="schedule" optional="YES" attributeType="Transformable" valueTransformerName="DaysValueTransformer"/>
+        <relationship name="oldTrackerCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerCategoryCoreData"/>
         <relationship name="trackerCategory" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerCategoryCoreData" inverseName="tracker" inverseEntity="TrackerCategoryCoreData"/>
     </entity>
     <entity name="TrackerRecordCoreData" representedClassName="TrackerRecordCoreData" syncable="YES" codeGenerationType="class">

@@ -110,6 +110,10 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         setColorPlusTrackerCellButton()
     }
     
+    func getIdTracker() -> UInt {
+        trackerId
+    }
+    
     // MARK: - Private Methods
     private func addConstraintBackgroundColorView() {
         NSLayoutConstraint.activate([

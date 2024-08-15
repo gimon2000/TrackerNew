@@ -17,10 +17,11 @@ protocol TrackersPresenterProtocol {
     func getCountTrackersInCategoriesInCurrentDate(inSection: Int) -> Int
     func getTrackersInDate(indexSection: Int, indexTracker: Int) -> Tracker?
     func setTracker(tracker: Tracker, category: String)
-    func getNameCategory(index: Int) -> String    
+    func getNameCategory(index: Int) -> String
     func setTrackerCompletedTrackers(id: UInt)
     func deleteTrackerCompletedTrackers(id: UInt)
     func containTrackerCompletedTrackers(id: UInt) -> Bool
     func countTrackerCompletedTrackers(id: UInt) -> String
     func setSearchText(text: String)
+    func changeCategoryInTrackerCoreData(categoryName: String, idTracker: UInt)
 }

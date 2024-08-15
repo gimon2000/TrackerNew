@@ -61,6 +61,10 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     
     func getCountCategoriesInCurrentDate() -> Int {
         visibleCategories = getCategoryInCurrentDay()
+        let index = visibleCategories.firstIndex(where: {$0.name == "Закрепленные"})
+        if let index, index != 0 {
+            visibleCategories.swapAt(index, 0)
+        }
         let count = visibleCategories.count
         print(#fileID, #function, #line, "count: \(count)")
         return count
@@ -82,6 +86,11 @@ final class TrackersPresenter: TrackersPresenterProtocol {
             let nserror = error as NSError
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
+    }
+    
+    func changeCategoryInTrackerCoreData(categoryName: String, idTracker: UInt) {
+        print(#fileID, #function, #line, "categoryName: \(categoryName), idTracker: \(idTracker)")
+        trackerStore.changeCategoryInTrackerCoreData(categoryName: categoryName, idTracker: idTracker)
     }
     
     func getNameCategory(index: Int) -> String {

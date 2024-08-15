@@ -255,7 +255,40 @@ extension TrackersViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 extension TrackersViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        guard let trackersPresenter else {
+            assertionFailure("collectionView contextMenuConfigurationForItemAt trackersPresenter nil")
+            return nil
+        }
+        
+        let categoryName = trackersPresenter.getNameCategory(index: indexPath.section)
+        let firstNameMenu = categoryName == "Закрепленные" ? "Открепить" : "Закрепить"
+        let idTracker = getIdCell(index: indexPath)
+        
+        return UIContextMenuConfiguration(actionProvider: { actions in
+            return UIMenu(children: [
+                UIAction(title: firstNameMenu){[weak self] _ in
+                    self?.trackersPresenter?.changeCategoryInTrackerCoreData(categoryName: categoryName, idTracker: idTracker)
+                    self?.collectionView.reloadData()
+                },
+                UIAction(title: "Редактировать"){[weak self] _ in
+                },
+                UIAction(title: "Удалить", attributes: .destructive){[weak self] _ in
+                },
+            ])
+        })
+    }
     
+    func getIdCell(index: IndexPath) -> UInt {
+        let cell = collectionView.cellForItem(at: index) as? TrackerCollectionViewCell
+        guard let id = cell?.getIdTracker() else {
+            assertionFailure("getIdCell cell?.getIdTracker() nil")
+            return 0
+        }
+        print(#fileID, #function, #line, "name: \(id)")
+        return id
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout

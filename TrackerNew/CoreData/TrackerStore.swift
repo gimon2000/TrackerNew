@@ -71,6 +71,22 @@ final class TrackerStore {
         }
     }
     
+    func deleteTracker(id: UInt) {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %d", id)
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            print(#fileID, #function, #line, "result: \(result)")
+            if let tracker = result.first {
+                context.delete(tracker)
+                saveContext()
+            }
+        } catch {
+            print(#fileID, #function, #line, "result: nil")
+        }
+    }
+    
     func changeCategoryInTrackerCoreData(categoryName: String, idTracker: UInt) {
         let fetchRequest: NSFetchRequest<TrackerCoreData> = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
         fetchRequest.predicate = NSPredicate(format: "idTracker == %d", idTracker)

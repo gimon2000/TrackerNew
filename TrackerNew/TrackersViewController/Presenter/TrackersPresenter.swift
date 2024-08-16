@@ -94,6 +94,12 @@ final class TrackersPresenter: TrackersPresenterProtocol {
         categories = trackerCategoryStore.getCategories()
     }
     
+    func deleteTracker(id: UInt) {
+        print(#fileID, #function, #line)
+        trackerStore.deleteTracker(id: id)
+        categories = trackerCategoryStore.getCategories()
+    }
+    
     func changeCategoryInTrackerCoreData(categoryName: String, idTracker: UInt) {
         print(#fileID, #function, #line, "categoryName: \(categoryName), idTracker: \(idTracker)")
         trackerStore.changeCategoryInTrackerCoreData(categoryName: categoryName, idTracker: idTracker)

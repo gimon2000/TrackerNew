@@ -25,4 +25,5 @@ protocol TrackersPresenterProtocol {
     func setSearchText(text: String)
     func changeCategoryInTrackerCoreData(categoryName: String, idTracker: UInt)
     func changeTracker(tracker: Tracker, category: String)
+    func deleteTracker(id: UInt)
 }

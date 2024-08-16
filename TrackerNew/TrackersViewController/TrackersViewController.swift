@@ -300,6 +300,25 @@ extension TrackersViewController: UICollectionViewDelegate {
                         self?.present(navigationController, animated: true)
                     },
                     UIAction(title: "Удалить", attributes: .destructive){[weak self] _ in
+                        let alert = UIAlertController(
+                            title: nil,
+                            message: "Уверены что хотите удалить трекер?",
+                            preferredStyle: .actionSheet
+                        )
+                        let actionDelete = UIAlertAction(
+                            title: "Удалить",
+                            style: .destructive){[weak self] _ in
+                                print(#fileID, #function, #line)
+                                self?.trackersPresenter?.deleteTracker(id: idTracker)
+                            }
+                        let actionCancel = UIAlertAction(
+                            title: "Отменить",
+                            style: .cancel){ _ in
+                                print(#fileID, #function, #line)
+                            }
+                        alert.addAction(actionDelete)
+                        alert.addAction(actionCancel)
+                        self?.present(alert, animated: true)
                     },
                 ]
             )

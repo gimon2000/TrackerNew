@@ -9,4 +9,5 @@ import Foundation
 
 protocol TrackersViewControllerDelegate: AnyObject {
     func setTracker(tracker: Tracker, category: String)
+    func changeTracker(tracker: Tracker, category: String)
 }

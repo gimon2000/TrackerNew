@@ -120,6 +120,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     //MARK: - Public Property
     var createTrackerPresenter: CreateTrackerPresenterProtocol?
     weak var delegate: SelectTypeEventViewControllerDelegate?
+    weak var trackersDelegate: TrackersViewControllerDelegate?
     
     //MARK: - Private Property
     private var navigationTitle: String
@@ -131,6 +132,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     )
     private let emojiCellIdentifier = "emojiCellIdentifier"
     private let colorCellIdentifier = "colorCellIdentifier"
+    private var trackerName: String?
     
     // MARK: - Initializers
     init(
@@ -215,7 +217,14 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         addConstraintColorsCollectionView()
         
         textField.delegate = self
+        if let trackerName {
+            textField.text = trackerName
+        }
         changeStateCreateButton()
+    }
+    
+    func setTracker(name: String) {
+        trackerName = name
     }
     
     // MARK: - Private Methods
@@ -424,7 +433,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
     }
 }
 
-//MARK: - ScheduleViewControllerDelegate
+//MARK: - CreateTrackerViewControllerDelegate
 extension CreateTrackerViewController: CreateTrackerViewControllerDelegate {
     
     func setCategoryChecked(nameCategory: String) {
@@ -506,6 +515,13 @@ extension CreateTrackerViewController: UICollectionViewDataSource {
             }
             print(#fileID, #function, #line)
             cell.emojiLabel.text = createTrackerPresenter?.arrayEmojis[indexPath.row]
+            if let index = createTrackerPresenter?.getIndexSelectedEmoji(), index == indexPath.row {
+                collectionView.selectItem(
+                    at: indexPath,
+                    animated: true,
+                    scrollPosition: .top
+                )
+            }
             return cell
         }
         if collectionView == colorsCollectionView {
@@ -514,6 +530,13 @@ extension CreateTrackerViewController: UICollectionViewDataSource {
             }
             print(#fileID, #function, #line)
             cell.colorView.backgroundColor = createTrackerPresenter?.arrayColors[indexPath.row] ?? .ypRed
+            if let index = createTrackerPresenter?.getIndexSelectedColor(), index == indexPath.row {
+                collectionView.selectItem(
+                    at: indexPath,
+                    animated: true,
+                    scrollPosition: .top
+                )
+            }
             return cell
         }
         return UICollectionViewCell()

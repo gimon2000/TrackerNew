@@ -265,18 +265,44 @@ extension TrackersViewController: UICollectionViewDelegate {
         let categoryName = trackersPresenter.getNameCategory(index: indexPath.section)
         let firstNameMenu = categoryName == "Закрепленные" ? "Открепить" : "Закрепить"
         let idTracker = getIdCell(index: indexPath)
-        
-        return UIContextMenuConfiguration(actionProvider: { actions in
-            return UIMenu(children: [
-                UIAction(title: firstNameMenu){[weak self] _ in
-                    self?.trackersPresenter?.changeCategoryInTrackerCoreData(categoryName: categoryName, idTracker: idTracker)
-                    self?.collectionView.reloadData()
-                },
-                UIAction(title: "Редактировать"){[weak self] _ in
-                },
-                UIAction(title: "Удалить", attributes: .destructive){[weak self] _ in
-                },
-            ])
+        let tracker = trackersPresenter.getTrackersInDate(
+            indexSection: indexPath.section,
+            indexTracker: indexPath.row
+        )
+        let numberOfRowsInSection = tracker?.eventDate == nil ? 2 : 1
+        return UIContextMenuConfiguration(actionProvider: {
+            actions in
+            return UIMenu(
+                children: [
+                    UIAction(title: firstNameMenu){[weak self] _ in
+                        self?.trackersPresenter?.changeCategoryInTrackerCoreData(categoryName: categoryName, idTracker: idTracker)
+                        self?.collectionView.reloadData()
+                    },
+                    UIAction(title: "Редактировать"){[weak self] _ in
+                        print(#fileID, #function, #line)
+                        let createTrackerViewController = CreateTrackerViewController(
+                            navigationTitle: "Редактирование привычки",
+                            numberOfRowsInSection: numberOfRowsInSection
+                        )
+                        let createTrackerPresenter = CreateTrackerPresenter()
+                        createTrackerViewController.createTrackerPresenter = createTrackerPresenter
+                        createTrackerPresenter.createTrackerView = createTrackerViewController
+                        createTrackerPresenter.setParam(
+                            oldWeekdaysChecked: tracker?.schedule ?? [],
+                            oldCategory: categoryName,
+                            oldSelectedEmoji: tracker?.emoji ?? "",
+                            oldSelectedColor: tracker?.color ?? .ypBlack,
+                            oldTrackerId: idTracker
+                        )
+                        createTrackerViewController.setTracker(name: tracker?.name ?? "")
+                        createTrackerViewController.trackersDelegate = self
+                        let navigationController = UINavigationController(rootViewController: createTrackerViewController)
+                        self?.present(navigationController, animated: true)
+                    },
+                    UIAction(title: "Удалить", attributes: .destructive){[weak self] _ in
+                    },
+                ]
+            )
         })
     }
     
@@ -316,6 +342,12 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - TrackersViewControllerDelegate
 extension TrackersViewController: TrackersViewControllerDelegate {
+    func changeTracker(tracker: Tracker, category: String) {
+        trackersPresenter?.changeTracker(tracker: tracker, category: category)
+        hideEmptyImage(setHidden: true)
+        collectionView.reloadData()
+    }
+    
     func setTracker(tracker: Tracker, category: String) {
         trackersPresenter?.setTracker(tracker: tracker, category: category)
         hideEmptyImage(setHidden: true)

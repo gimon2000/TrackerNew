@@ -14,6 +14,7 @@
 "empty.trackers.label" = "What are we going to track?";
 "search.text.field.placeholder" = "Search";
 "trackers.view.controller.title" = "Trackers";
+"trackers.view.controller.filters" = "Filters";
 // MARK: - SelectTypeTracker
 "select.type.event.view.controller.title" = "Creating a tracker";
 "add.new.habit.button" = "Habit";

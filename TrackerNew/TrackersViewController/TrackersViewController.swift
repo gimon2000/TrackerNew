@@ -10,6 +10,21 @@ import UIKit
 final class TrackersViewController: UIViewController, TrackersViewControllerProtocol {
     
     //MARK: - Visual Components
+    private lazy var filtersButton: UIButton = {
+        let view = UIButton(type: .custom)
+        let habitTitleButton = NSLocalizedString(
+            "trackers.view.controller.filters",
+            comment: "Text displayed in button"
+        )
+        view.setTitle(habitTitleButton, for: .normal)
+        view.setTitleColor(.white, for: .normal)
+        view.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        view.backgroundColor = .ypBlue
+        view.layer.cornerRadius = 16
+        view.addTarget(self, action: #selector(clickFiltersButton), for: .touchUpInside)
+        return view
+    }()
+    
     private lazy var addNewTracker: UIButton = {
         guard let image = UIImage(named: "AddTracker") else {
             print(#fileID, #function, #line)
@@ -74,6 +89,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     private var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.contentInset.bottom = 100
         return collectionView
     }()
     
@@ -120,6 +136,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
             collectionView,
             emptyTrackersImage,
             emptyTrackersLabel,
+            filtersButton
         ].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
@@ -129,11 +146,21 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         addConstraintEmptyTrackersImage()
         addConstraintEmptyTrackersLabel()
         addConstraintCollectionView()
+        addConstraintFiltersButton()
         
         hideEmptyImage(setHidden: true)
     }
     
     // MARK: - Private Methods
+    private func addConstraintFiltersButton() {
+        NSLayoutConstraint.activate([
+            filtersButton.widthAnchor.constraint(equalToConstant: 114),
+            filtersButton.heightAnchor.constraint(equalToConstant: 50),
+            filtersButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            filtersButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
+        ])
+    }
+    
     private func addConstraintEmptyTrackersImage() {
         NSLayoutConstraint.activate([
             emptyTrackersImage.widthAnchor.constraint(equalToConstant: 80),
@@ -183,6 +210,14 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         present(navigationController, animated: true)
     }
     
+    @objc private func clickFiltersButton() {
+        print(#fileID, #function, #line)
+        let filtersViewController = FiltersViewController()
+        filtersViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: filtersViewController)
+        present(navigationController, animated: true)
+    }
+    
     @objc private func searchTextFieldDidChanged(_ searchField: UISearchTextField) {
         if let searchText = searchField.text, !searchText.isEmpty {
             trackersPresenter?.setSearchText(text: searchText)
@@ -197,6 +232,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         print(#fileID, #function, #line, "setHidden: \(setHidden)")
         emptyTrackersImage.isHidden = setHidden
         emptyTrackersLabel.isHidden = setHidden
+        filtersButton.isHidden = !setHidden
     }
     
     func collectionViewReloadData() {
@@ -370,5 +406,25 @@ extension TrackersViewController: TrackersViewControllerDelegate {
     func setTracker(tracker: Tracker, category: String) {
         trackersPresenter?.setTracker(tracker: tracker, category: category)
         hideEmptyImage(setHidden: true)
+    }
+    
+    func cleanAllFilters() {
+        trackersPresenter?.cleanAllFilters()
+        collectionView.reloadData()
+    }
+    
+    func todayFilter() {
+        trackersPresenter?.todayFilter()
+        collectionView.reloadData()
+    }
+    
+    func completedFilter() {
+        trackersPresenter?.completedFilter()
+        collectionView.reloadData()
+    }
+    
+    func uncompletedFilter() {
+        trackersPresenter?.uncompletedFilter()
+        collectionView.reloadData()
     }
 }

@@ -51,6 +51,7 @@
 		E0799E692C317A0C006C7F7A /* TrackersPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0799E682C317A0C006C7F7A /* TrackersPresenterProtocol.swift */; };
 		E0799E6B2C317ACD006C7F7A /* TrackersViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0799E6A2C317ACD006C7F7A /* TrackersViewControllerProtocol.swift */; };
 		E0799E6D2C31E4F3006C7F7A /* SelectTypeEventViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0799E6C2C31E4F3006C7F7A /* SelectTypeEventViewControllerDelegate.swift */; };
+		E0B5B4162C7097D8001C8D88 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B5B4152C7097D8001C8D88 /* FiltersViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,6 +103,7 @@
 		E0799E682C317A0C006C7F7A /* TrackersPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersPresenterProtocol.swift; sourceTree = "<group>"; };
 		E0799E6A2C317ACD006C7F7A /* TrackersViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewControllerProtocol.swift; sourceTree = "<group>"; };
 		E0799E6C2C31E4F3006C7F7A /* SelectTypeEventViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTypeEventViewControllerDelegate.swift; sourceTree = "<group>"; };
+		E0B5B4152C7097D8001C8D88 /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 				E03B466C2C2DF03800E53E05 /* Extensions */,
 				E03B466F2C2DF07B00E53E05 /* Models */,
 				E03B46792C2DF14D00E53E05 /* TabBarController */,
+				E0B5B4142C7097A1001C8D88 /* FiltersViewController */,
 				E03B467C2C2DF18F00E53E05 /* TrackersViewController */,
 				E03B46762C2DF11100E53E05 /* StatisticViewController */,
 				E03B46652C2DEF8E00E53E05 /* CreateEvent */,
@@ -303,6 +306,14 @@
 			path = Presenter;
 			sourceTree = "<group>";
 		};
+		E0B5B4142C7097A1001C8D88 /* FiltersViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E0B5B4152C7097D8001C8D88 /* FiltersViewController.swift */,
+			);
+			path = FiltersViewController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -397,6 +408,7 @@
 				E05472F72C5D2E2D009E86E6 /* PageViewController.swift in Sources */,
 				E03B468C2C30331900E53E05 /* CreateTrackerPresenterProtocol.swift in Sources */,
 				E03B468E2C30337800E53E05 /* CreateTrackerViewControllerProtocol.swift in Sources */,
+				E0B5B4162C7097D8001C8D88 /* FiltersViewController.swift in Sources */,
 				E0799E672C3179E1006C7F7A /* TrackersPresenter.swift in Sources */,
 				E05472A12C445B4F009E86E6 /* TrackerStore.swift in Sources */,
 				E03B46852C3000AD00E53E05 /* ScheduleTableCell.swift in Sources */,

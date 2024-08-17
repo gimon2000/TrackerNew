@@ -26,4 +26,8 @@ protocol TrackersPresenterProtocol {
     func changeCategoryInTrackerCoreData(categoryName: String, idTracker: UInt)
     func changeTracker(tracker: Tracker, category: String)
     func deleteTracker(id: UInt)
+    func cleanAllFilters()
+    func todayFilter()
+    func completedFilter()
+    func uncompletedFilter()
 }

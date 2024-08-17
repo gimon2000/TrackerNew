@@ -14,6 +14,10 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     
     // MARK: - Private Properties
     private lazy var currentDate: Date = Date()
+    private lazy var currentDateForFilter: Date = Date()
+    private var isCurrentDateFilterOn = false
+    private var isCompletedFilterOn = false
+    private var isUncompletedFilterOn = false
     private let calendar = Calendar.current
     private lazy var trackerCategoryStore = TrackerCategoryStore()
     private let trackerStore = TrackerStore()
@@ -30,9 +34,38 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     }
     
     // MARK: - Public Methods
+    func cleanAllFilters() {
+        print(#fileID, #function, #line)
+        isCurrentDateFilterOn = false
+        isCompletedFilterOn = false
+        isUncompletedFilterOn = false
+        visibleCategories = getCategoryInCurrentDay()
+    }
+    
+    func todayFilter() {
+        print(#fileID, #function, #line)
+        cleanAllFilters()
+        isCurrentDateFilterOn = true
+    }
+    
+    func completedFilter() {
+        print(#fileID, #function, #line)
+        cleanAllFilters()
+        isCompletedFilterOn = true
+        visibleCategories = getCategoryInCurrentDay()
+    }
+    
+    func uncompletedFilter() {
+        print(#fileID, #function, #line)
+        cleanAllFilters()
+        isUncompletedFilterOn = true
+        visibleCategories = getCategoryInCurrentDay()
+    }
+    
     func getCurrentDate() -> Date {
-        print(#fileID, #function, #line, "currentDate: \(currentDate)")
-        return currentDate
+        let date = isCurrentDateFilterOn ? currentDateForFilter : currentDate
+        print(#fileID, #function, #line, "currentDate: \(date)")
+        return date
     }
     
     func setCurrentDate(date: Date) {
@@ -113,12 +146,14 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     
     func setTrackerCompletedTrackers(id: UInt) {
         print(#fileID, #function, #line)
-        trackerRecordStore.setTrackerCompletedTrackers(currentDate: currentDate, id: id)
+        let date = isCurrentDateFilterOn ? currentDateForFilter : currentDate
+        trackerRecordStore.setTrackerCompletedTrackers(currentDate: date, id: id)
     }
     
     func deleteTrackerCompletedTrackers(id: UInt) {
         print(#fileID, #function, #line)
-        trackerRecordStore.deleteTrackerCompletedTrackers(currentDate: currentDate, id: id)
+        let date = isCurrentDateFilterOn ? currentDateForFilter : currentDate
+        trackerRecordStore.deleteTrackerCompletedTrackers(currentDate: date, id: id)
     }
     
     func countTrackerCompletedTrackers(id: UInt) -> String {
@@ -135,9 +170,9 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     
     func containTrackerCompletedTrackers(id: UInt) -> Bool {
         print(#fileID, #function, #line)
-        
+        let date = isCurrentDateFilterOn ? currentDateForFilter : currentDate
         return trackerRecordStore.containTrackerCompletedTrackers(
-            currentDate: currentDate,
+            currentDate: date,
             id: id
         )
     }
@@ -155,7 +190,8 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     
     private func getCurrentWeekday() -> Weekdays {
         print(#fileID, #function, #line)
-        let weekday = calendar.component(.weekday, from: currentDate)
+        let date = isCurrentDateFilterOn ? currentDateForFilter : currentDate
+        let weekday = calendar.component(.weekday, from: date)
         guard let day = Weekdays(rawValue: weekday) else {
             assertionFailure("getCurrentWeekday")
             return Weekdays.friday
@@ -177,7 +213,8 @@ final class TrackersPresenter: TrackersPresenterProtocol {
                             return schedule.contains(day)
                         }
                         if let eventDate = tracker.eventDate {
-                            return dateIgnoreTime(date: eventDate) == dateIgnoreTime(date: currentDate)
+                            let date = isCurrentDateFilterOn ? currentDateForFilter : currentDate
+                            return dateIgnoreTime(date: eventDate) == dateIgnoreTime(date: date)
                         }
                         return false
                     }
@@ -193,6 +230,30 @@ final class TrackersPresenter: TrackersPresenterProtocol {
                                 return contain
                             }
                             return false
+                        }
+                        return false
+                    }
+                }
+                
+                if isCompletedFilterOn {
+                    trackersInDate = trackersInDate.filter{
+                        if let tracker = $0 as? TrackerCoreData {
+                            let id = tracker.idTracker
+                            let contain = containTrackerCompletedTrackers(id: UInt(id))
+                            print(#fileID, #function, #line, "contain: \(contain)")
+                            return contain
+                        }
+                        return false
+                    }
+                }
+                
+                if isUncompletedFilterOn {
+                    trackersInDate = trackersInDate.filter{
+                        if let tracker = $0 as? TrackerCoreData {
+                            let id = tracker.idTracker
+                            let contain = !containTrackerCompletedTrackers(id: UInt(id))
+                            print(#fileID, #function, #line, "contain: \(contain)")
+                            return contain
                         }
                         return false
                     }

@@ -14,6 +14,7 @@
 "empty.trackers.label" = "Что будем отслеживать?";
 "search.text.field.placeholder" = "Поиск";
 "trackers.view.controller.title" = "Трекеры";
+"trackers.view.controller.filters" = "Фильтры";
 // MARK: - SelectTypeTracker
 "select.type.event.view.controller.title" = "Создание трекера";
 "add.new.habit.button" = "Привычка";

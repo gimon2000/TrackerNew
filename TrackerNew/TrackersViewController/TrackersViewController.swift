@@ -99,6 +99,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     //MARK: - Private Property
     private let cellIdentifier = "cellIdentifier"
     private let headerIdentifier = "header"
+    private let analyticsService = AnalyticsService()
     
     //MARK: - Public Methods
     override func viewDidLoad() {
@@ -149,6 +150,26 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         addConstraintFiltersButton()
         
         hideEmptyImage(setHidden: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let params = [
+            "event":"open",
+            "screen":"Main"
+        ]
+        print(#fileID, #function, #line, "analyticsService params: \(params)")
+        analyticsService.report(event: "open_main", params: params)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let params = [
+            "event":"close",
+            "screen":"Main"
+        ]
+        print(#fileID, #function, #line, "analyticsService params: \(params)")
+        analyticsService.report(event: "close_main", params: params)
     }
     
     // MARK: - Private Methods
@@ -207,6 +228,13 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         let selectTypeEventViewController = SelectTypeEventViewController()
         selectTypeEventViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: selectTypeEventViewController)
+        let params = [
+            "event": "click",
+            "screen": "Main",
+            "item": "add_track"
+        ]
+        print(#fileID, #function, #line, "analyticsService params: \(params)")
+        analyticsService.report(event: "add_track", params: params)
         present(navigationController, animated: true)
     }
     
@@ -215,6 +243,13 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         let filtersViewController = FiltersViewController()
         filtersViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: filtersViewController)
+        let params = [
+            "event": "click",
+            "screen": "Main",
+            "item": "filter"
+        ]
+        print(#fileID, #function, #line, "analyticsService params: \(params)")
+        analyticsService.report(event: "filter_click", params: params)
         present(navigationController, animated: true)
     }
     
@@ -336,6 +371,13 @@ extension TrackersViewController: UICollectionViewDelegate {
                         createTrackerViewController.setTracker(name: tracker?.name ?? "")
                         createTrackerViewController.trackersDelegate = self
                         let navigationController = UINavigationController(rootViewController: createTrackerViewController)
+                        let params = [
+                            "event": "click",
+                            "screen": "Main",
+                            "item": "edit"
+                        ]
+                        print(#fileID, #function, #line, "analyticsService params: \(params)")
+                        self?.analyticsService.report(event: "filter_edit", params: params)
                         self?.present(navigationController, animated: true)
                     },
                     UIAction(title: "Удалить", attributes: .destructive){[weak self] _ in
@@ -349,6 +391,13 @@ extension TrackersViewController: UICollectionViewDelegate {
                             style: .destructive){[weak self] _ in
                                 print(#fileID, #function, #line)
                                 self?.trackersPresenter?.deleteTracker(id: idTracker)
+                                let params = [
+                                    "event": "click",
+                                    "screen": "Main",
+                                    "item": "delete"
+                                ]
+                                print(#fileID, #function, #line, "analyticsService params: \(params)")
+                                self?.analyticsService.report(event: "filter_delete", params: params)
                             }
                         let actionCancel = UIAlertAction(
                             title: "Отменить",

@@ -232,7 +232,10 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         print(#fileID, #function, #line, "setHidden: \(setHidden)")
         emptyTrackersImage.isHidden = setHidden
         emptyTrackersLabel.isHidden = setHidden
-        filtersButton.isHidden = !setHidden
+        let bool = UserDefaults.standard.integer(forKey: "selectedFilter") == 0
+        if bool {
+            filtersButton.isHidden = !setHidden
+        }
     }
     
     func collectionViewReloadData() {

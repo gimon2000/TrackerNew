@@ -105,7 +105,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         super.viewDidLoad()
         print(#fileID, #function, #line)
         
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         
         title = NSLocalizedString(
             "trackers.view.controller.title",

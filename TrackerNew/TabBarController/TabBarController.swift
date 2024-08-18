@@ -38,6 +38,7 @@ final class TabBarController: UITabBarController {
             selectedImage: nil
         )
         self.tabBar.tintColor = .ypBlue
+        self.tabBar.backgroundColor = .systemBackground
         self.viewControllers = [navigationController, statisticViewController]
     }
 }

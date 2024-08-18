@@ -107,6 +107,19 @@ final class TrackerRecordStore: NSObject {
         return true
     }
     
+    func getCountRecords() -> Int {
+        print(#fileID, #function, #line)
+        let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = fetchedResultsController.fetchRequest
+        do {
+            let records = try context.fetch(fetchRequest)
+            print(#fileID, #function, #line, "records.count")
+            return records.count
+        } catch {
+            print(#fileID, #function, #line, "catch")
+            return 0
+        }
+    }
+    
     // MARK: - Private Methods
     private func getFetchRequest(id: UInt, currentDate: Date) -> NSFetchRequestResult? {
         let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = fetchedResultsController.fetchRequest

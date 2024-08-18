@@ -33,5 +33,8 @@ extension UIColor {
     static var ypColorFF99CC: UIColor{ UIColor(named: "YPTrackerColorFF99CC") ?? .systemPink }
     static var ypColorFF674D: UIColor{ UIColor(named: "YPTrackerColorFF674D") ?? .red }
     static var ypColorFF881E: UIColor{ UIColor(named: "YPTrackerColorFF881E") ?? .orange }
+    static var ypLGStart: UIColor{ UIColor(named: "YPLGStart") ?? .red }
+    static var ypLGMiddle: UIColor{ UIColor(named: "YPLGMiddle") ?? .red }
+    static var ypLGEnd: UIColor{ UIColor(named: "YPLGEnd") ?? .red }
 }
 

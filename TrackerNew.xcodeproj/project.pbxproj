@@ -57,6 +57,7 @@
 		E0B5B4262C71EECB001C8D88 /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = E0B5B4252C71EECB001C8D88 /* InlineSnapshotTesting */; };
 		E0B5B4282C71EECB001C8D88 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = E0B5B4272C71EECB001C8D88 /* SnapshotTesting */; };
 		E0B5B42B2C72173D001C8D88 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B5B42A2C72173D001C8D88 /* AnalyticsService.swift */; };
+		E0B5B42D2C724751001C8D88 /* StatisticTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B5B42C2C724751001C8D88 /* StatisticTableCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +125,7 @@
 		E0B5B41B2C71EE7F001C8D88 /* SnapshotTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapshotTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0B5B41D2C71EE7F001C8D88 /* SnapshotTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTrackerTests.swift; sourceTree = "<group>"; };
 		E0B5B42A2C72173D001C8D88 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
+		E0B5B42C2C724751001C8D88 /* StatisticTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticTableCell.swift; sourceTree = "<group>"; };
 		F87A360D48E2095B374315D9 /* Pods-TrackerNew.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackerNew.debug.xcconfig"; path = "Target Support Files/Pods-TrackerNew/Pods-TrackerNew.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -242,6 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				E03B46772C2DF12500E53E05 /* StatisticViewController.swift */,
+				E0B5B42C2C724751001C8D88 /* StatisticTableCell.swift */,
 			);
 			path = StatisticViewController;
 			sourceTree = "<group>";
@@ -575,6 +578,7 @@
 				E03B46692C2DEFE400E53E05 /* SelectTypeEventViewController.swift in Sources */,
 				E0799E622C309434006C7F7A /* TrackerCollectionViewCell.swift in Sources */,
 				E0799E6B2C317ACD006C7F7A /* TrackersViewControllerProtocol.swift in Sources */,
+				E0B5B42D2C724751001C8D88 /* StatisticTableCell.swift in Sources */,
 				E054731C2C60CB82009E86E6 /* CategoryViewController.swift in Sources */,
 				E05472F52C5D2008009E86E6 /* OnboardingViewController.swift in Sources */,
 				E054724B2C392A3B009E86E6 /* EmojiCollectionViewCell.swift in Sources */,

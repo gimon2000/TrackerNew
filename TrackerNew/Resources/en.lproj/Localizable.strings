@@ -15,6 +15,10 @@
 "search.text.field.placeholder" = "Search";
 "trackers.view.controller.title" = "Trackers";
 "trackers.view.controller.filters" = "Filters";
+// MARK: - Statistic
+"statistic.view.controller.title" = "Statistic";
+"empty.statistic.label" = "There is nothing to analyze yet";
+"statistic.subtitle.label.cell.text" = "Trackers completed";
 // MARK: - SelectTypeTracker
 "select.type.event.view.controller.title" = "Creating a tracker";
 "add.new.habit.button" = "Habit";

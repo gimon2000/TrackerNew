@@ -136,6 +136,7 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     func changeCategoryInTrackerCoreData(categoryName: String, idTracker: UInt) {
         print(#fileID, #function, #line, "categoryName: \(categoryName), idTracker: \(idTracker)")
         trackerStore.changeCategoryInTrackerCoreData(categoryName: categoryName, idTracker: idTracker)
+        categories = trackerCategoryStore.getCategories()
     }
     
     func getNameCategory(index: Int) -> String {

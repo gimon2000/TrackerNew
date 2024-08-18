@@ -256,7 +256,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     private func addConstraintCountDaysLabel() {
         NSLayoutConstraint.activate([
             countDaysLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            countDaysLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24)
+            countDaysLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24)
         ])
     }
     

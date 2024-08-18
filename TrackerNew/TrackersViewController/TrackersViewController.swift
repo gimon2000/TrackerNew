@@ -373,6 +373,7 @@ extension TrackersViewController: UICollectionViewDelegate {
                         )
                         createTrackerViewController.setTracker(name: tracker?.name ?? "")
                         createTrackerViewController.trackersDelegate = self
+                        createTrackerViewController.setCountDays(count: trackersPresenter.countTrackerCompletedTrackers(id: idTracker))
                         let navigationController = UINavigationController(rootViewController: createTrackerViewController)
                         let params = [
                             "event": "click",

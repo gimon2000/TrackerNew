@@ -117,6 +117,14 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         return collectionView
     }()
     
+    private lazy var countDaysLabel: UILabel = {
+        let view = UILabel()
+        view.textColor = .ypBlack
+        view.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        view.text = countDaysText
+        return view
+    }()
+    
     //MARK: - Public Property
     var createTrackerPresenter: CreateTrackerPresenterProtocol?
     weak var delegate: SelectTypeEventViewControllerDelegate?
@@ -133,6 +141,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     private let emojiCellIdentifier = "emojiCellIdentifier"
     private let colorCellIdentifier = "colorCellIdentifier"
     private var trackerName: String?
+    private var countDaysText: String?
     
     // MARK: - Initializers
     init(
@@ -161,6 +170,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         
         [
             scrollView,
+            countDaysLabel,
             textField,
             stackView,
             createButton,
@@ -176,13 +186,14 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         
         view.addSubview(scrollView)
         [
+            countDaysLabel,
             textField,
             stackView,
             tableViewCategoryAndSchedule,
             titleEmojis,
             emojisCollectionView,
             titleColors,
-            colorsCollectionView
+            colorsCollectionView,
         ].forEach{
             scrollView.addSubview($0)
         }
@@ -206,6 +217,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         colorsCollectionView.allowsMultipleSelection = false
         
         addConstraintScrollView()
+        addConstraintCountDaysLabel()
         addConstraintTextField()
         addConstraintStackView()
         addConstraintCreateButton()
@@ -227,6 +239,10 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         trackerName = name
     }
     
+    func setCountDays(count: String){
+        countDaysText = count
+    }
+    
     // MARK: - Private Methods
     private func addConstraintScrollView() {
         NSLayoutConstraint.activate([
@@ -237,12 +253,25 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         ])
     }
     
+    private func addConstraintCountDaysLabel() {
+        NSLayoutConstraint.activate([
+            countDaysLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            countDaysLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24)
+        ])
+    }
+    
     private func addConstraintTextField() {
+        
+        if countDaysText != nil {
+            textField.topAnchor.constraint(equalTo: countDaysLabel.bottomAnchor, constant: 40).isActive = true
+        } else {
+            textField.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24).isActive = true
+        }
+        
         NSLayoutConstraint.activate([
             textField.heightAnchor.constraint(equalToConstant: 75),
             textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            textField.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24)
         ])
     }
     

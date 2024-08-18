@@ -344,7 +344,10 @@ extension TrackersViewController: UICollectionViewDelegate {
             indexTracker: indexPath.row
         )
         let numberOfRowsInSection = tracker?.eventDate == nil ? 2 : 1
-        return UIContextMenuConfiguration(actionProvider: {
+        return UIContextMenuConfiguration(previewProvider: {
+            return self.makePreview(tracker: tracker)
+        },
+                                          actionProvider: {
             actions in
             return UIMenu(
                 children: [
@@ -411,6 +414,18 @@ extension TrackersViewController: UICollectionViewDelegate {
                 ]
             )
         })
+    }
+    
+    func makePreview(tracker: Tracker?) -> UIViewController {
+        guard let tracker else {
+            return UIViewController()
+        }
+        let vc = PreviewViewController(
+            backgroundColor: tracker.color,
+            name: tracker.name,
+            emoji: tracker.emoji
+        )
+        return vc
     }
     
     func getIdCell(index: IndexPath) -> UInt {

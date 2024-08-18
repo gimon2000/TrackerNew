@@ -58,6 +58,7 @@
 		E0B5B4282C71EECB001C8D88 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = E0B5B4272C71EECB001C8D88 /* SnapshotTesting */; };
 		E0B5B42B2C72173D001C8D88 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B5B42A2C72173D001C8D88 /* AnalyticsService.swift */; };
 		E0B5B42D2C724751001C8D88 /* StatisticTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B5B42C2C724751001C8D88 /* StatisticTableCell.swift */; };
+		E0B5B42F2C7272EA001C8D88 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B5B42E2C7272EA001C8D88 /* PreviewViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,6 +127,7 @@
 		E0B5B41D2C71EE7F001C8D88 /* SnapshotTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTrackerTests.swift; sourceTree = "<group>"; };
 		E0B5B42A2C72173D001C8D88 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		E0B5B42C2C724751001C8D88 /* StatisticTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticTableCell.swift; sourceTree = "<group>"; };
+		E0B5B42E2C7272EA001C8D88 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		F87A360D48E2095B374315D9 /* Pods-TrackerNew.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackerNew.debug.xcconfig"; path = "Target Support Files/Pods-TrackerNew/Pods-TrackerNew.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -261,6 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				E03B467D2C2DF19C00E53E05 /* TrackersViewController.swift */,
+				E0B5B42E2C7272EA001C8D88 /* PreviewViewController.swift */,
 				E0799E6A2C317ACD006C7F7A /* TrackersViewControllerProtocol.swift */,
 				E0799E612C309434006C7F7A /* TrackerCollectionViewCell.swift */,
 				E0799E632C309B59006C7F7A /* CategoryView.swift */,
@@ -555,6 +558,7 @@
 				E06428DF2C623C6B0007BE15 /* CategoryViewModel.swift in Sources */,
 				E03B46672C2DEFAC00E53E05 /* CreateTrackerViewController.swift in Sources */,
 				E03B46752C2DF0E700E53E05 /* TrackerRecord.swift in Sources */,
+				E0B5B42F2C7272EA001C8D88 /* PreviewViewController.swift in Sources */,
 				E03B46922C3043DD00E53E05 /* CreateTrackerViewControllerDelegateDelegate.swift in Sources */,
 				E03B46712C2DF08E00E53E05 /* Tracker.swift in Sources */,
 				E05472992C3DB928009E86E6 /* DaysValueTransformer.swift in Sources */,

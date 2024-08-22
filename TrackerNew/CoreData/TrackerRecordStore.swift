@@ -98,6 +98,22 @@ final class TrackerRecordStore: NSObject {
         }
     }
     
+    func deleteTrackerRecords(id: UInt) {
+        let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %d", id)
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            print(#fileID, #function, #line, "result: \(result)")
+            result.forEach {
+                context.delete($0)
+            }
+            saveContext()
+        } catch {
+            assertionFailure("\(error)")
+        }
+    }
+    
     func containTrackerCompletedTrackers(currentDate: Date, id: UInt) -> Bool {
         guard let _ = getFetchRequest(id: id, currentDate: currentDate) else {
             print(#fileID, #function, #line, "false")
@@ -125,12 +141,9 @@ final class TrackerRecordStore: NSObject {
         let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = fetchedResultsController.fetchRequest
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.predicate = NSPredicate(
-            //            format: "%K == %d AND %K == %@",
             format: "%K == %d",
             #keyPath(TrackerRecordCoreData.idTracker),
             Int32(id) as CVarArg//,
-            //            #keyPath(TrackerRecordCoreData.date),
-            //            currentDate as CVarArg
         )
         var record: [NSFetchRequestResult]?
         do {

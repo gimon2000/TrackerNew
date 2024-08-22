@@ -130,6 +130,7 @@ final class TrackersPresenter: TrackersPresenterProtocol {
     func deleteTracker(id: UInt) {
         print(#fileID, #function, #line)
         trackerStore.deleteTracker(id: id)
+        trackerRecordStore.deleteTrackerRecords(id: id)
         categories = trackerCategoryStore.getCategories()
     }
     

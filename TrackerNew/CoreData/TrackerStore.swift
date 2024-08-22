@@ -67,7 +67,7 @@ final class TrackerStore {
                 saveContext()
             }
         } catch {
-            print(#fileID, #function, #line, "result: nil")
+            assertionFailure("\(error)")
         }
     }
     
@@ -83,7 +83,7 @@ final class TrackerStore {
                 saveContext()
             }
         } catch {
-            print(#fileID, #function, #line, "result: nil")
+            assertionFailure("\(error)")
         }
     }
     
@@ -106,7 +106,7 @@ final class TrackerStore {
             }
             saveContext()
         } catch {
-            print(#fileID, #function, #line, "result: nil")
+            assertionFailure("\(error)")
         }
     }
     

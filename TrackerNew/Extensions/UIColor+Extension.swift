@@ -10,6 +10,7 @@ import UIKit
 extension UIColor {
     static var ypBlue: UIColor{ UIColor(named: "YPColorBlue") ?? .blue }
     static var ypBlack: UIColor{ UIColor(named: "YPColorBlack") ?? .black }
+    static var ypWhite: UIColor{ UIColor(named: "YPColorWhite") ?? .white }
     static var ypGray30: UIColor{ UIColor(named: "YPColorGray30") ?? .gray }
     static var ypGray: UIColor{ UIColor(named: "YPColorGray") ?? .gray }
     static var ypGraySelectEmoji: UIColor{ UIColor(named: "YPColorGraySelectEmoji") ?? .gray }
@@ -36,5 +37,6 @@ extension UIColor {
     static var ypLGStart: UIColor{ UIColor(named: "YPLGStart") ?? .red }
     static var ypLGMiddle: UIColor{ UIColor(named: "YPLGMiddle") ?? .red }
     static var ypLGEnd: UIColor{ UIColor(named: "YPLGEnd") ?? .red }
+    static var ypColorGray12_24: UIColor{ UIColor(named: "YPColorGray12_24") ?? .gray }
+    static var ypColorGray_White: UIColor{ UIColor(named: "YPColorGray_White") ?? .gray }
 }
-

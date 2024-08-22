@@ -76,6 +76,7 @@ extension FiltersViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let index = indexPath.row
         print(#fileID, #function, #line, "index: \(index)")
+        UserDefaults.standard.setValue(index, forKey: "selectedFilter")
         switch index {
         case 0:
             delegate?.cleanAllFilters()
@@ -88,7 +89,6 @@ extension FiltersViewController: UITableViewDelegate {
         default:
             print(#fileID, #function, #line)
         }
-        UserDefaults.standard.setValue(index, forKey: "selectedFilter")
         self.dismiss(animated: true)
     }
 }
@@ -106,28 +106,18 @@ extension FiltersViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         let text = nameColumns[indexPath.row]
-        let bool = UserDefaults.standard.integer(forKey: "selectedFilter") == indexPath.row
-        cell.setDataInCell(text: text, doesCheckmarkHidden: !bool)
+        let isSelected = UserDefaults.standard.integer(forKey: "selectedFilter") == indexPath.row
+        cell.setDataInCell(text: text, doesCheckmarkHidden: !isSelected)
         return cell
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let isLastCell = indexPath.row == nameColumns.count - 1
-        
-        if isLastCell {
-            cell.separatorInset = UIEdgeInsets(
-                top: 0,
-                left: cell.bounds.width,
-                bottom: 0,
-                right: 0
-            )
-        } else {
-            cell.separatorInset = UIEdgeInsets(
-                top: 0,
-                left: 16,
-                bottom: 0,
-                right: 16
-            )
-        }
+        cell.separatorInset = UIEdgeInsets(
+            top: 0,
+            left: isLastCell ? cell.bounds.width: 16,
+            bottom: 0,
+            right: isLastCell ? 0 : 16
+        )
     }
 }

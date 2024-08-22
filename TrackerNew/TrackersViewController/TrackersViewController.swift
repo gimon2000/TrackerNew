@@ -45,6 +45,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
             return UIImageView()
         }
         let view = UIImageView(image: image)
+        view.backgroundColor = .ypWhite
         return view
     }()
     
@@ -63,7 +64,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         let picker = UIDatePicker()
         picker.datePickerMode = .date
         picker.preferredDatePickerStyle = .compact
-        picker.locale = .current
+        picker.locale = Locale(identifier: "ru_RU")
         picker.translatesAutoresizingMaskIntoConstraints = false
         picker.widthAnchor.constraint(equalToConstant: 100).isActive = true
         picker.calendar.firstWeekday = 2
@@ -78,10 +79,20 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     
     private lazy var searchTextField : UISearchTextField = {
         let viewSearchTextField = UISearchTextField()
-        viewSearchTextField.placeholder = NSLocalizedString(
+        let textPlaceholder = NSLocalizedString(
             "search.text.field.placeholder",
             comment: "Text displayed in placeholder"
         )
+        viewSearchTextField.textColor = .ypBlack
+        viewSearchTextField.backgroundColor = .ypColorGray12_24
+        viewSearchTextField.attributedPlaceholder = NSAttributedString(
+            string: textPlaceholder,
+            attributes: [
+                NSAttributedString.Key.foregroundColor : UIColor.ypColorGray_White
+            ]
+        )
+        let leftView = viewSearchTextField.leftView
+        leftView?.tintColor = .ypColorGray_White
         viewSearchTextField.addTarget(self, action: #selector(searchTextFieldDidChanged), for: .editingChanged)
         return viewSearchTextField
     }()
@@ -90,6 +101,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.contentInset.bottom = 100
+        collectionView.backgroundColor = .ypWhite
         return collectionView
     }()
     
@@ -106,7 +118,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         super.viewDidLoad()
         print(#fileID, #function, #line)
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .ypWhite
         
         title = NSLocalizedString(
             "trackers.view.controller.title",
@@ -267,8 +279,8 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         print(#fileID, #function, #line, "setHidden: \(setHidden)")
         emptyTrackersImage.isHidden = setHidden
         emptyTrackersLabel.isHidden = setHidden
-        let bool = UserDefaults.standard.integer(forKey: "selectedFilter") == 0
-        if bool {
+        let isSelected = UserDefaults.standard.integer(forKey: "selectedFilter") == 0
+        if isSelected {
             filtersButton.isHidden = !setHidden
         }
     }
@@ -478,21 +490,29 @@ extension TrackersViewController: TrackersViewControllerDelegate {
     
     func cleanAllFilters() {
         trackersPresenter?.cleanAllFilters()
+        let trackersIsEmpty = trackersPresenter?.getCountCategoriesInCurrentDate() ?? 0 > 0
+        hideEmptyImage(setHidden: trackersIsEmpty)
         collectionView.reloadData()
     }
     
     func todayFilter() {
         trackersPresenter?.todayFilter()
+        let trackersIsEmpty = trackersPresenter?.getCountCategoriesInCurrentDate() ?? 0 > 0
+        hideEmptyImage(setHidden: trackersIsEmpty)
         collectionView.reloadData()
     }
     
     func completedFilter() {
         trackersPresenter?.completedFilter()
+        let trackersIsEmpty = trackersPresenter?.getCountCategoriesInCurrentDate() ?? 0 > 0
+        hideEmptyImage(setHidden: trackersIsEmpty)
         collectionView.reloadData()
     }
     
     func uncompletedFilter() {
         trackersPresenter?.uncompletedFilter()
+        let trackersIsEmpty = trackersPresenter?.getCountCategoriesInCurrentDate() ?? 0 > 0
+        hideEmptyImage(setHidden: trackersIsEmpty)
         collectionView.reloadData()
     }
 }

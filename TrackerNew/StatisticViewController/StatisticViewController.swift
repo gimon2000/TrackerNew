@@ -125,11 +125,11 @@ final class StatisticViewController: UIViewController {
     }
     
     private func hiddenEmptyImageLabel() {
-        let bool = trackerRecordStore.getCountRecords() == 0
-        print(#fileID, #function, #line, "hiddenEmptyImageLabel: \(bool)")
-        emptyStatisticImage.isHidden = bool ? false : true
-        emptyStatisticLabel.isHidden = bool ? false : true
-        tableViewStatistic.isHidden = !bool ? false : true
+        let isEmpty = trackerRecordStore.getCountRecords() == 0
+        print(#fileID, #function, #line, "hiddenEmptyImageLabel: \(isEmpty)")
+        emptyStatisticImage.isHidden = isEmpty ? false : true
+        emptyStatisticLabel.isHidden = isEmpty ? false : true
+        tableViewStatistic.isHidden = !isEmpty ? false : true
     }
 }
 

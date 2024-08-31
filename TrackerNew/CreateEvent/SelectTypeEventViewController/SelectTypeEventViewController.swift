@@ -12,7 +12,11 @@ final class SelectTypeEventViewController: UIViewController {
     //MARK: - Visual Components
     private lazy var addNewHabit: UIButton = {
         let view = UIButton(type: .custom)
-        view.setTitle("Привычка", for: .normal)
+        let habitTitleButton = NSLocalizedString(
+            "add.new.habit.button",
+            comment: "Text displayed in button"
+        )
+        view.setTitle(habitTitleButton, for: .normal)
         view.setTitleColor(.white, for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         view.backgroundColor = .ypBlack
@@ -23,7 +27,11 @@ final class SelectTypeEventViewController: UIViewController {
     
     private lazy var addNewIrregularEvent: UIButton = {
         let view = UIButton(type: .custom)
-        view.setTitle("Нерегулярное событие", for: .normal)
+        let irregularEventTitleButton = NSLocalizedString(
+            "add.new.irregular.event",
+            comment: "Text displayed in button"
+        )
+        view.setTitle(irregularEventTitleButton, for: .normal)
         view.setTitleColor(.white, for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         view.backgroundColor = .ypBlack
@@ -51,7 +59,10 @@ final class SelectTypeEventViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        navigationItem.title = "Создание трекера"
+        navigationItem.title = NSLocalizedString(
+            "select.type.event.view.controller.title",
+            comment: "Text displayed in title"
+        )
         
         [
             stackView,
@@ -95,16 +106,24 @@ final class SelectTypeEventViewController: UIViewController {
     
     @objc private func clickAddNewHabit () {
         print(#fileID, #function, #line)
+        let newHabitTitle = NSLocalizedString(
+            "create.habit.tracker.view.controller.title",
+            comment: "Text displayed in title"
+        )
         clickAddNewEvent(
-            navigationTitle: "Новая привычка",
+            navigationTitle: newHabitTitle,
             numberOfRowsInSection: 2
         )
     }
     
     @objc private func clickAddNewIrregularEvent () {
         print(#fileID, #function, #line)
+        let newIrregularEventTitle = NSLocalizedString(
+            "create.irregular.event.tracker.view.controller.title",
+            comment: "Text displayed in title"
+        )
         clickAddNewEvent(
-            navigationTitle: "Новое нерегулярное событие",
+            navigationTitle: newIrregularEventTitle,
             numberOfRowsInSection: 1
         )
     }

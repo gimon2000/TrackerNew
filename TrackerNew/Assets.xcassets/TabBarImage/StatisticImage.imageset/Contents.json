@@ -3,16 +3,19 @@
     {
       "filename" : "ic 28x28.png",
       "idiom" : "universal",
+      "language-direction" : "left-to-right",
       "scale" : "1x"
     },
     {
       "filename" : "ic 28x28@2x.png",
       "idiom" : "universal",
+      "language-direction" : "left-to-right",
       "scale" : "2x"
     },
     {
       "filename" : "ic 28x28@3x.png",
       "idiom" : "universal",
+      "language-direction" : "left-to-right",
       "scale" : "3x"
     }
   ],

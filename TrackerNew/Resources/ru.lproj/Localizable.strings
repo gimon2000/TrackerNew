@@ -1,0 +1,64 @@
+/* 
+  Localizable.strings
+  TrackerNew
+
+  Created by gimon on 10.08.2024.
+  
+*/
+
+// MARK: - Onboarding
+"onboarding.button" = "Вот это технологии!";
+"onboarding.text.first" = "Отслеживайте только то, что хотите";
+"onboarding.text.second" = "Даже если это не литры воды и йога";
+// MARK: - Trackers
+"empty.trackers.label" = "Что будем отслеживать?";
+"search.text.field.placeholder" = "Поиск";
+"trackers.view.controller.title" = "Трекеры";
+"trackers.view.controller.filters" = "Фильтры";
+// MARK: - Statistic
+"statistic.view.controller.title" = "Статистика";
+"empty.statistic.label" = "Анализировать пока нечего";
+"statistic.subtitle.label.cell.text" = "Трекеров завершено";
+// MARK: - SelectTypeTracker
+"select.type.event.view.controller.title" = "Создание трекера";
+"add.new.habit.button" = "Привычка";
+"add.new.irregular.event" = "Нерегулярное событие";
+// MARK: - CreateTracker
+"create.habit.tracker.view.controller.title" = "Новая привычка";
+"create.irregular.event.tracker.view.controller.title" = "Новое нерегулярное событие";
+"text.field.placeholder" = "Введите название трекера";
+"create.button" = "Создать";
+"cancel.button" = "Отменить";
+"title.emojis" = "Emoji";
+"title.colors" = "Цвет";
+"title.table.cell.category" = "Категория";
+"title.table.cell.schedule" = "Расписание";
+// MARK: - Category
+"create.category.button" = "Добавить категорию";
+"empty.categories.label" = "Привычки и события можно\nобъединить по смыслу";
+"category.view.controller.title" = "Категория";
+// MARK: - CreateCategory
+"create.category.view.controller.title" = "Новая категория";
+"done.button.category" = "Готово";
+"name.category.text.field.placeholder" = "Введите название категории";
+// MARK: - Schedule
+"schedule.view.controller.title" = "Расписание";
+"done.button.schedule" = "Готово";
+// MARK: - Weekdays
+"monday.fullName" = "Понедельник";
+"tuesday.fullName" = "Вторник";
+"wednesday.fullName" = "Среда";
+"thursday.fullName" = "Четверг";
+"friday.fullName" = "Пятница";
+"saturday.fullName" = "Суббота";
+"sunday.fullName" = "Воскресенье";
+"monday.shortName" = "Пн";
+"tuesday.shortName" = "Вт";
+"wednesday.shortName" = "Ср";
+"thursday.shortName" = "Чт";
+"friday.shortName" = "Пт";
+"saturday.shortName" = "Сб";
+"sunday.shortName" = "Вс";
+// MARK: - TabBar
+"tab.bar.title.trackers" = "Трекеры";
+"tab.bar.title.statistic" = "Статистика";

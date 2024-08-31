@@ -62,6 +62,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     // MARK: - Private Properties
     private var plusTrackerCellButtonColor = UIColor.red
     private var trackerId: UInt = 0
+    private let analyticsService = AnalyticsService()
     
     // MARK: - Initializers
     override init(frame: CGRect) {
@@ -108,6 +109,10 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         trackerId = tracker.id
         daysTracker.text = delegate?.countTrackerCompletedTrackers(id: trackerId) ?? "0 дней"
         setColorPlusTrackerCellButton()
+    }
+    
+    func getIdTracker() -> UInt {
+        trackerId
     }
     
     // MARK: - Private Methods
@@ -162,6 +167,14 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     @objc private func clickPlusTrackerCellButton() {
         print(#fileID, #function, #line)
+        
+        let params = [
+            "event": "click",
+            "screen": "Main",
+            "item": "track"
+        ]
+        print(#fileID, #function, #line, "analyticsService params: \(params)")
+        analyticsService.report(event: "track_click", params: params)
         
         guard let delegate else {
             print(#fileID, #function, #line)

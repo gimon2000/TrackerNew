@@ -46,6 +46,70 @@ final class TrackerStore {
         saveContext()
     }
     
+    func changeTrackerInCoreData(tracker: Tracker, categoryName: String) {
+        let category = coreDataStore.getTrackerCategoryCoreData(categoryName: categoryName)
+        
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %d", tracker.id)
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            print(#fileID, #function, #line, "result: \(result)")
+            if let oldTracker = result.first {
+                if let schedule = tracker.schedule, !schedule.isEmpty {
+                    oldTracker.schedule = daysValueTransformer.transformedValue(schedule) as? NSObject
+                }
+                oldTracker.color = uiColorMarshalling.hexString(from: tracker.color)
+                oldTracker.emoji = tracker.emoji
+                oldTracker.name = tracker.name
+                oldTracker.trackerCategory = category
+                
+                saveContext()
+            }
+        } catch {
+            assertionFailure("\(error)")
+        }
+    }
+    
+    func deleteTracker(id: UInt) {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %d", id)
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            print(#fileID, #function, #line, "result: \(result)")
+            if let tracker = result.first {
+                context.delete(tracker)
+                saveContext()
+            }
+        } catch {
+            assertionFailure("\(error)")
+        }
+    }
+    
+    func changeCategoryInTrackerCoreData(categoryName: String, idTracker: UInt) {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %d", idTracker)
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            print(#fileID, #function, #line, "result: \(result)")
+            
+            if categoryName == "Закрепленные" {
+                let oldCategory = result.first?.oldTrackerCategory
+                result.first?.trackerCategory = oldCategory
+            } else {
+                let categoryFix = coreDataStore.getTrackerCategoryCoreData(categoryName: "Закрепленные")
+                let oldCategory = result.first?.trackerCategory
+                result.first?.oldTrackerCategory = oldCategory
+                result.first?.trackerCategory = categoryFix
+            }
+            saveContext()
+        } catch {
+            assertionFailure("\(error)")
+        }
+    }
+    
     // MARK: - Core Data Saving support
     private func saveContext() {
         if context.hasChanges {

@@ -24,4 +24,6 @@ protocol CreateTrackerPresenterProtocol {
     func setSelectedColor(index: Int)
     func selectedEmojiIsEmpty() -> Bool
     func selectedColorIsEmpty() -> Bool
+    func getIndexSelectedEmoji() -> Int?
+    func getIndexSelectedColor() -> Int?
 }

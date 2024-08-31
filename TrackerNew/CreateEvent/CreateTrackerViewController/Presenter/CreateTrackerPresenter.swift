@@ -57,14 +57,42 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
     private var category: String = ""
     private var selectedEmoji: String = ""
     private var selectedColor: UIColor?
-    private let color: UIColor = .red
+    private var trackerId: UInt?
     
     // MARK: - Public Methods
+    func setParam(
+        oldWeekdaysChecked: [Weekdays],
+        oldCategory: String,
+        oldSelectedEmoji: String,
+        oldSelectedColor: UIColor,
+        oldTrackerId: UInt
+    ){
+        weekdaysChecked = oldWeekdaysChecked
+        category = oldCategory
+        selectedEmoji = oldSelectedEmoji
+        selectedColor = oldSelectedColor
+        trackerId = oldTrackerId
+    }
+    
+    func getIndexSelectedEmoji() -> Int? {
+        if selectedEmoji.isEmpty {
+            return nil
+        }
+        return arrayEmojis.firstIndex(where: {$0 == selectedEmoji})
+    }
+    
+    func getIndexSelectedColor() -> Int? {
+        guard let selectedColor else {
+            return nil
+        }
+        return arrayColors.firstIndex(where: {compareColors(c1: $0, c2: selectedColor) })
+    }
+    
     func createTracker(name: String) {
         print(#fileID, #function, #line)
         if let weekdaysChecked = weekdaysChecked {
             let tracker = Tracker(
-                id: UInt.random(in: 0...UInt(Int32.max)),
+                id: trackerId ?? UInt.random(in: 0...UInt(Int32.max)),
                 name: name,
                 emoji: selectedEmoji,
                 color: selectedColor ?? .red,
@@ -72,9 +100,10 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
                 eventDate: nil
             )
             createTrackerView?.delegate?.setTracker(tracker: tracker, category: category)
+            createTrackerView?.trackersDelegate?.changeTracker(tracker: tracker, category: category)
         } else {
             let tracker = Tracker(
-                id: UInt.random(in: 0...UInt(Int32.max)),
+                id: trackerId ?? UInt.random(in: 0...UInt(Int32.max)),
                 name: name,
                 emoji: selectedEmoji,
                 color: selectedColor ?? .red,
@@ -82,6 +111,7 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
                 eventDate: Date()
             )
             createTrackerView?.delegate?.setTracker(tracker: tracker, category: category)
+            createTrackerView?.trackersDelegate?.changeTracker(tracker: tracker, category: category)
         }
         
     }
@@ -164,5 +194,21 @@ final class CreateTrackerPresenter: CreateTrackerPresenterProtocol {
             return true
         }
         return false
+    }
+    
+    private func compareColors (c1:UIColor, c2:UIColor) -> Bool{
+        var red:CGFloat = 0
+        var green:CGFloat  = 0
+        var blue:CGFloat = 0
+        var alpha:CGFloat  = 0
+        c1.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        var red2:CGFloat = 0
+        var green2:CGFloat  = 0
+        var blue2:CGFloat = 0
+        var alpha2:CGFloat  = 0
+        c2.getRed(&red2, green: &green2, blue: &blue2, alpha: &alpha2)
+        
+        return (Int(red*255) == Int(red*255) && Int(green*255) == Int(green2*255) && Int(blue*255) == Int(blue*255) )
     }
 }

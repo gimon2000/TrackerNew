@@ -21,7 +21,10 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     private var textField: UITextField = {
         let view = UITextField()
-        view.placeholder = "Введите название трекера"
+        view.placeholder = NSLocalizedString(
+            "text.field.placeholder",
+            comment: "Text displayed in placeholder"
+        )
         view.backgroundColor = .ypGray30
         view.layer.cornerRadius = 16
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
@@ -33,7 +36,11 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     private lazy var createButton: UIButton = {
         let view = UIButton(type: .custom)
-        view.setTitle("Создать", for: .normal)
+        let createText = NSLocalizedString(
+            "create.button",
+            comment: "Text displayed in button"
+        )
+        view.setTitle(createText, for: .normal)
         view.setTitleColor(.white, for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         view.backgroundColor = .ypGray
@@ -44,7 +51,11 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     private lazy var cancelButton: UIButton = {
         let view = UIButton(type: .custom)
-        view.setTitle("Отменить", for: .normal)
+        let cancelText = NSLocalizedString(
+            "cancel.button",
+            comment: "Text displayed in button"
+        )
+        view.setTitle(cancelText, for: .normal)
         view.setTitleColor(.ypRed, for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         view.backgroundColor = .white
@@ -76,7 +87,10 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         let view = UILabel()
         view.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         view.textColor = .ypBlack
-        view.text = "Emoji"
+        view.text = NSLocalizedString(
+            "title.emojis",
+            comment: "Text displayed in title emoji"
+        )
         return view
     }()
     
@@ -84,7 +98,10 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         let view = UILabel()
         view.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         view.textColor = .ypBlack
-        view.text = "Цвет"
+        view.text = NSLocalizedString(
+            "title.colors",
+            comment: "Text displayed in title colors"
+        )
         return view
     }()
     
@@ -100,9 +117,18 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         return collectionView
     }()
     
+    private lazy var countDaysLabel: UILabel = {
+        let view = UILabel()
+        view.textColor = .ypBlack
+        view.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        view.text = countDaysText
+        return view
+    }()
+    
     //MARK: - Public Property
     var createTrackerPresenter: CreateTrackerPresenterProtocol?
     weak var delegate: SelectTypeEventViewControllerDelegate?
+    weak var trackersDelegate: TrackersViewControllerDelegate?
     
     //MARK: - Private Property
     private var navigationTitle: String
@@ -114,6 +140,8 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     )
     private let emojiCellIdentifier = "emojiCellIdentifier"
     private let colorCellIdentifier = "colorCellIdentifier"
+    private var trackerName: String?
+    private var countDaysText: String?
     
     // MARK: - Initializers
     init(
@@ -142,6 +170,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         
         [
             scrollView,
+            countDaysLabel,
             textField,
             stackView,
             createButton,
@@ -157,13 +186,14 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         
         view.addSubview(scrollView)
         [
+            countDaysLabel,
             textField,
             stackView,
             tableViewCategoryAndSchedule,
             titleEmojis,
             emojisCollectionView,
             titleColors,
-            colorsCollectionView
+            colorsCollectionView,
         ].forEach{
             scrollView.addSubview($0)
         }
@@ -187,6 +217,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         colorsCollectionView.allowsMultipleSelection = false
         
         addConstraintScrollView()
+        addConstraintCountDaysLabel()
         addConstraintTextField()
         addConstraintStackView()
         addConstraintCreateButton()
@@ -198,7 +229,18 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         addConstraintColorsCollectionView()
         
         textField.delegate = self
+        if let trackerName {
+            textField.text = trackerName
+        }
         changeStateCreateButton()
+    }
+    
+    func setTracker(name: String) {
+        trackerName = name
+    }
+    
+    func setCountDays(count: String){
+        countDaysText = count
     }
     
     // MARK: - Private Methods
@@ -211,12 +253,25 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         ])
     }
     
+    private func addConstraintCountDaysLabel() {
+        NSLayoutConstraint.activate([
+            countDaysLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            countDaysLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24)
+        ])
+    }
+    
     private func addConstraintTextField() {
+        
+        if countDaysText != nil {
+            textField.topAnchor.constraint(equalTo: countDaysLabel.bottomAnchor, constant: 40).isActive = true
+        } else {
+            textField.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24).isActive = true
+        }
+        
         NSLayoutConstraint.activate([
             textField.heightAnchor.constraint(equalToConstant: 75),
             textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            textField.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24)
         ])
     }
     
@@ -363,7 +418,18 @@ extension CreateTrackerViewController: UITableViewDataSource {
             print(#fileID, #function, #line)
             return UITableViewCell()
         }
-        let title = ["Категория", "Расписание"]
+        
+        let titleCategory = NSLocalizedString(
+            "title.table.cell.category",
+            comment: "Text displayed in title table"
+        )
+        
+        let titleSchedule = NSLocalizedString(
+            "title.table.cell.schedule",
+            comment: "Text displayed in title table"
+        )
+        
+        let title = [titleCategory, titleSchedule]
         var subtitle = ""
         if indexPath.row == 1 {
             subtitle = createTrackerPresenter?.getSubtitleSchedule() ?? ""
@@ -396,7 +462,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
     }
 }
 
-//MARK: - ScheduleViewControllerDelegate
+//MARK: - CreateTrackerViewControllerDelegate
 extension CreateTrackerViewController: CreateTrackerViewControllerDelegate {
     
     func setCategoryChecked(nameCategory: String) {
@@ -478,6 +544,13 @@ extension CreateTrackerViewController: UICollectionViewDataSource {
             }
             print(#fileID, #function, #line)
             cell.emojiLabel.text = createTrackerPresenter?.arrayEmojis[indexPath.row]
+            if let index = createTrackerPresenter?.getIndexSelectedEmoji(), index == indexPath.row {
+                collectionView.selectItem(
+                    at: indexPath,
+                    animated: true,
+                    scrollPosition: .top
+                )
+            }
             return cell
         }
         if collectionView == colorsCollectionView {
@@ -486,6 +559,13 @@ extension CreateTrackerViewController: UICollectionViewDataSource {
             }
             print(#fileID, #function, #line)
             cell.colorView.backgroundColor = createTrackerPresenter?.arrayColors[indexPath.row] ?? .ypRed
+            if let index = createTrackerPresenter?.getIndexSelectedColor(), index == indexPath.row {
+                collectionView.selectItem(
+                    at: indexPath,
+                    animated: true,
+                    scrollPosition: .top
+                )
+            }
             return cell
         }
         return UICollectionViewCell()

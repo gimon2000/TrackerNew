@@ -98,6 +98,22 @@ final class TrackerRecordStore: NSObject {
         }
     }
     
+    func deleteTrackerRecords(id: UInt) {
+        let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        fetchRequest.predicate = NSPredicate(format: "idTracker == %d", id)
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            print(#fileID, #function, #line, "result: \(result)")
+            result.forEach {
+                context.delete($0)
+            }
+            saveContext()
+        } catch {
+            assertionFailure("\(error)")
+        }
+    }
+    
     func containTrackerCompletedTrackers(currentDate: Date, id: UInt) -> Bool {
         guard let _ = getFetchRequest(id: id, currentDate: currentDate) else {
             print(#fileID, #function, #line, "false")
@@ -107,17 +123,27 @@ final class TrackerRecordStore: NSObject {
         return true
     }
     
+    func getCountRecords() -> Int {
+        print(#fileID, #function, #line)
+        let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = fetchedResultsController.fetchRequest
+        do {
+            let records = try context.fetch(fetchRequest)
+            print(#fileID, #function, #line, "records.count")
+            return records.count
+        } catch {
+            print(#fileID, #function, #line, "catch")
+            return 0
+        }
+    }
+    
     // MARK: - Private Methods
     private func getFetchRequest(id: UInt, currentDate: Date) -> NSFetchRequestResult? {
         let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = fetchedResultsController.fetchRequest
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.predicate = NSPredicate(
-            //            format: "%K == %d AND %K == %@",
             format: "%K == %d",
             #keyPath(TrackerRecordCoreData.idTracker),
             Int32(id) as CVarArg//,
-            //            #keyPath(TrackerRecordCoreData.date),
-            //            currentDate as CVarArg
         )
         var record: [NSFetchRequestResult]?
         do {

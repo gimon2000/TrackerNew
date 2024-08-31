@@ -10,6 +10,21 @@ import UIKit
 final class TrackersViewController: UIViewController, TrackersViewControllerProtocol {
     
     //MARK: - Visual Components
+    private lazy var filtersButton: UIButton = {
+        let view = UIButton(type: .custom)
+        let habitTitleButton = NSLocalizedString(
+            "trackers.view.controller.filters",
+            comment: "Text displayed in button"
+        )
+        view.setTitle(habitTitleButton, for: .normal)
+        view.setTitleColor(.white, for: .normal)
+        view.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        view.backgroundColor = .ypBlue
+        view.layer.cornerRadius = 16
+        view.addTarget(self, action: #selector(clickFiltersButton), for: .touchUpInside)
+        return view
+    }()
+    
     private lazy var addNewTracker: UIButton = {
         guard let image = UIImage(named: "AddTracker") else {
             print(#fileID, #function, #line)
@@ -30,12 +45,16 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
             return UIImageView()
         }
         let view = UIImageView(image: image)
+        view.backgroundColor = .ypWhite
         return view
     }()
     
     private let emptyTrackersLabel: UILabel = {
         let view = UILabel()
-        view.text = "Что будем отслеживать?"
+        view.text = NSLocalizedString(
+            "empty.trackers.label",
+            comment: "Text displayed on empty state"
+        )
         view.textColor = .ypBlack
         view.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         return view
@@ -45,7 +64,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         let picker = UIDatePicker()
         picker.datePickerMode = .date
         picker.preferredDatePickerStyle = .compact
-        picker.locale = Locale(identifier: "ru_Ru")
+        picker.locale = Locale(identifier: "ru_RU")
         picker.translatesAutoresizingMaskIntoConstraints = false
         picker.widthAnchor.constraint(equalToConstant: 100).isActive = true
         picker.calendar.firstWeekday = 2
@@ -58,15 +77,31 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         return picker
     }()
     
-    private var searchTextField : UISearchTextField = {
+    private lazy var searchTextField : UISearchTextField = {
         let viewSearchTextField = UISearchTextField()
-        viewSearchTextField.placeholder = "Поиск"
+        let textPlaceholder = NSLocalizedString(
+            "search.text.field.placeholder",
+            comment: "Text displayed in placeholder"
+        )
+        viewSearchTextField.textColor = .ypBlack
+        viewSearchTextField.backgroundColor = .ypColorGray12_24
+        viewSearchTextField.attributedPlaceholder = NSAttributedString(
+            string: textPlaceholder,
+            attributes: [
+                NSAttributedString.Key.foregroundColor : UIColor.ypColorGray_White
+            ]
+        )
+        let leftView = viewSearchTextField.leftView
+        leftView?.tintColor = .ypColorGray_White
+        viewSearchTextField.addTarget(self, action: #selector(searchTextFieldDidChanged), for: .editingChanged)
         return viewSearchTextField
     }()
     
     private var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.contentInset.bottom = 100
+        collectionView.backgroundColor = .ypWhite
         return collectionView
     }()
     
@@ -76,15 +111,19 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
     //MARK: - Private Property
     private let cellIdentifier = "cellIdentifier"
     private let headerIdentifier = "header"
+    private let analyticsService = AnalyticsService()
     
     //MARK: - Public Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#fileID, #function, #line)
         
-        view.backgroundColor = .white
+        view.backgroundColor = .ypWhite
         
-        title = "Трекеры"
+        title = NSLocalizedString(
+            "trackers.view.controller.title",
+            comment: "Text displayed in title"
+        )
         navigationController?.navigationBar.prefersLargeTitles = true
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addNewTracker)
@@ -110,6 +149,7 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
             collectionView,
             emptyTrackersImage,
             emptyTrackersLabel,
+            filtersButton
         ].forEach{
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
@@ -119,11 +159,41 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         addConstraintEmptyTrackersImage()
         addConstraintEmptyTrackersLabel()
         addConstraintCollectionView()
+        addConstraintFiltersButton()
         
         hideEmptyImage(setHidden: true)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let params = [
+            "event":"open",
+            "screen":"Main"
+        ]
+        print(#fileID, #function, #line, "analyticsService params: \(params)")
+        analyticsService.report(event: "open_main", params: params)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let params = [
+            "event":"close",
+            "screen":"Main"
+        ]
+        print(#fileID, #function, #line, "analyticsService params: \(params)")
+        analyticsService.report(event: "close_main", params: params)
+    }
+    
     // MARK: - Private Methods
+    private func addConstraintFiltersButton() {
+        NSLayoutConstraint.activate([
+            filtersButton.widthAnchor.constraint(equalToConstant: 114),
+            filtersButton.heightAnchor.constraint(equalToConstant: 50),
+            filtersButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            filtersButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
+        ])
+    }
+    
     private func addConstraintEmptyTrackersImage() {
         NSLayoutConstraint.activate([
             emptyTrackersImage.widthAnchor.constraint(equalToConstant: 80),
@@ -170,13 +240,49 @@ final class TrackersViewController: UIViewController, TrackersViewControllerProt
         let selectTypeEventViewController = SelectTypeEventViewController()
         selectTypeEventViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: selectTypeEventViewController)
+        let params = [
+            "event": "click",
+            "screen": "Main",
+            "item": "add_track"
+        ]
+        print(#fileID, #function, #line, "analyticsService params: \(params)")
+        analyticsService.report(event: "add_track", params: params)
         present(navigationController, animated: true)
+    }
+    
+    @objc private func clickFiltersButton() {
+        print(#fileID, #function, #line)
+        let filtersViewController = FiltersViewController()
+        filtersViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: filtersViewController)
+        let params = [
+            "event": "click",
+            "screen": "Main",
+            "item": "filter"
+        ]
+        print(#fileID, #function, #line, "analyticsService params: \(params)")
+        analyticsService.report(event: "filter_click", params: params)
+        present(navigationController, animated: true)
+    }
+    
+    @objc private func searchTextFieldDidChanged(_ searchField: UISearchTextField) {
+        if let searchText = searchField.text, !searchText.isEmpty {
+            trackersPresenter?.setSearchText(text: searchText)
+        } else {
+            trackersPresenter?.setSearchText(text: "")
+        }
+        hideEmptyImage(setHidden: true)
+        collectionView.reloadData()
     }
     
     private func hideEmptyImage(setHidden: Bool) {
         print(#fileID, #function, #line, "setHidden: \(setHidden)")
         emptyTrackersImage.isHidden = setHidden
         emptyTrackersLabel.isHidden = setHidden
+        let isSelected = UserDefaults.standard.integer(forKey: "selectedFilter") == 0
+        if isSelected {
+            filtersButton.isHidden = !setHidden
+        }
     }
     
     func collectionViewReloadData() {
@@ -235,7 +341,115 @@ extension TrackersViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 extension TrackersViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        guard let trackersPresenter else {
+            assertionFailure("collectionView contextMenuConfigurationForItemAt trackersPresenter nil")
+            return nil
+        }
+        
+        let categoryName = trackersPresenter.getNameCategory(index: indexPath.section)
+        let firstNameMenu = categoryName == "Закрепленные" ? "Открепить" : "Закрепить"
+        let idTracker = getIdCell(index: indexPath)
+        let tracker = trackersPresenter.getTrackersInDate(
+            indexSection: indexPath.section,
+            indexTracker: indexPath.row
+        )
+        let numberOfRowsInSection = tracker?.eventDate == nil ? 2 : 1
+        return UIContextMenuConfiguration(previewProvider: {
+            return self.makePreview(tracker: tracker)
+        },
+                                          actionProvider: {
+            actions in
+            return UIMenu(
+                children: [
+                    UIAction(title: firstNameMenu){[weak self] _ in
+                        self?.trackersPresenter?.changeCategoryInTrackerCoreData(categoryName: categoryName, idTracker: idTracker)
+                        self?.collectionView.reloadData()
+                    },
+                    UIAction(title: "Редактировать"){[weak self] _ in
+                        print(#fileID, #function, #line)
+                        let createTrackerViewController = CreateTrackerViewController(
+                            navigationTitle: "Редактирование привычки",
+                            numberOfRowsInSection: numberOfRowsInSection
+                        )
+                        let createTrackerPresenter = CreateTrackerPresenter()
+                        createTrackerViewController.createTrackerPresenter = createTrackerPresenter
+                        createTrackerPresenter.createTrackerView = createTrackerViewController
+                        createTrackerPresenter.setParam(
+                            oldWeekdaysChecked: tracker?.schedule ?? [],
+                            oldCategory: categoryName,
+                            oldSelectedEmoji: tracker?.emoji ?? "",
+                            oldSelectedColor: tracker?.color ?? .ypBlack,
+                            oldTrackerId: idTracker
+                        )
+                        createTrackerViewController.setTracker(name: tracker?.name ?? "")
+                        createTrackerViewController.trackersDelegate = self
+                        createTrackerViewController.setCountDays(count: trackersPresenter.countTrackerCompletedTrackers(id: idTracker))
+                        let navigationController = UINavigationController(rootViewController: createTrackerViewController)
+                        let params = [
+                            "event": "click",
+                            "screen": "Main",
+                            "item": "edit"
+                        ]
+                        print(#fileID, #function, #line, "analyticsService params: \(params)")
+                        self?.analyticsService.report(event: "filter_edit", params: params)
+                        self?.present(navigationController, animated: true)
+                    },
+                    UIAction(title: "Удалить", attributes: .destructive){[weak self] _ in
+                        let alert = UIAlertController(
+                            title: nil,
+                            message: "Уверены что хотите удалить трекер?",
+                            preferredStyle: .actionSheet
+                        )
+                        let actionDelete = UIAlertAction(
+                            title: "Удалить",
+                            style: .destructive){[weak self] _ in
+                                print(#fileID, #function, #line)
+                                self?.trackersPresenter?.deleteTracker(id: idTracker)
+                                let params = [
+                                    "event": "click",
+                                    "screen": "Main",
+                                    "item": "delete"
+                                ]
+                                print(#fileID, #function, #line, "analyticsService params: \(params)")
+                                self?.analyticsService.report(event: "filter_delete", params: params)
+                            }
+                        let actionCancel = UIAlertAction(
+                            title: "Отменить",
+                            style: .cancel){ _ in
+                                print(#fileID, #function, #line)
+                            }
+                        alert.addAction(actionDelete)
+                        alert.addAction(actionCancel)
+                        self?.present(alert, animated: true)
+                    },
+                ]
+            )
+        })
+    }
     
+    func makePreview(tracker: Tracker?) -> UIViewController {
+        guard let tracker else {
+            return UIViewController()
+        }
+        let vc = PreviewViewController(
+            backgroundColor: tracker.color,
+            name: tracker.name,
+            emoji: tracker.emoji
+        )
+        return vc
+    }
+    
+    func getIdCell(index: IndexPath) -> UInt {
+        let cell = collectionView.cellForItem(at: index) as? TrackerCollectionViewCell
+        guard let id = cell?.getIdTracker() else {
+            assertionFailure("getIdCell cell?.getIdTracker() nil")
+            return 0
+        }
+        print(#fileID, #function, #line, "name: \(id)")
+        return id
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -263,8 +477,42 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - TrackersViewControllerDelegate
 extension TrackersViewController: TrackersViewControllerDelegate {
+    func changeTracker(tracker: Tracker, category: String) {
+        trackersPresenter?.changeTracker(tracker: tracker, category: category)
+        hideEmptyImage(setHidden: true)
+        collectionView.reloadData()
+    }
+    
     func setTracker(tracker: Tracker, category: String) {
         trackersPresenter?.setTracker(tracker: tracker, category: category)
         hideEmptyImage(setHidden: true)
+    }
+    
+    func cleanAllFilters() {
+        trackersPresenter?.cleanAllFilters()
+        let trackersIsEmpty = trackersPresenter?.getCountCategoriesInCurrentDate() ?? 0 > 0
+        hideEmptyImage(setHidden: trackersIsEmpty)
+        collectionView.reloadData()
+    }
+    
+    func todayFilter() {
+        trackersPresenter?.todayFilter()
+        let trackersIsEmpty = trackersPresenter?.getCountCategoriesInCurrentDate() ?? 0 > 0
+        hideEmptyImage(setHidden: trackersIsEmpty)
+        collectionView.reloadData()
+    }
+    
+    func completedFilter() {
+        trackersPresenter?.completedFilter()
+        let trackersIsEmpty = trackersPresenter?.getCountCategoriesInCurrentDate() ?? 0 > 0
+        hideEmptyImage(setHidden: trackersIsEmpty)
+        collectionView.reloadData()
+    }
+    
+    func uncompletedFilter() {
+        trackersPresenter?.uncompletedFilter()
+        let trackersIsEmpty = trackersPresenter?.getCountCategoriesInCurrentDate() ?? 0 > 0
+        hideEmptyImage(setHidden: trackersIsEmpty)
+        collectionView.reloadData()
     }
 }

@@ -35,7 +35,7 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     
     func trackerCategoryCount() -> Int {
         print(#fileID, #function, #line)
-        categories = trackerCategoryStore.getArrayNameCategoryCoreData()
+        updateCategories()
         print(#fileID, #function, #line, "categories.count: \(categories.count)")
         return categories.count
     }
@@ -48,13 +48,20 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     func addLastCategory(categoryName: String) {
         trackerCategoryStore.cleanLastCategoryCoreData()
         trackerCategoryStore.addLastCategoryCoreData(categoryName: categoryName)
-        categories = trackerCategoryStore.getArrayNameCategoryCoreData()
+        updateCategories()
     }
     
     func addCategory(name: String) {
         print(#fileID, #function, #line, "name: \(name)")
         trackerCategoryStore.addCategoryCoreData(name: name)
-        categories = trackerCategoryStore.getArrayNameCategoryCoreData()
+        updateCategories()
         hiddenEmptyImageLabel?()
+    }
+    
+    private func updateCategories() {
+        let arrayCategory = trackerCategoryStore.getArrayNameCategoryCoreData()
+        categories = arrayCategory.filter{
+            $0.0 != "Закрепленные"
+        }
     }
 }

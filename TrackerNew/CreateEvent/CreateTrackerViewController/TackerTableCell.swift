@@ -25,7 +25,6 @@ final class TackerTableCell: UITableViewCell {
     }()
     
     private lazy var stackView: UIStackView = {
-        //        let view = UIStackView(arrangedSubviews: [textTitleLabelCell, textSubtitleLabelCell])
         let view = UIStackView(arrangedSubviews: [textTitleLabelCell])
         view.axis = .vertical
         view.alignment = .fill

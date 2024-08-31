@@ -92,7 +92,7 @@ final class TrackerCategoryStore: NSObject {
             result.first?.isLast = false
             saveContext()
         } catch {
-            print(#fileID, #function, #line, "result: nil")
+            assertionFailure("\(error)")
         }
     }
     
@@ -106,7 +106,7 @@ final class TrackerCategoryStore: NSObject {
             result.first?.isLast = true
             saveContext()
         } catch {
-            print(#fileID, #function, #line, "result: nil")
+            assertionFailure("\(error)")
         }
     }
     
